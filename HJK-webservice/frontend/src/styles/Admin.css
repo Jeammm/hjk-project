@@ -1,0 +1,35 @@
+#login-page-container {
+  background-image: url("../assets/login_background.jpg");
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#login-container {
+  display: flex;
+  flex-direction: column;
+  width: 450px;
+  padding: 3rem;
+  background-color: white;
+  gap: 1.5rem;
+  border-radius: 0.5rem;
+  border: 5px solid rgb(0, 140, 255);
+}
+
+.login-input {
+  height: 2rem;
+  border-radius: 0.4rem;
+  border: 1px solid grey;
+}
+
+.login-text {
+  padding-left: 1rem;
+}
+
+.login-button {
+  background-color: rgba(0, 140, 255, 0.699);
+  border:none;
+}

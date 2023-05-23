@@ -4,31 +4,61 @@ const product = require("../services/product");
 
 router.get("/category", async function (req, res, next) {
   try {
-    res.json(await product.getAllCategory());
+    const data = await product.getAllCategory();
+    res.json(data.rows);
   } catch (err) {
     console.error(`Error while getting products `, err.message);
     next(err);
   }
 });
 
-router.get("/category/:subCategory", async function (req, res, next) {
+router.get("/brands", async function (req, res, next) {
   try {
-    res.json(await product.getAllSubCategory(req.params.subCategory));
+    const data = await product.getAllBrands();
+    res.json(data.rows);
   } catch (err) {
     console.error(`Error while getting products `, err.message);
     next(err);
   }
 });
 
-router.get("/category/:subCategory/:productId", async function (req, res, next) {
+router.get("/brands/:brandID", async function (req, res, next) {
   try {
-    res.json(await product.getMultiple(req.params.subCategory));
+    const data = await product.getBrandItem(req.params.brandID);
+    res.json(data.rows);
   } catch (err) {
     console.error(`Error while getting products `, err.message);
     next(err);
   }
 });
 
+router.get("/category/:categoryID", async function (req, res, next) {
+  try {
+    const data = await product.getAllSubCategory(req.params.categoryID);
+    res.json(data.rows);
+  } catch (err) {
+    console.error(`Error while getting products `, err.message);
+    next(err);
+  }
+});
+
+router.get("/subCategory/:subCategoryID", async function (req, res, next) {
+  try {
+    res.json(await product.getMultiple(req.params.subCategoryID));
+  } catch (err) {
+    console.error(`Error while getting products `, err.message);
+    next(err);
+  }
+});
+
+router.get("/product/:productID", async function (req, res, next) {
+  try {
+    res.json(await product.getProduct(req.params.productID));
+  } catch (err) {
+    console.error(`Error while getting products `, err.message);
+    next(err);
+  }
+});
 
 // getAllCategory
 // getAllSubCategory

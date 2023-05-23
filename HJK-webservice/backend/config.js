@@ -4,7 +4,7 @@ const config = {
     host: "127.0.0.1",
     user: "root",
     password: "0891122331",
-    database: "HJK Database",
+    database: "hjk_database",
     port: "3306",
     // socketPath: "/Applications/MAMP/tmp/mysql/mysql.sock",
   },

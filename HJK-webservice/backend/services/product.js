@@ -2,7 +2,7 @@ const db = require("./db");
 const helper = require("../helper");
 const config = require("../config");
 
-async function getMultiple(page = 1, subCategory) {
+exports.getMultiple = async (subCategory, page = 1) =>  {
   const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
     `SELECT * 
@@ -19,7 +19,7 @@ async function getMultiple(page = 1, subCategory) {
   };
 }
 
-async function getOneProduct(productId) {
+exports.getProduct = async (productId) => {
   const product = await db.query(
     `SELECT * 
     FROM Product 
@@ -38,7 +38,7 @@ async function getOneProduct(productId) {
   };
 }
 
-async function getAllCategory() {
+exports.getAllCategory = async () => {
   const rows = await db.query(
     `SELECT *
     FROM Category`
@@ -48,7 +48,28 @@ async function getAllCategory() {
   }
 }
 
-async function getAllSubCategory(param) {
+exports.getAllBrands = async () => {
+  const rows = await db.query(
+    `SELECT *
+    FROM Brand`
+  );
+  return {
+    rows,
+  }
+}
+
+exports.getBrandItem = async (brandId) => {
+  const rows = await db.query(
+    `SELECT *
+    FROM Product
+    WHERE Brand = ${brandId}`
+  );
+  return {
+    rows,
+  }
+}
+
+exports.getAllSubCategory = async (param) => {
   const rows = await db.query(
     `SELECT *
     FROM SubCategory WHERE CategoryID = ${param}`
@@ -58,7 +79,7 @@ async function getAllSubCategory(param) {
   }
 }
 
-async function create(programmingLanguage) {
+exports.create = async (programmingLanguage) => {
   const result = await db.query(
     `INSERT INTO programming_languages 
     (name, released_year, githut_rank, pypl_rank, tiobe_rank) 
@@ -75,7 +96,7 @@ async function create(programmingLanguage) {
   return { message };
 }
 
-async function update(id, programmingLanguage) {
+exports.update = async (id, programmingLanguage) => {
   const result = await db.query(
     `UPDATE programming_languages 
     SET name="${programmingLanguage.name}", released_year=${programmingLanguage.released_year}, githut_rank=${programmingLanguage.githut_rank}, 
@@ -92,7 +113,7 @@ async function update(id, programmingLanguage) {
   return { message };
 }
 
-async function remove(id) {
+exports.remove = async (id) => {
   const result = await db.query(
     `DELETE FROM programming_languages WHERE id=${id}`
   );
@@ -106,12 +127,12 @@ async function remove(id) {
   return { message };
 }
 
-module.exports = {
-  getMultiple,
-  getAllCategory,
-  getAllSubCategory,
-  getOneProduct,
-  create,
-  update,
-  remove,
-};
+// module.exports = {
+//   getMultiple,
+//   getAllCategory,
+//   getAllSubCategory,
+//   getOneProduct,
+//   create,
+//   update,
+//   remove,
+// };

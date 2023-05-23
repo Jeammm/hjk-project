@@ -1,0 +1,138 @@
+
+#product-detail {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 3rem;
+  padding-top: 1rem;
+}
+
+#product-detail-topic {
+  font-size: 1.8rem
+}
+
+#img-with-desc {
+  display: flex;
+  width: 100%;
+  /* justify-content: center; */
+}
+
+#product-img-container {
+  width : 30%;
+  height : 300px;
+  border: 1px solid rgb(196, 196, 196);
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#product-img {
+  object-fit: contain;
+  width: 100%;
+}
+
+#product-name {
+  color: #cb3435;
+  font-size: 2rem;
+  border-bottom: 1px solid rgb(201, 201, 201);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+#detail-beside-img {
+  margin-left: 1rem;
+  width: 70%;
+}
+
+#product-desc {
+  text-indent: 3rem;
+}
+
+#size-container {
+  margin-top: 2rem;
+}
+
+.size-detail {
+  display: flex;
+}
+
+.size-detail-box {
+  border-radius: 0.5rem;
+  text-align: center;
+  padding-block: 0.3rem;
+  margin: 1px;
+}
+
+.w-200 {
+  width: 200px;
+}
+.w-150 {
+  width: 150px;
+}
+
+.grey {
+  background-color: rgb(207, 207, 207);
+}
+
+.dark {
+  background-color: rgb(236, 236, 236);
+}
+
+.table-topic {
+  background-color: rgb(99, 99, 99);
+  color: white;
+}
+
+.order-amount {
+  width: 80%;
+  border-radius: 0.2rem;
+  border: 1px solid rgb(138, 138, 138);
+  background-color: none;
+  outline: none;
+  padding-inline: 0.5rem;
+}
+
+#place-order-button-container {
+  width: 100%;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+#add-to-basket {
+  background-color: #193d73;
+}
+
+#cancel {
+  background-color: #cb3435;
+}
+
+.order-button {
+  padding: 0.7rem;
+  margin-inline: 1rem;
+  width: 10rem;
+  border: none;
+  outline: none;
+  border-radius: 0.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+}
+
+.topic-with-close {
+  display: flex;
+  justify-content: space-between;
+}
+
+#close-button {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+#close-button:hover {
+  color: #cb3435;
+}
