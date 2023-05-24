@@ -48,6 +48,39 @@ exports.getAllCategory = async () => {
   }
 }
 
+exports.checkCategory = async (categoryId) => {
+  const rows = await db.query(
+    `SELECT *
+    FROM Category
+    WHERE CategoryID = ${categoryId}`
+  );
+  return {
+    rows,
+  }
+}
+
+exports.checkCategory = async (categoryId) => {
+  const rows = await db.query(
+    `SELECT *
+    FROM Category
+    WHERE CategoryID = ${categoryId}`
+  );
+  return {
+    rows,
+  }
+}
+
+exports.checkSubCategory = async (categoryId, subCategoryId) => {
+  const rows = await db.query(
+    `SELECT *
+    FROM SubCategory
+    WHERE CategoryID = ${categoryId} AND SubCategoryID = ${subCategoryId}`
+  );
+  return {
+    rows,
+  }
+}
+
 exports.getAllBrands = async () => {
   const rows = await db.query(
     `SELECT *

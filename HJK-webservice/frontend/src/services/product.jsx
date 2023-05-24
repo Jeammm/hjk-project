@@ -7,6 +7,16 @@ export async function getAllCategory() {
   return res.data;
 }
 
+export async function checkCategory(id) {
+  const res = await axios.get(`${url}/checkCategory/${id}`)
+  return res.data;
+}
+
+export async function checkSubCategory(catId, subId) {
+  const res = await axios.get(`${url}/checkSubCategory/${catId}/${subId}`)
+  return res.data;
+}
+
 export async function getSubCategory(id) {
   const res = await axios.get(`${url}/category/${id}`)
   return res.data;

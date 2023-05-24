@@ -1,0 +1,41 @@
+.product-conf-list-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns (50% width each) */
+  grid-auto-rows: 120px; /* Fixed row height */
+  grid-gap: 10px; /* Gap between divs */
+  flex-grow: 1;
+}
+
+.product-conf-item {
+  display: flex;
+  min-width: 100%;
+  height: 120px;
+  padding: 0.8rem;
+  background-color: rgb(243, 243, 243);
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.product-conf-thumbnail {
+  width : 50%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+.product-conf-detail {
+  padding-left: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.product-conf-detail > h2 {
+  font-size: 1rem;
+}
+
+.product-conf-detail > h3 {
+  font-size: 1rem;
+  font-weight: 400;
+}

@@ -12,6 +12,26 @@ router.get("/category", async function (req, res, next) {
   }
 });
 
+router.get("/checkcategory/:categoryId", async function (req, res, next) {
+  try {
+    const data = await product.checkCategory(req.params.categoryId);
+    res.json(data.rows);
+  } catch (err) {
+    console.error(`Error while getting products `, err.message);
+    next(err);
+  }
+});
+
+router.get("/checkSubCategory/:categoryId/:subCategoryId", async function (req, res, next) {
+  try {
+    const data = await product.checkSubCategory(req.params.categoryId, req.params.subCategoryId);
+    res.json(data.rows);
+  } catch (err) {
+    console.error(`Error while getting products `, err.message);
+    next(err);
+  }
+});
+
 router.get("/brands", async function (req, res, next) {
   try {
     const data = await product.getAllBrands();
