@@ -1,4 +1,4 @@
-import { useLoaderData, Outlet, NavLink } from "react-router-dom";
+import { useLoaderData, Outlet, NavLink, useParams } from "react-router-dom";
 
 import { checkCategory, getSubCategory } from "../services/product";
 
@@ -19,20 +19,24 @@ export async function loader({ params }) {
 export default function SubCategoryConf() {
   const { subCategory } = useLoaderData();
 
+  const params = useParams();
+
+  const catIdSelecting = params.subcategoryId
+
   return (
     <div className="category-conf-container">
       <div className="category-selection-area">
         {subCategory.map((cat) => {
           return (
-            <NavLink to={`${cat.SubCategoryID}/product`}>
-              <div className="category-conf-item selectable">
+            <NavLink to={`${cat.SubCategoryID}/product`} key={cat.SubCategoryID}>
+              <div className={`category-conf-item selectable ${`${cat.SubCategoryID}` === catIdSelecting ? "isSelected" : ""}`}>
                 <p>{cat.SubNameTH}</p>
               </div>
             </NavLink>
           );
         })}
         <div className="category-conf-item selectable">
-          <p>หมวดหมู่ย่อยใหม่</p>
+          <p> + หมวดหมู่ย่อยใหม่</p>
         </div>
       </div>
       <Outlet />

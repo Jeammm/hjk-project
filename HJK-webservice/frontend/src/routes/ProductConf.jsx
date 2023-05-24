@@ -1,6 +1,6 @@
 import "../styles/ProductConf.css";
 
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, NavLink } from "react-router-dom";
 
 import { checkSubCategory, getItems } from "../services/product";
 
@@ -27,7 +27,11 @@ export default function ProductConf() {
     <div className="product-conf-list-container">
       {products.map((product) => {
         return (
-          <div className="product-conf-item selectable">
+          <NavLink
+            to={`${product.ProductID}/edit`}
+            className="product-conf-item selectable"
+            key={product.ProductID}
+          >
             <img
               src={product.Thumbnail}
               alt={product.NameTH}
@@ -38,10 +42,10 @@ export default function ProductConf() {
               <h3>{product.NameTH}</h3>
               <h4>{product.IsColor ? "หลายสี" : ""}</h4>
             </div>
-          </div>
+          </NavLink>
         );
       })}
-      <div className="product-conf-item selectable">
+      <NavLink to="new" className="product-conf-item selectable">
         <img
           src="https://cdn-icons-png.flaticon.com/512/2661/2661440.png"
           alt="Add new product"
@@ -50,7 +54,7 @@ export default function ProductConf() {
         <div className="product-conf-detail">
           <p>เพิ่มสินค้า</p>
         </div>
-      </div>
+      </NavLink>
     </div>
   );
 }

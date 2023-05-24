@@ -1,0 +1,13 @@
+.add-new-size {
+  width: 100%;
+  text-align: center;
+  /* border: 1px solid grey; */
+  border-radius: 0.5rem;
+  margin-top: 0.1rem;
+  font-weight: 700;
+  background-color: #7bca5e;
+}
+
+.size-input-box {
+  border: none;
+}

@@ -49,7 +49,7 @@ export default function Product() {
         <div id="size-container">
           <div className="size-detail">
             <p className="size-detail-box w-200 table-topic">รหัสสินค้า</p>
-            <p className="size-detail-box w-200 table-topic">ขนาด</p>
+            <p className="size-detail-box w-150 table-topic">ขนาด</p>
             <p className="size-detail-box w-150 table-topic">บรรจุ</p>
             <p className="size-detail-box w-150 table-topic">ราคา</p>
             <p className="size-detail-box w-150 table-topic">จำนวนที่สั่ง</p>
@@ -66,7 +66,7 @@ export default function Product() {
                 <p className={`size-detail-box w-200 ${cal_color(i)}`}>
                   {cal_id(s.ProductID, s.SizeID)}
                 </p>
-                <p className={`size-detail-box w-200 ${cal_color(i)}`}>
+                <p className={`size-detail-box w-150 ${cal_color(i)}`}>
                   {s.Des}
                 </p>
                 <p className={`size-detail-box w-150 ${cal_color(i)}`}>

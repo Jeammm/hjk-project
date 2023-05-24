@@ -19,6 +19,9 @@ import CategoryConf, {loader as categoryConfLoader} from "./routes/CategoryConf"
 import SubCategoryConf, {loader as subCategoryConfLoader} from "./routes/SubCategoryConf";
 import ProductConf, {loader as ProductConfLoader} from "./routes/ProductConf";
 
+import NewProduct, {loader as NewProductLoader} from "./routes/NewProduct";
+import EditProduct, {loader as EditProductLoader} from "./routes/EditProduct";
+
 const router = createBrowserRouter([
   {
     path: "",
@@ -85,13 +88,19 @@ const router = createBrowserRouter([
                 element: <ProductConf />,
                 loader: ProductConfLoader,
                 children: [
-                  {
-                    path: ":productId",
-                    element: <ProductConf />,
-                    loader: ProductConfLoader,
-                  }
+                  
                 ],
-              }
+              },
+              {
+                path: ":subcategoryId/product/:productId/edit",
+                element: <EditProduct />,
+                loader: EditProductLoader,
+              },
+              {
+                path: ":subcategoryId/product/new",
+                element: <NewProduct />,
+                loader: NewProductLoader,
+              },
             ],
           }
         ],
