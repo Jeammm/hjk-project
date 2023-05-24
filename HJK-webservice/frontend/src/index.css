@@ -11,12 +11,12 @@ html, * {
   box-sizing: inherit;
 }
 
-.link-text, .link-text:focus, .link-text:active {
+a, a:focus, a:active {
   text-decoration: none;
   color: inherit;
 }
 
-.link-text:hover {
+a:hover {
   cursor:pointer;  
 }
 
