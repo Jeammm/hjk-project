@@ -11,3 +11,11 @@
 .size-input-box {
   border: none;
 }
+
+.color-checker-container {
+  margin-top: 0.5rem
+}
+
+.color-check-box {
+  margin-right: 1rem;
+}

@@ -1,8 +1,8 @@
-import "../styles/SubCategory.css";
+import "../../styles/SubCategory.css";
 
 import { useLoaderData, NavLink } from "react-router-dom";
 
-import { getItems } from "../services/product";
+import { getItems } from "../../services/product";
 
 ///subCategory/:subCategoryID
 

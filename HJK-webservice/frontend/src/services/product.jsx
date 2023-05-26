@@ -41,3 +41,4 @@ export async function getBrandItem(id) {
   const res = await axios.get(`${url}/brands/${id}`)
   return res.data;
 }
+

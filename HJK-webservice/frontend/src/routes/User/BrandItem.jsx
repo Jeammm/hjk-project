@@ -1,26 +1,26 @@
-import "../styles/Brand.css";
+import "../../styles/Brand.css";
 
 import { useLoaderData, NavLink } from "react-router-dom";
 
-import { getBrands } from "../services/product";
+import { getBrandItem } from "../../services/product";
 
-export async function loader() {
-  const brands = await getBrands();
-  return { brands };
+export async function loader({ params }) {
+  const brandItems = await getBrandItem(params.brandId);
+  return { brandItems };
 }
 
 export default function Category() {
-  const { brands } = useLoaderData();
+  const { brandItems } = useLoaderData();
 
   return (
     <div id="subcategory-list">
       <ul className="subcat-list">
-        {brands.map((b) => {
+        {brandItems.map((b) => {
           return (
             <li key={b.BrandID}>
-              <NavLink to={`/brands/${b.BrandID}`} className="subcat-item selectable">
+              <NavLink to={`/product/${b.ProductID}`} className="subcat-item selectable">
                 <img
-                  src={b.Logo}
+                  src={b.Thumbnail}
                   alt={b.NameTH}
                   className="category-thumbnail"
                 />

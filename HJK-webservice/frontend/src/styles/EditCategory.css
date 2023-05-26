@@ -1,0 +1,15 @@
+.edit-input-field {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.edit-input-field > input {
+  width: 60%;
+}
+
+.edit-category-form-conatiner {
+  width: 500px;
+  padding: 1rem;
+}

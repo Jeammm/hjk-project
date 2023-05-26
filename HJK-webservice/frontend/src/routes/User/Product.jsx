@@ -1,6 +1,6 @@
-import "../styles/Product.css";
+import "../../styles/Product.css";
 
-import { getProduct } from "../services/product";
+import { getProduct } from "../../services/product";
 
 import { useLoaderData, useNavigate, Form } from "react-router-dom";
 

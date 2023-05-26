@@ -1,8 +1,8 @@
-import "../styles/Category.css";
+import "../../styles/Category.css";
 
 import { useLoaderData, NavLink } from "react-router-dom";
 
-import { getSubCategory } from "../services/product";
+import { getSubCategory } from "../../services/product";
 
 export async function loader({ params }) {
   const subCategory = await getSubCategory(params.categoryId);

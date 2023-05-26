@@ -23,7 +23,22 @@
   padding-block: 0.2rem;
 }
 
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.cat-edit-button{
+  margin-right: -0.4rem;
+  margin-left: 0.2rem;
+  width: 20px;
+}
+
 .isSelected {
   background-color: #193d73;
   color: white;
+}
+
+.edit-on-right {
+  display: flex;
+  align-items: center;
 }

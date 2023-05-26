@@ -1,4 +1,4 @@
-import "../styles/ControlPanel.css"
+import "../../styles/ControlPanel.css"
 
 import { Outlet } from "react-router-dom"
 
