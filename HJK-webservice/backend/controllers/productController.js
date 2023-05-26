@@ -1,139 +1,168 @@
-const express = require('express');
+const express = require("express");
 
-const product = require("../services/product"); 
+const product = require("../services/product");
+const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/AppError");
 
 const router = express.Router();
 
-exports.getAllCategory = async (req, res, next) => {
-  try {
-    const data = await product.getAllCategory();
-    res.json(data.rows);
-  } catch (err) {
-    console.error(`Error while getting products `, err.message);
-    next(err);
-  }
-}
+exports.getAllCategory = catchAsync(async (req, res, next) => {
+  const result = await product.getAllCategory();
+  const data = result.rows;
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
 
-exports.checkCategory = async (req, res, next) => {
-  try {
-    const data = await product.checkCategory(req.params.categoryId);
-    res.json(data.rows);
-  } catch (err) {
-    console.error(`Error while getting products `, err.message);
-    next(err);
+exports.checkCategory = catchAsync(async (req, res, next) => {
+  const result = await product.checkCategory(req.params.categoryId);
+  const data = result.rows;
+  if (data.length === 0) {
+    return next(new AppError("No Category found with prodivded ID", 404));
   }
-}
 
-exports.checkSubCategory = async (req, res, next) => {
-  try {
-    const data = await product.checkSubCategory(req.params.categoryId, req.params.subCategoryId);
-    res.json(data.rows);
-  } catch (err) {
-    console.error(`Error while getting products `, err.message);
-    next(err);
-  }
-}
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
 
-exports.getAllBrands = async (req, res, next) => {
-  try {
-    const data = await product.getAllBrands();
-    res.json(data.rows);
-  } catch (err) {
-    console.error(`Error while getting products `, err.message);
-    next(err);
-  }
-}
+exports.checkSubCategory = catchAsync(async (req, res, next) => {
+  const result = await product.checkSubCategory(
+    req.params.categoryId,
+    req.params.subCategoryId
+  );
 
-exports.getBrandItem = async (req, res, next) => {
-  try {
-    const data = await product.getBrandItem(req.params.brandID);
-    res.json(data.rows);
-  } catch (err) {
-    console.error(`Error while getting products `, err.message);
-    next(err);
+  const data = result.rows;
+  if (data.length === 0) {
+    return next(new AppError("No Sub-Category found with prodivded ID", 404));
   }
-}
 
-exports.getAllSubCategory = async (req, res, next) => {
-  try {
-    const data = await product.getAllSubCategory(req.params.categoryID);
-    res.json(data.rows);
-  } catch (err) {
-    console.error(`Error while getting products `, err.message);
-    next(err);
-  }
-}
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
 
-exports.getAllItemBySub = async (req, res, next) => {
-  try {
-    res.json(await product.getMultiple(req.params.subCategoryID));
-  } catch (err) {
-    console.error(`Error while getting products `, err.message);
-    next(err);
-  }
-}
+exports.getAllBrands = catchAsync(async (req, res, next) => {
+  const result = await product.getAllBrands();
+  const data = result.rows;
 
-exports.getProduct = async (req, res, next) => {
-  try {
-    res.json(await product.getProduct(req.params.productID));
-  } catch (err) {
-    console.error(`Error while getting products `, err.message);
-    next(err);
-  }
-}
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
 
-exports.createCategory = async (req, res, next) => {
-  try {
-    res.json(await product.createCategory(req.body));
-  } catch (err) {
-    console.error(`Error while creating category`, err.message);
-    next(err);
-  }
-}
+exports.getBrandItem = catchAsync(async (req, res, next) => {
+  const result = await product.getBrandItem(req.params.brandId);
+  const data = result.rows;
 
-exports.editCategory = async (req, res, next) => {
-  try {
-    res.json(await product.editCategory(req.params.categoryId, req.body));
-  } catch (err) {
-    console.error(`Error while editing category`, err.message);
-    next(err);
-  }
-}
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
 
-exports.createSubCategory = async (req, res, next) => {
-  try {
-    res.json(await product.createSubCategory(req.params.categoryId, req.body));
-  } catch (err) {
-    console.error(`Error while creating sub-category`, err.message);
-    next(err);
-  }
-}
+exports.getAllSubCategory = catchAsync(async (req, res, next) => {
+  const result = await product.getAllSubCategory(req.params.categoryId);
+  const data = result.rows;
 
-exports.editSubCategory = async (req, res, next) => {
-  try {
-    res.json(
-      await product.editSubCategory(req.params.subcategoryId, req.body)
-    );
-  } catch (err) {
-    console.error(`Error while editing sub-category`, err.message);
-    next(err);
-  }
-}
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
 
-exports.createProduct = async (req, res, next) => {
-  try {
-    res.json(await product.createProduct(req.params.subcategoryId, req.body));
-  } catch (err) {
-    console.error(`Error while creating product`, err.message);
-    next(err);
-  }
-}
+exports.getAllItemBySub = catchAsync(async (req, res, next) => {
+  const result = await product.getMultiple(req.params.subCategoryId);
+  const data = result.data;
 
-exports.editProduct = async (req, res, next) => {
-  try {
-    res.json(await product.editProduct(req.params.productId, req.body));
-  } catch (err) {
-    console.error(`Error while editing product`, err.message);
-    next(err);
-  }
-}
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
+
+exports.getProduct = catchAsync(async (req, res, next) => {
+  const result = await product.getProduct(req.params.productId);
+  const data = result;
+
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
+
+exports.createCategory = catchAsync(async (req, res, next) => {
+  console.log(req.body)
+  const result = await product.createCategory(req.body);
+
+  const data = result;
+
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
+
+exports.editCategory = catchAsync(async (req, res, next) => {
+  const result = await product.editCategory(req.params.categoryId, req.body);
+  const data = result;
+
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
+
+exports.createSubCategory = catchAsync(async (req, res, next) => {
+  const result = await product.createSubCategory(
+    req.params.categoryId,
+    req.body
+  );
+  const data = result;
+
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
+
+exports.editSubCategory = catchAsync(async (req, res, next) => {
+  
+  const result = await product.editSubCategory(
+    req.params.subCategoryId,
+    req.body
+  );
+  const data = result;
+
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
+
+exports.createProduct = catchAsync(async (req, res, next) => {
+  const result = await product.createProduct(
+    req.params.subCategoryId,
+    req.body
+  );
+  const data = result;
+
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
+
+exports.editProduct = catchAsync(async (req, res, next) => {
+  const result = await product.editProduct(req.params.productId, req.body);
+  const data = result;
+
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});

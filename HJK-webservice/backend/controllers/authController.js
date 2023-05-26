@@ -3,6 +3,8 @@ const { promisify } = require("util");
 const User = require("../services/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/AppError");
 
 const signToken = async (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
@@ -37,10 +39,17 @@ const createAndSendToken = async (user, status, res) => {
   });
 };
 
-exports.signup = async (req, res, next) => {
-  if (req.body.password !== req.body.passwordConfirm) {
-    next(new Error("Password not matched"));
+exports.signup = catchAsync(async (req, res, next) => {
+  //1) check if email & password exist
+  if (!req.body.username || !req.body.password || !req.body.passwordConfirm) {
+    return next(new AppError("Please provide email and password", 400));
   }
+
+  //2) check if password confirm is correct
+  if (req.body.password !== req.body.passwordConfirm) {
+    next(new AppError("Password not matched", 400));
+  }
+
   const username = req.body.username;
   const password = await bcrypt.hash(req.body.password, 12);
 
@@ -49,47 +58,61 @@ exports.signup = async (req, res, next) => {
     password: password,
   };
 
-  try {
-    const genID = User.create(newUser);
-    newUser.UserID = genID;
-  } catch (err) {
-    next(err);
+  const genID = User.create(newUser);
+  if (!genID) {
+    next(new AppError("There was an error creating account", 400));
   }
+  newUser.UserID = genID;
 
   createAndSendToken(newUser, 201, res);
-};
+});
 
-exports.login = async (req, res, next) => {
+exports.login = catchAsync(async (req, res, next) => {
   const { username, password } = req.body;
 
   //1) check if username & password exist
   if (!username || !password) {
-    next(new Error("Please provide username and password"));
+    next(new AppError("Please provide username and password", 400));
   }
 
   //2) check if user exists & password correct
   const user = await User.getUserCredential(username);
 
   if (!user || !(await User.correctPassword(password, user.password))) {
-    return next(new Error("Incorret username or password"));
+    return next(new AppError("Incorret username or password", 401));
   }
 
   //3) send back a token
   createAndSendToken(user, 201, res);
-};
+});
 
-exports.protect = async (req, res, next) => {
+exports.logout = catchAsync(async (req, res, next) => {
+  const cookieOptions = {
+    expires: new Date(
+      Date.now()
+    ),
+    httpOnly: true,
+  };
+
+  if (process.env.NODE_ENV === "production") {
+    cookieOptions.secure = true;
+  }
+
+  res.cookie("jwt", "", cookieOptions);
+  res.status(201).json({
+    status: "success",
+  });
+});
+
+exports.protect = catchAsync(async (req, res, next) => {
   //1) check if token is provided
   let token;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
+  if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
 
   if (!token) {
-    return next(Error("You are not logged in!"));
+    return next(new AppError("You are not logged in!", 401));
   }
 
   //2) verify token
@@ -100,25 +123,44 @@ exports.protect = async (req, res, next) => {
   const freshUser = await User.getUserById(decoded.id);
   if (!freshUser) {
     // return next(new AppError("User not found", 401));
-    return next(new Error("User not found"));
+    return next(new AppError("User not found", 401));
   }
 
   //4) check if user change password after token issued
   // if (freshUser.changePasswordAfter(decoded.iat)) {
   //   return next(new AppError("User recently changed password!", 401));
   // }
-  
+
   req.user = freshUser;
   next();
-};
+});
 
-// exports.restrictTo =
-//   (...roles) =>
-//   (req, res, next) => {
-//     if (!roles.includes(req.user.role)) {
-//       return next(
-//         new AppError('You do not have permission to perform this action.', 403)
-//       );
-//     }
-//     next();
-//   };
+exports.isAuthorized = catchAsync(async (req, res, next) => {
+  //1) check if token is provided
+  let token;
+  if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
+
+  if (!token) {
+    return next(new AppError("You are not logged in!", 401));
+  }
+
+  //2) verify token
+
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
+  //3) check if user still exists
+  const freshUser = await User.getUserById(decoded.id);
+  if (!freshUser) {
+    // return next(new AppError("User not found", 401));
+    return next(new AppError("User not found", 401));
+  }
+
+  freshUser.password = null;
+
+  res.status(201).json({
+    status: "success",
+    freshUser,
+  });
+});
