@@ -16,24 +16,24 @@ router
   .get(productController.checkSubCategory);
 
 router
-  .route("/category/:categoryID")
+  .route("/category/:categoryId")
   .get(productController.getAllSubCategory)
   .patch(authController.protect, productController.editCategory)
   .post(authController.protect, productController.createSubCategory);
 
 router
-  .route("/subCategory/:subCategoryID")
+  .route("/subCategory/:subCategoryId")
   .get(productController.getAllItemBySub)
   .patch(authController.protect, productController.editSubCategory)
   .post(authController.protect, productController.createProduct);
 
 router
-  .route("/product/:productID")
+  .route("/product/:productId")
   .get(productController.getProduct)
   .patch(authController.protect, productController.editProduct);
 
 router.route("/brands").get(productController.getAllBrands);
 
-router.route("/brands/:brandID").get(productController.getBrandItem);
+router.route("/brands/:brandId").get(productController.getBrandItem);
 
 module.exports = router;
