@@ -1,8 +1,8 @@
 import "../../styles/EditCategory.css";
 
-import { checkCategory } from "../../services/product";
+import { checkCategory, editCategory } from "../../services/product";
 
-import { useLoaderData, Form, useNavigate } from "react-router-dom";
+import { useLoaderData, Form, useNavigate, redirect } from "react-router-dom";
 
 export async function loader({ params }) {
   const category = await checkCategory(params.categoryId);
@@ -17,6 +17,13 @@ export async function loader({ params }) {
   return { category };
 }
 
+export async function action({ request, params }) {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  await editCategory(params.categoryId, data);
+  return redirect(`/admin/category/${params.categoryId}/SubCategory`);
+}
+
 export default function EditCategory() {
   const { category } = useLoaderData();
   const navigate = useNavigate();
@@ -24,7 +31,7 @@ export default function EditCategory() {
   return (
     <div className="edit-category-form-conatiner">
       <h2>Category ID: {category[0].CategoryID}</h2>
-      <Form key={category[0].CategoryID}>
+      <Form key={category[0].CategoryID} method="post">
         <div className="edit-input-field">
           <p>ชื่อหมวดหมู่</p>
           <input

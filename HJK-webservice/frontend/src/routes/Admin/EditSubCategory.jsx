@@ -1,8 +1,8 @@
 import "../../styles/EditCategory.css";
 
-import { checkSubCategory } from "../../services/product";
+import { checkSubCategory, editSubCategory } from "../../services/product";
 
-import { useLoaderData, Form, useNavigate } from "react-router-dom";
+import { useLoaderData, Form, useNavigate, redirect } from "react-router-dom";
 
 export async function loader({ params }) {
   const subCategory = await checkSubCategory(params.categoryId, params.subcategoryId);
@@ -17,6 +17,13 @@ export async function loader({ params }) {
   return { subCategory };
 }
 
+export async function action({ request, params }) {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  await editSubCategory(params.subcategoryId, data);
+  return redirect(`/admin/category/${params.categoryId}/SubCategory/${params.subcategoryId}/product`);
+}
+
 export default function EditSubCategory() {
   const { subCategory } = useLoaderData();
   const navigate = useNavigate();
@@ -24,12 +31,12 @@ export default function EditSubCategory() {
   return (
     <div className="edit-category-form-conatiner">
       <h2>Sub-Category ID: {subCategory[0].SubCategoryID}</h2>
-      <Form key={subCategory[0].SubCategoryID}>
+      <Form key={subCategory[0].SubCategoryID} method="post">
         <div className="edit-input-field">
           <p>ชื่อหมวดหมู่ย่อย</p>
           <input
             type="text"
-            name="SubCategoryTH"
+            name="SubNameTH"
             defaultValue={subCategory[0].SubNameTH}
           />
         </div>
@@ -37,7 +44,7 @@ export default function EditSubCategory() {
           <p>ชื่อหมวดหมู่ย่อย (EN)</p>
           <input
             type="text"
-            name="CategoryEN"
+            name="SubNameEN"
             defaultValue={subCategory[0].SubNameEN}
           />
         </div>

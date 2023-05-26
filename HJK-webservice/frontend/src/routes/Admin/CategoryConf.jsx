@@ -17,6 +17,7 @@ export async function loader() {
   return { category };
 }
 
+
 export default function CategoryConf() {
   const { category } = useLoaderData();
 

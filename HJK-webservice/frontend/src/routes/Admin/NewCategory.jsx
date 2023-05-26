@@ -1,4 +1,13 @@
-import { useNavigate, Form} from "react-router-dom"
+import { useNavigate, Form, redirect } from "react-router-dom"
+
+import { newCategory } from "../../services/product"
+
+export async function action({ request }) {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  const newCatId = await newCategory(data);
+  return redirect(`/admin/category/`);
+}
 
 export default function NewCategory() {
   const navigate = useNavigate();
@@ -6,7 +15,7 @@ export default function NewCategory() {
   return (
     <div className="edit-category-form-conatiner">
       <h2>สร้างหมวดหมู่ใหม่</h2>
-      <Form>
+      <Form method="post">
         <div className="edit-input-field">
           <p>ชื่อหมวดหมู่</p>
           <input

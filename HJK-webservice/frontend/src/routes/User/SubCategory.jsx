@@ -8,6 +8,7 @@ import { getItems } from "../../services/product";
 
 export async function loader({ params }) {
   const items = await getItems(params.subCategoryId);
+
   if (!items) {
     throw new Response("", {
       status: 404,

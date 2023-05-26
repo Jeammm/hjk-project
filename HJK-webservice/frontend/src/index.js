@@ -16,19 +16,19 @@ import Product, { loader as productLoader } from "./routes/User/Product";
 import Brand, { loader as brandLoader } from "./routes/User/Brand";
 import BrandItem, { loader as brandItemLoader } from "./routes/User/BrandItem";
 
-import ControlPanel from "./routes/Admin/ControlPanel";
+import ControlPanel, {loader as adminLoader } from "./pages/ControlPanel";
 import CategoryConf, { loader as categoryConfLoader } from "./routes/Admin/CategoryConf";
 import SubCategoryConf, { loader as subCategoryConfLoader } from "./routes/Admin/SubCategoryConf";
 import ProductConf, { loader as ProductConfLoader } from "./routes/Admin/ProductConf";
 
 import NewProduct, { loader as NewProductLoader } from "./routes/Admin/NewProduct";
+import NewCategory, {action as NewCategoryAction } from "./routes/Admin/NewCategory";
+import NewSubCategory, {action as NewSubCategoryAction } from "./routes/Admin/NewSubCategory";
+
 import EditProduct, { loader as EditProductLoader } from "./routes/Admin/EditProduct";
+import EditCategory, { loader as EditCategoryLoader, action as EditCategoryAction } from "./routes/Admin/EditCategory";
+import EditSubCategory, { loader as EditSubCategoryLoader, action as EditSubCategoryAction } from "./routes/Admin/EditSubCategory";
 
-import EditCategory, { loader as EditCategoryLoader } from "./routes/Admin/EditCategory";
-import EditSubCategory, { loader as EditSubCategoryLoader } from "./routes/Admin/EditSubCategory";
-
-import NewCategory from "./routes/Admin/NewCategory";
-import NewSubCategory from "./routes/Admin/NewSubCategory";
 
 const router = createBrowserRouter([
   {
@@ -80,6 +80,7 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <ControlPanel />,
+    loader: adminLoader,
     children: [
       { index: true, element: <Index /> },
       {
@@ -91,10 +92,12 @@ const router = createBrowserRouter([
             path: ":categoryId/edit",
             element: <EditCategory />,
             loader: EditCategoryLoader,
+            action: EditCategoryAction
           },
           {
             path: "new",
             element: <NewCategory />,
+            action: NewCategoryAction,
           },
           {
             path: ":categoryId/subcategory",
@@ -104,11 +107,13 @@ const router = createBrowserRouter([
               {
                 path: "new",
                 element: <NewSubCategory />,
+                action: NewSubCategoryAction,
               },
               {
                 path: ":subcategoryId/edit",
                 element: <EditSubCategory />,
                 loader: EditSubCategoryLoader,
+                action: EditSubCategoryAction,
               },
               {
                 path: ":subcategoryId/product",

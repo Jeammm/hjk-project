@@ -24,34 +24,31 @@ export default function EditProduct() {
 
   const sizeOptionGen = (amount) => {
     const sizeOption = [];
-    const prod_id = productDetail.ProductID
+    const prod_id = productDetail.ProductID;
 
     let biggest_size = 0;
-    
+
     if (size.length) {
-      biggest_size = size[size.length-1].SizeID;
+      biggest_size = size[size.length - 1].SizeID;
     }
 
     for (let i = 0; i < amount; i++) {
-
       let size_id;
 
       if (size[i]) {
-        size_id = cal_id(size[i].ProductID, size[i].SizeID)
-      }
-      else {
+        size_id = cal_id(size[i].ProductID, size[i].SizeID);
+      } else {
         biggest_size += 1;
-        size_id = cal_id(prod_id, biggest_size)
+        size_id = cal_id(prod_id, biggest_size);
       }
 
       sizeOption.push(
-        <div
-          className="size-detail"
-          key={size_id}
-        >
+        <div className="size-detail" key={size_id}>
           <input
             className={`size-detail-box w-200 size-input-box ${cal_color(i)}`}
-            value={size[i] ? cal_id(size[i].ProductID, size[i].SizeID) : size_id}
+            value={
+              size[i] ? cal_id(size[i].ProductID, size[i].SizeID) : size_id
+            }
             readOnly
           />
 
@@ -107,8 +104,15 @@ export default function EditProduct() {
         </div>
 
         <div className="color-checker-container">
-          <input type="checkbox" className="color-check-box" name="IsColor" defaultChecked={productDetail.IsColor}/>
-          <label for="IsColor">ติ๊กช่องนี้ถ้าสินค้านี้เป็นประเภท "สี"</label>
+          <input
+            type="checkbox"
+            className="color-check-box"
+            name="IsColor"
+            defaultChecked={productDetail.IsColor}
+          />
+          <label htmlFor="IsColor">
+            ติ๊กช่องนี้ถ้าสินค้านี้เป็นประเภท "สี"
+          </label>
         </div>
 
         <div id="size-container">
@@ -119,7 +123,12 @@ export default function EditProduct() {
             <p className="size-detail-box w-150 table-topic">ราคา</p>
           </div>
           {sizeOptionGen(sizeNo)}
-          <div className="add-new-size selectable" onClick={() => setSizeNo(prev => prev+1)}>+ เพิ่มไซส์</div>
+          <div
+            className="add-new-size selectable"
+            onClick={() => setSizeNo((prev) => prev + 1)}
+          >
+            + เพิ่มไซส์
+          </div>
         </div>
         <div id="place-order-button-container">
           <button type="submit" className="order-button" id="add-to-basket">

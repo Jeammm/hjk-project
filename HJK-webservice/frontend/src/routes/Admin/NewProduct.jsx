@@ -16,12 +16,11 @@ export async function loader({ params }) {
     });
   }
 
-  const subCategoryId = params.subcategoryId
+  const subCategoryId = params.subcategoryId;
   return { subCategoryId };
 }
 
 export default function NewProduct() {
-
   const { subCategoryId } = useLoaderData();
 
   const navigate = useNavigate();
@@ -33,10 +32,7 @@ export default function NewProduct() {
 
     for (let i = 1; i <= amount; i++) {
       sizeOption.push(
-        <div
-          className="size-detail"
-          key={i}
-        >
+        <div className="size-detail" key={i}>
           <input
             className={`size-detail-box w-200 size-input-box ${cal_color(i)}`}
             value={i}
@@ -81,15 +77,17 @@ export default function NewProduct() {
             <img src="../assets/logo.svg" alt="product" id="product-img" />
           </div>
           <div id="detail-beside-img">
-            <input type="text" value={subCategoryId} readOnly hidden/>
-            <input id="product-name" placeholder="ชื่อสินค้า..."/>
+            <input type="text" value={subCategoryId} readOnly hidden />
+            <input id="product-name" placeholder="ชื่อสินค้า..." />
             <textarea id="product-desc" placeholder="รายละเอียดสินค้า..." />
           </div>
         </div>
 
         <div className="color-checker-container">
-          <input type="checkbox" className="color-check-box" name="IsColor"/>
-          <label for="IsColor">ติ๊กช่องนี้ถ้าสินค้านี้เป็นประเภท "สี"</label>
+          <input type="checkbox" className="color-check-box" name="IsColor" />
+          <label htmlFor="IsColor">
+            ติ๊กช่องนี้ถ้าสินค้านี้เป็นประเภท "สี"
+          </label>
         </div>
 
         <div id="size-container">
@@ -100,10 +98,13 @@ export default function NewProduct() {
             <p className="size-detail-box w-150 table-topic">ราคา</p>
           </div>
           {sizeOptionGen(sizeNo)}
-          <div className="add-new-size selectable" onClick={() => setSizeNo(prev => prev+1)}>ADD +</div>
+          <div
+            className="add-new-size selectable"
+            onClick={() => setSizeNo((prev) => prev + 1)}
+          >
+            ADD +
+          </div>
         </div>
-
-        
 
         <div id="place-order-button-container">
           <button type="submit" className="order-button" id="add-to-basket">
