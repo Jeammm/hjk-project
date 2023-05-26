@@ -2,7 +2,21 @@ const db = require("./db");
 const helper = require("../helper");
 const config = require("../config");
 
-exports.getMultiple = async (subCategory, page = 1) =>  {
+const query_gen = (data) => {
+  const keys = Object.keys(data);
+  let updateQuery = "";
+
+  keys.forEach((key, index) => {
+    if (index !== 0) {
+      updateQuery += ', ';
+    }
+    updateQuery += `${key}="${data[key]}"`;
+  });
+
+  return updateQuery;
+}
+
+exports.getMultiple = async (subCategory, page = 1) => {
   const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
     `SELECT * 
@@ -17,7 +31,7 @@ exports.getMultiple = async (subCategory, page = 1) =>  {
     data,
     meta,
   };
-}
+};
 
 exports.getProduct = async (productId) => {
   const product = await db.query(
@@ -36,7 +50,7 @@ exports.getProduct = async (productId) => {
     product,
     size,
   };
-}
+};
 
 exports.getAllCategory = async () => {
   const rows = await db.query(
@@ -45,8 +59,8 @@ exports.getAllCategory = async () => {
   );
   return {
     rows,
-  }
-}
+  };
+};
 
 exports.checkCategory = async (categoryId) => {
   const rows = await db.query(
@@ -56,19 +70,8 @@ exports.checkCategory = async (categoryId) => {
   );
   return {
     rows,
-  }
-}
-
-exports.checkCategory = async (categoryId) => {
-  const rows = await db.query(
-    `SELECT *
-    FROM Category
-    WHERE CategoryID = ${categoryId}`
-  );
-  return {
-    rows,
-  }
-}
+  };
+};
 
 exports.checkSubCategory = async (categoryId, subCategoryId) => {
   const rows = await db.query(
@@ -78,8 +81,8 @@ exports.checkSubCategory = async (categoryId, subCategoryId) => {
   );
   return {
     rows,
-  }
-}
+  };
+};
 
 exports.getAllBrands = async () => {
   const rows = await db.query(
@@ -88,8 +91,8 @@ exports.getAllBrands = async () => {
   );
   return {
     rows,
-  }
-}
+  };
+};
 
 exports.getBrandItem = async (brandId) => {
   const rows = await db.query(
@@ -99,52 +102,139 @@ exports.getBrandItem = async (brandId) => {
   );
   return {
     rows,
-  }
-}
+  };
+};
 
 exports.getAllSubCategory = async (param) => {
   const rows = await db.query(
     `SELECT *
-    FROM SubCategory WHERE CategoryID = ${param}`
+    FROM SubCategory 
+    WHERE CategoryID = ${param}`
   );
   return {
     rows,
-  }
-}
+  };
+};
 
-exports.create = async (programmingLanguage) => {
+exports.createCategory = async (categoryData) => {
+  
   const result = await db.query(
-    `INSERT INTO programming_languages 
-    (name, released_year, githut_rank, pypl_rank, tiobe_rank) 
+    `INSERT INTO Category 
+    (CategoryTH, CategoryEN) 
     VALUES 
-    ("${programmingLanguage.name}", ${programmingLanguage.released_year}, ${programmingLanguage.githut_rank}, ${programmingLanguage.pypl_rank}, ${programmingLanguage.tiobe_rank})`
+    ("${categoryData.CategoryTH}", "${categoryData.CategoryEN}")`
   );
 
-  let message = "Error in creating programming language";
+  let message = "Error in creating new category";
 
   if (result.affectedRows) {
-    message = "Programming language created successfully";
+    message = "New Category created successfully";
   }
 
   return { message };
-}
+};
 
-exports.update = async (id, programmingLanguage) => {
+exports.editCategory = async (id, categoryData) => {
+  const updateQuery= query_gen(categoryData);
+  
   const result = await db.query(
-    `UPDATE programming_languages 
-    SET name="${programmingLanguage.name}", released_year=${programmingLanguage.released_year}, githut_rank=${programmingLanguage.githut_rank}, 
-    pypl_rank=${programmingLanguage.pypl_rank}, tiobe_rank=${programmingLanguage.tiobe_rank} 
-    WHERE id=${id}`
+    `UPDATE Category 
+    SET ${updateQuery}
+    WHERE CategoryID=${id}`
   );
 
-  let message = "Error in updating programming language";
+  let message = "Error in updating category data";
 
   if (result.affectedRows) {
-    message = "Programming language updated successfully";
+    message = "Category data updated successfully";
   }
 
   return { message };
-}
+};
+
+exports.createSubCategory = async (id, subCategoryData) => {
+
+  const result = await db.query(
+    `INSERT INTO SubCategory 
+    (CategoryID, SubNameTH, SubNameEN, Thumbnail) 
+    VALUES 
+    ("${id}", "${subCategoryData.SubNameTH}", "${subCategoryData.SubNameEN}", "${subCategoryData.Thumbnail}")`
+  );
+
+  let message = "Error in creating new sub-category";
+
+  if (result.affectedRows) {
+    message = "New Sub-Category created successfully";
+  }
+
+  return { message };
+};
+
+exports.editSubCategory = async (id, subCategoryData) => {
+
+  const updateQuery= query_gen(subCategoryData);
+
+  const result = await db.query(
+    `UPDATE SubCategory 
+    SET ${updateQuery}
+    WHERE SubCategoryID="${id}"`
+  );
+
+  let message = "Error in updating category data";
+
+  if (result.affectedRows) {
+    message = "Category data updated successfully";
+  }
+
+  return { message };
+};
+
+exports.createProduct = async (id, productData) => {
+
+  const keys = Object.keys(productData);
+
+  const values = [];
+
+  keys.forEach((key) => {
+    values.push(`"${productData[key]}"`);
+  });
+
+  console.log(keys, values)
+
+  const result = await db.query(
+    `INSERT INTO Product 
+    (${keys.join(", ")}, SubCategory)
+    VALUES 
+    ( ${values.join(", ")}, "${id}")`
+  );
+
+  let message = "Error in creating new product";
+
+  if (result.affectedRows) {
+    message = "New product created successfully";
+  }
+
+  return { message };
+};
+
+exports.editProduct = async (id, productData) => {
+
+  const updateQuery= query_gen(productData);
+
+  const result = await db.query(
+    `UPDATE Product
+    SET ${updateQuery}
+    WHERE ProductID="${id}"`
+  );
+
+  let message = "Error in updating product data";
+
+  if (result.affectedRows) {
+    message = "Product data updated successfully";
+  }
+
+  return { message };
+};
 
 exports.remove = async (id) => {
   const result = await db.query(
@@ -158,7 +248,7 @@ exports.remove = async (id) => {
   }
 
   return { message };
-}
+};
 
 // module.exports = {
 //   getMultiple,
