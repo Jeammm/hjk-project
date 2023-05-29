@@ -3,15 +3,10 @@ import axios from "axios";
 const url = "http://localhost:8000/api/v1/user";
 
 export async function login(loginDetail) {
-  try {
-    const res = await axios.post(`${url}/login`, loginDetail, {
-      withCredentials: true,
-    });
-    return res;
-  } catch (err) {
-    // console.log(err)
-    window.alert(err.response.message);
-  }
+  const res = await axios.post(`${url}/login`, loginDetail, {
+    withCredentials: true,
+  });
+  return res;
 }
 
 export async function isAuthorized() {
@@ -44,7 +39,7 @@ export async function logout() {
         withCredentials: true,
       }
     );
-    console.log(res)
+    console.log(res);
     return res;
   } catch (err) {
     // console.log(err)

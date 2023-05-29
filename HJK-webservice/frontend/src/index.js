@@ -4,11 +4,11 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import App, { loader as rootLoader } from "./pages/App";
-import Admin, { action as loginAction } from "./pages/Admin";
+import Admin, { action as loginAction, loader as loginLoader } from "./pages/Admin";
 import ControlPanel, { loader as adminLoader } from "./pages/ControlPanel";
 
 import ErrorPage from "./routes/ErrorPage";
-import CPIndex from "./routes/admin/Index";
+import CPIndex from "./routes/Admin/CPIndex";
 import Index from "./routes/User/Index";
 
 import Category, { loader as categoryLoader } from "./routes/User/Category";
@@ -31,6 +31,7 @@ import ProductConf, {
 
 import NewProduct, {
   loader as NewProductLoader,
+  action as NewProductAction,
 } from "./routes/Admin/NewProduct";
 import NewCategory, {
   action as NewCategoryAction,
@@ -41,6 +42,7 @@ import NewSubCategory, {
 
 import EditProduct, {
   loader as EditProductLoader,
+  action as EditProductAction,
 } from "./routes/Admin/EditProduct";
 import EditCategory, {
   loader as EditCategoryLoader,
@@ -96,6 +98,7 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Admin />,
     errorElement: <ErrorPage />,
+    loader: loginLoader,
     action: loginAction,
   },
   {
@@ -140,17 +143,18 @@ const router = createBrowserRouter([
                 path: ":subcategoryId/product",
                 element: <ProductConf />,
                 loader: ProductConfLoader,
-                children: [],
               },
               {
                 path: ":subcategoryId/product/:productId/edit",
                 element: <EditProduct />,
                 loader: EditProductLoader,
+                action: EditProductAction,
               },
               {
                 path: ":subcategoryId/product/new",
                 element: <NewProduct />,
                 loader: NewProductLoader,
+                action: NewProductAction,
               },
             ],
           },
