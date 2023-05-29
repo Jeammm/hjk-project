@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import { checkSubCategory } from "../../services/product";
+import { checkSubCategory, newProduct } from "../../services/product";
 
-import { useLoaderData, useNavigate, Form } from "react-router-dom";
+import { useLoaderData, useNavigate, Form, redirect } from "react-router-dom";
 
 export async function loader({ params }) {
   const subCategoryCheck = await checkSubCategory(
@@ -18,6 +18,19 @@ export async function loader({ params }) {
 
   const subCategoryId = params.subcategoryId;
   return { subCategoryId };
+}
+
+export async function action({ request, params }) {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  console.log(data);
+  if (data.IsColor === undefined) data.IsColor = 0;
+  else data.IsColor = 1;
+
+  const res = await newProduct(params.subcategoryId, data);
+  const productId = res.data.productId;
+  window.alert(res.data.data[0]);
+  return redirect(`/admin/category/${params.categoryId}/subcategory/${params.subcategoryId}/product/${productId}/edit`)
 }
 
 export default function NewProduct() {
@@ -37,18 +50,25 @@ export default function NewProduct() {
             className={`size-detail-box w-200 size-input-box ${cal_color(i)}`}
             value={i}
             readOnly
+            required={true}
           />
 
           <input
             className={`size-detail-box w-150 size-input-box ${cal_color(i)}`}
+            name={`${i}_Des`}
+            required={true}
           />
 
           <input
             className={`size-detail-box w-150 size-input-box ${cal_color(i)}`}
+            name={`${i}_Packing`}
+            required={true}
           />
 
           <input
             className={`size-detail-box w-150 size-input-box ${cal_color(i)}`}
+            name={`${i}_Price`}
+            required={true}
             type="number"
             min={0}
           />
@@ -71,15 +91,21 @@ export default function NewProduct() {
           X
         </button>
       </div>
-      <Form>
+      <Form method="post">
         <div id="img-with-desc">
           <div id="product-img-container">
             <img src="../assets/logo.svg" alt="product" id="product-img" />
           </div>
           <div id="detail-beside-img">
-            <input type="text" value={subCategoryId} readOnly hidden />
-            <input id="product-name" placeholder="ชื่อสินค้า..." />
-            <textarea id="product-desc" placeholder="รายละเอียดสินค้า..." />
+            {/* <input
+              type="text"
+              value={subCategoryId}
+              readOnly
+              hidden
+              name="SubCategory"
+            /> */}
+            <input id="product-name" placeholder="ชื่อสินค้า..." name="NameTH"/>
+            <textarea id="product-desc" placeholder="รายละเอียดสินค้า..." name="DesTH"/>
           </div>
         </div>
 

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "../../styles/EditProduct.css";
 
-import { getProduct } from "../../services/product";
+import { getProduct, editProduct } from "../../services/product";
 
-import { useLoaderData, useNavigate, Form } from "react-router-dom";
+import { useLoaderData, useNavigate, Form, Navigate } from "react-router-dom";
 
 export async function loader({ params }) {
   const { product, size } = await getProduct(params.productId);
@@ -14,6 +14,16 @@ export async function loader({ params }) {
     });
   }
   return { product, size };
+}
+
+export async function action({ request, params }) {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  if (data.IsColor === undefined) data.IsColor = 0;
+  else data.IsColor = 1;
+  const res = await editProduct(params.productId, data);
+  window.alert(res.data.data[0])
+  return null;
 }
 
 export default function EditProduct() {
@@ -50,23 +60,30 @@ export default function EditProduct() {
               size[i] ? cal_id(size[i].ProductID, size[i].SizeID) : size_id
             }
             readOnly
+            // name={`${size_id}_Id`}
           />
 
           <input
             className={`size-detail-box w-150 size-input-box ${cal_color(i)}`}
             defaultValue={size[i] ? size[i].Des : ""}
+            name={`${size_id}_Des`}
+            required={true}
           />
 
           <input
             className={`size-detail-box w-150 size-input-box ${cal_color(i)}`}
             defaultValue={size[i] ? size[i].Packing : ""}
+            name={`${size_id}_Packing`}
+            required={true}
           />
 
           <input
             className={`size-detail-box w-150 size-input-box ${cal_color(i)}`}
             defaultValue={size[i] ? size[i].Price : ""}
+            name={`${size_id}_Price`}
             type="number"
             min={0}
+            required={true}
           />
         </div>
       );
@@ -92,14 +109,22 @@ export default function EditProduct() {
           X
         </button>
       </div>
-      <Form>
+      <Form method="post">
         <div id="img-with-desc">
           <div id="product-img-container">
             <img src={productDetail.Thumbnail} alt="product" id="product-img" />
           </div>
           <div id="detail-beside-img">
-            <input id="product-name" defaultValue={productDetail.NameTH} />
-            <textarea id="product-desc" defaultValue={productDetail.DesTH} />
+            <input
+              id="product-name"
+              defaultValue={productDetail.NameTH}
+              name="NameTH"
+            />
+            <textarea
+              id="product-desc"
+              defaultValue={productDetail.DesTH}
+              name="DesTH"
+            />
           </div>
         </div>
 
@@ -125,7 +150,15 @@ export default function EditProduct() {
           {sizeOptionGen(sizeNo)}
           <div
             className="add-new-size selectable"
-            onClick={() => setSizeNo((prev) => prev + 1)}
+            onClick={() =>
+              setSizeNo((prev) => {
+                if (prev <= 19) return prev + 1;
+                else {
+                  window.alert("มีได้ไม่เกิน 20 ไซส์")
+                  return prev;
+                }
+              })
+            }
           >
             + เพิ่มไซส์
           </div>

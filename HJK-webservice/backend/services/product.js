@@ -55,6 +55,18 @@ exports.getProduct = async (productId) => {
   };
 };
 
+exports.getProductByName = async (productName) => {
+  const product = await db.query(
+    `SELECT * 
+    FROM Product 
+    WHERE NameTH = "${productName}"`
+  );
+
+  return {
+    product
+  }
+}
+
 exports.getAllCategory = async () => {
   const rows = await db.query(
     `SELECT *
@@ -173,10 +185,10 @@ exports.editSubCategory = async (id, subCategoryData) => {
       SET ${updateQuery}
       WHERE SubCategoryID="${id}"`
     );
-    return("Sub-Category updated successfully");
-    } catch (e) { 
-      throw new AppError(e, 409);
-    }
+    return "Sub-Category updated successfully";
+  } catch (e) {
+    throw new AppError(e, 409);
+  }
 };
 
 exports.createProduct = async (id, productData) => {
@@ -193,8 +205,9 @@ exports.createProduct = async (id, productData) => {
       VALUES 
       ( ${values.join(", ")}, "${id}")`
     );
-    return("New Product created successfully");
-  } catch(e) {
+
+    return "New product detail inserted successfully";
+  } catch (e) {
     throw new AppError(e, 409);
   }
 };
@@ -208,7 +221,54 @@ exports.editProduct = async (id, productData) => {
       SET ${updateQuery}
       WHERE ProductID="${id}"`
     );
-    return("Product data updated successfully");
+    return "Product data updated successfully";
+  } catch (e) {
+    throw new AppError(e, 409);
+  }
+};
+
+exports.editSize = async (id, sizeData) => {
+  const checkIfRowExists = async (key, id) => {
+    const result = await db.query(`
+    SELECT *
+    FROM Size
+    WHERE ProductID = "${id}" AND SizeID = "${key}"
+    `);
+    return result;
+  };
+
+  const updateRow = async (id, key, sizeData) => {
+    const updateQuery = query_gen(sizeData);
+    
+    result = await db.query(
+      `UPDATE Size
+      SET ${updateQuery}
+      WHERE ProductID="${id}" AND SizeID="${key}"`
+    );
+    return result.row;
+  };
+
+  const insertRow = async (id, key, sizeData) => {
+
+    const result = await db.query(`
+      INSERT INTO Size 
+      (ProductID, SizeID, Des, Packing, Price)
+      VALUES 
+      ("${id}", ${key}, "${sizeData.Des}", "${sizeData.Packing}" ,"${sizeData.Price}")
+      `);
+  };
+
+  try {
+    for (const key in sizeData) {
+      const rowExists = await checkIfRowExists(key, id);
+
+      if (rowExists.length !== 0) {
+        updateRow(id, key, sizeData[key]);
+      } else {
+        insertRow(id, key, sizeData[key]);
+      }
+    }
+    return "Product data updated successfully";
   } catch (e) {
     throw new AppError(e, 409);
   }

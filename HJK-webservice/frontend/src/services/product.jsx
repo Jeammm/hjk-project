@@ -93,3 +93,31 @@ export async function newSubCategory(id, detail) {
     window.alert(err.response.message);
   }
 }
+
+export async function editProduct(id, detail) {
+  try {
+    const res = await axios.patch(`${url}/product/${id}`, detail, {
+      withCredentials: true,
+    });
+
+    return res;
+
+  } catch (err) {
+    // console.log(err)
+    window.alert(err.response.message);
+  }
+}
+
+export async function newProduct(id, detail) {
+  try {
+    const res = await axios.post(`${url}/subcategory/${id}`, detail, {
+      withCredentials: true,
+    });
+
+    return res;
+
+  } catch (err) {
+    // console.log(err)
+    window.alert(err.response.message);
+  }
+}
