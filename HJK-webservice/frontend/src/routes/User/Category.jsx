@@ -1,22 +1,31 @@
 import "../../styles/Category.css";
 
-import { useLoaderData, NavLink } from "react-router-dom";
+import { useLoaderData, NavLink, useSubmit, Form } from "react-router-dom";
 
-import { getSubCategory } from "../../services/product";
+import { getSubCategory, checkCategory } from "../../services/product";
 
-export async function loader({ params }) {
-  const subCategory = await getSubCategory(params.categoryId);
-  // if (subCategory.length === 0) {
-  //   throw new Response("", {
-  //     status: 404,
-  //     statusText: "Not Found",
-  //   });
-  // }
-  return { subCategory };
+import { useEffect } from "react";
+
+export async function loader({ request, params }) {
+  const url = new URL(request.url);
+  let p = url.searchParams.get("p");
+  if (!p) p = 1;
+  const subCategory = await getSubCategory(params.categoryId, p);
+  const category = await checkCategory(params.categoryId);
+  return { subCategory, p, category };
 }
 
 export default function Category() {
-  const { subCategory } = useLoaderData();
+  const { subCategory, p, category } = useLoaderData();
+  const submit = useSubmit();
+
+  useEffect(() => {
+    document.getElementById("p").value = p;
+  }, [p]);
+
+  useEffect(() => {
+    document.title = category[0].CategoryTH;
+  }, [category]);
 
   return (
     <div id="subcategory-list">
@@ -36,6 +45,39 @@ export default function Category() {
           );
         })}
       </ul>
+      <Form className="paginator">
+        <button
+          className="paginator-btn"
+          // type="button"
+          onClick={() => {
+            const page = parseInt(document.getElementById("p").value);
+            if (page > 1) document.getElementById("p").value = page - 1;
+          }}
+        >
+          ⬅️
+        </button>
+
+        <input
+          autoComplete="off"
+          id="p"
+          name="p"
+          // type="search"
+          defaultValue={1}
+          onChange={(event) => {
+            submit(event.currentTarget.form);
+          }}
+        />
+        <button
+          className="paginator-btn"
+          // type="button"
+          onClick={() => {
+            const page = parseInt(document.getElementById("p").value);
+            document.getElementById("p").value = page + 1;
+          }}
+        >
+          ➡️
+        </button>
+      </Form>
     </div>
   );
 }

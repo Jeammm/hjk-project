@@ -4,6 +4,8 @@ import { useLoaderData, Outlet, NavLink, useParams } from "react-router-dom";
 
 import { checkCategory, getSubCategory } from "../../services/product";
 
+import { useState } from "react";
+
 export async function loader({ params }) {
   const category = await checkCategory(params.categoryId);
 
@@ -21,6 +23,11 @@ export async function loader({ params }) {
 export default function SubCategoryConf() {
   const { subCategory } = useLoaderData();
 
+  const [query, setQuery] = useState("");
+  const onChange = (e) => {
+    setQuery(e.target.value.toLowerCase());
+  };
+
   const params = useParams();
 
   const catIdSelecting = params.subcategoryId;
@@ -28,7 +35,17 @@ export default function SubCategoryConf() {
   return (
     <div className="category-conf-container">
       <div className="category-selection-area">
-        {subCategory.map((cat) => {
+        <input
+          aria-label="ค้นหาหมวดหมู่ย่อย"
+          placeholder="ค้นหาหมวดหมู่ย่อย..."
+          type="search"
+          name="q"
+          onChange={onChange}
+          className="category-search-box"
+        />
+        {subCategory.filter((c) =>
+            `${c.SubNameTH} ${c.SubNameEN}`.toLowerCase().includes(query)
+          ).map((cat) => {
           return (
             <div className="edit-on-right" key={cat.SubCategoryID}>
               <NavLink
