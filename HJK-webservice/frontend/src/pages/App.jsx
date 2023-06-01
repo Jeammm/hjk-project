@@ -1,22 +1,55 @@
 import "../styles/App.css";
 
-import { Form, Outlet, useLoaderData, NavLink } from "react-router-dom";
+import {
+  Form,
+  Outlet,
+  useLoaderData,
+  NavLink,
+  redirect,
+  useNavigation,
+  useSubmit,
+} from "react-router-dom";
+
+import { useEffect, useCallback } from "react";
 
 import { getAllCategory } from "../services/product";
 
-export async function loader() {
+export async function loader({ request }) {
+  const url = new URL(request.url);
+  const q = url.searchParams.get("q");
   const category = await getAllCategory();
-  // if (!categories) {
-  //   throw new Response("", {
-  //     status: 404,
-  //     statusText: "Not Found",
-  //   });
-  // }
-  return { category };
+  return { category, q };
+}
+
+export async function action({ request, params }) {
+  // const formData = await request.formData();
+  // const data = Object.fromEntries(formData);
+  // return redirect(`/search`);
+  return null;
 }
 
 function App() {
-  const { category } = useLoaderData();
+  const { category, q } = useLoaderData();
+  const navigation = useNavigation();
+  const submit = useSubmit();
+
+  const searching =
+    navigation.location &&
+    new URLSearchParams(navigation.location.search).has("q");
+
+  useEffect(() => {
+    document.getElementById("q").value = q;
+  }, [q]);
+
+  const debounce = (fn, delay) => {
+    let timerId;
+    return (...args) => {
+      clearTimeout(timerId);
+      timerId = setTimeout(() => fn(...args), delay);
+    };
+  };
+
+  const searchBox = useCallback(debounce(submit, 300), [submit]);
 
   return (
     <div className="App">
@@ -48,8 +81,15 @@ function App() {
                 placeholder="ค้นหาสินค้า"
                 type="search"
                 name="q"
+                defaultValue={q}
+                onChange={(event) => {
+                  const isFirstSearch = q === null;
+                  searchBox(event.currentTarget.form, {
+                    replace: !isFirstSearch,
+                  });
+                }}
               />
-              <div id="search-spinner" aria-hidden hidden={true} />
+              <div id="search-spinner" aria-hidden hidden={!searching} />
               <div className="sr-only" aria-live="polite"></div>
             </Form>
           </div>

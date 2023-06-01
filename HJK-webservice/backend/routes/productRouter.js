@@ -15,6 +15,10 @@ router
   .route("/checkSubCategory/:categoryId/:subCategoryId")
   .get(productController.checkSubCategory);
 
+  router
+  .route("/getSubName/:subCategoryId")
+  .get(productController.getSubName);
+
 router
   .route("/category/:categoryId")
   .get(productController.getAllSubCategory)
@@ -32,8 +36,16 @@ router
   .get(productController.getProduct)
   .patch(authController.protect, productController.editProduct);
 
-router.route("/brands").get(productController.getAllBrands);
+router.route("/products").get(productController.queryProduct);
 
-router.route("/brands/:brandId").get(productController.getBrandItem);
+router
+  .route("/brands")
+  .get(productController.getAllBrands)
+  .post(authController.protect, productController.createBrand);
+
+router
+  .route("/brands/:brandId")
+  .get(productController.getBrandItem)
+  .patch(authController.protect, productController.editBrand);
 
 module.exports = router;

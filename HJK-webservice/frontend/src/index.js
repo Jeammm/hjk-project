@@ -3,13 +3,15 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import App, { loader as rootLoader } from "./pages/App";
+import App, { loader as rootLoader, action as rootAction } from "./pages/App";
 import Admin, { action as loginAction, loader as loginLoader } from "./pages/Admin";
 import ControlPanel, { loader as adminLoader } from "./pages/ControlPanel";
 
 import ErrorPage from "./routes/ErrorPage";
 import CPIndex from "./routes/Admin/CPIndex";
 import Index from "./routes/User/Index";
+
+import Search, { loader as searchLoader} from "./routes/User/Search"
 
 import Category, { loader as categoryLoader } from "./routes/User/Category";
 import SubCategory, {
@@ -20,14 +22,17 @@ import Brand, { loader as brandLoader } from "./routes/User/Brand";
 import BrandItem, { loader as brandItemLoader } from "./routes/User/BrandItem";
 
 import CategoryConf, {
-  loader as categoryConfLoader,
+  loader as CategoryConfLoader,
 } from "./routes/Admin/CategoryConf";
 import SubCategoryConf, {
-  loader as subCategoryConfLoader,
+  loader as SubCategoryConfLoader,
 } from "./routes/Admin/SubCategoryConf";
 import ProductConf, {
   loader as ProductConfLoader,
 } from "./routes/Admin/ProductConf";
+import BrandConf, {
+  loader as BrandConfLoader,
+} from "./routes/Admin/BrandConf";
 
 import NewProduct, {
   loader as NewProductLoader,
@@ -39,6 +44,9 @@ import NewCategory, {
 import NewSubCategory, {
   action as NewSubCategoryAction,
 } from "./routes/Admin/NewSubCategory";
+import NewBrand, {
+  action as NewBrandAction,
+} from "./routes/Admin/NewBrand";
 
 import EditProduct, {
   loader as EditProductLoader,
@@ -52,6 +60,10 @@ import EditSubCategory, {
   loader as EditSubCategoryLoader,
   action as EditSubCategoryAction,
 } from "./routes/Admin/EditSubCategory";
+import EditBrand, {
+  loader as EditBrandLoader,
+  action as EditBrandAction,
+} from "./routes/Admin/EditBrand";
 
 const router = createBrowserRouter([
   {
@@ -59,12 +71,16 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     loader: rootLoader,
-    // action: rootAction,
+    action: rootAction,
     children: [
       {
         errorElement: <ErrorPage />,
         children: [
-          { index: true, element: <Index /> },
+          { 
+            index: true, 
+            element: <Search title="สินค้าทั้งหมด"/>,
+            loader: searchLoader, 
+          },
           {
             path: "category/:categoryId",
             element: <Category />,
@@ -110,7 +126,7 @@ const router = createBrowserRouter([
       {
         path: "category",
         element: <CategoryConf />,
-        loader: categoryConfLoader,
+        loader: CategoryConfLoader,
         children: [
           {
             path: ":categoryId/edit",
@@ -126,7 +142,7 @@ const router = createBrowserRouter([
           {
             path: ":categoryId/subcategory",
             element: <SubCategoryConf />,
-            loader: subCategoryConfLoader,
+            loader: SubCategoryConfLoader,
             children: [
               {
                 path: "new",
@@ -160,6 +176,29 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "brand",
+        element: <BrandConf />,
+        loader: BrandConfLoader,
+        children: [
+          {
+            errorElement: <ErrorPage />,
+            children: [
+              {
+                path: ":brandId/edit",
+                element: <EditBrand />,
+                loader: EditBrandLoader,
+                action: EditBrandAction,
+              },
+              {
+                path: "new",
+                element: <NewBrand />,
+                action: NewBrandAction,
+              }
+            ]
+          }
+        ]
+      }
     ],
   },
 ]);

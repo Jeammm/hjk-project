@@ -28,6 +28,19 @@ exports.checkCategory = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getSubName = catchAsync(async (req, res, next) => {
+  const result = await product.getSubName(req.params.subCategoryId);
+  const data = result.rows;
+  if (data.length === 0) {
+    return next(new AppError("No Category found with prodivded ID", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
+
 exports.checkSubCategory = catchAsync(async (req, res, next) => {
   const result = await product.checkSubCategory(
     req.params.categoryId,
@@ -66,7 +79,10 @@ exports.getBrandItem = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllSubCategory = catchAsync(async (req, res, next) => {
-  const result = await product.getAllSubCategory(req.params.categoryId);
+  const result = await product.getAllSubCategory(
+    req.params.categoryId,
+    req.query.page
+  );
   const data = result.rows;
 
   res.status(200).json({
@@ -76,7 +92,10 @@ exports.getAllSubCategory = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllItemBySub = catchAsync(async (req, res, next) => {
-  const result = await product.getMultiple(req.params.subCategoryId);
+  const result = await product.getMultiple(
+    req.params.subCategoryId,
+    req.query.page
+  );
   const data = result.data;
 
   res.status(200).json({
@@ -178,19 +197,15 @@ exports.createProduct = catchAsync(async (req, res, next) => {
     transformedSizing[lastTwoDigits][prop] = sizing[key];
   }
 
-  
   const resultDetail = await product.createProduct(
     req.params.subCategoryId,
     detail
-    );
+  );
 
   const newProduct = await product.getProductByName(req.body.NameTH);
   const productId = newProduct.product[0].ProductID;
 
-  const resultSize = await product.editSize(
-    productId,
-    transformedSizing
-  );
+  const resultSize = await product.editSize(productId, transformedSizing);
 
   const data = [resultDetail, resultSize];
 
@@ -210,6 +225,7 @@ exports.editProduct = catchAsync(async (req, res, next) => {
     "DesEN",
     "Brand",
     "IsColor",
+    "Available",
   ];
 
   const detail = {};
@@ -242,6 +258,37 @@ exports.editProduct = catchAsync(async (req, res, next) => {
     transformedSizing
   );
   const data = [resultDetail, resultSize];
+
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
+
+exports.editBrand = catchAsync(async (req, res, next) => {
+  const result = await product.editBrand(req.params.brandId, req.body);
+  const data = result;
+
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
+
+exports.createBrand = catchAsync(async (req, res, next) => {
+  const result = await product.createBrand(req.body);
+  const data = result;
+
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
+
+exports.queryProduct = catchAsync(async (req, res, next) => {
+  const result = await product.queryProduct(req.query.q, req.query.p);
+
+  const data = result;
 
   res.status(200).json({
     status: "success",

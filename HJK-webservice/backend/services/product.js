@@ -10,6 +10,7 @@ const query_gen = (data) => {
   let updateQuery = "";
 
   keys.forEach((key, index) => {
+    if (data[key] === "") return;
     if (index !== 0) {
       updateQuery += ", ";
     }
@@ -63,9 +64,9 @@ exports.getProductByName = async (productName) => {
   );
 
   return {
-    product
-  }
-}
+    product,
+  };
+};
 
 exports.getAllCategory = async () => {
   const rows = await db.query(
@@ -82,6 +83,17 @@ exports.checkCategory = async (categoryId) => {
     `SELECT *
     FROM Category
     WHERE CategoryID = ${categoryId}`
+  );
+  return {
+    rows,
+  };
+};
+
+exports.getSubName = async (subcategoryId) => {
+  const rows = await db.query(
+    `SELECT *
+    FROM SubCategory
+    WHERE SubCategoryID = ${subcategoryId}`
   );
   return {
     rows,
@@ -120,11 +132,13 @@ exports.getBrandItem = async (brandId) => {
   };
 };
 
-exports.getAllSubCategory = async (param) => {
+exports.getAllSubCategory = async (param, p) => {
+  const offset = helper.getOffset(p, config.listPerPage);
   const rows = await db.query(
     `SELECT *
     FROM SubCategory 
-    WHERE CategoryID = ${param}`
+    WHERE CategoryID = ${param}
+    LIMIT ${offset},${config.listPerPage};`
   );
   return {
     rows,
@@ -192,7 +206,9 @@ exports.editSubCategory = async (id, subCategoryData) => {
 };
 
 exports.createProduct = async (id, productData) => {
-  const keys = Object.keys(productData);
+  const keys = Object.keys(productData).filter(
+    (item) => productData[item] !== ""
+  );
   const values = [];
   keys.forEach((key) => {
     values.push(`"${productData[key]}"`);
@@ -239,7 +255,7 @@ exports.editSize = async (id, sizeData) => {
 
   const updateRow = async (id, key, sizeData) => {
     const updateQuery = query_gen(sizeData);
-    
+
     result = await db.query(
       `UPDATE Size
       SET ${updateQuery}
@@ -249,7 +265,6 @@ exports.editSize = async (id, sizeData) => {
   };
 
   const insertRow = async (id, key, sizeData) => {
-
     const result = await db.query(`
       INSERT INTO Size 
       (ProductID, SizeID, Des, Packing, Price)
@@ -274,16 +289,45 @@ exports.editSize = async (id, sizeData) => {
   }
 };
 
-exports.remove = async (id) => {
-  const result = await db.query(
-    `DELETE FROM programming_languages WHERE id=${id}`
+exports.createBrand = async (brandData) => {
+  try {
+    const result = await db.query(
+      `INSERT INTO Brand
+      (NameTH, NameEN, Logo) 
+      VALUES 
+      ("${brandData.NameTH}", "${brandData.NameEN}", "${brandData.Logo}")`
+    );
+    return "New Brand created successfully";
+  } catch (e) {
+    throw new AppError(e, 409);
+  }
+};
+
+exports.editBrand = async (id, brandData) => {
+  const updateQuery = query_gen(brandData);
+
+  try {
+    const result = await db.query(
+      `UPDATE Brand 
+      SET ${updateQuery}
+      WHERE BrandID="${id}"`
+    );
+    return "Brand updated successfully";
+  } catch (e) {
+    throw new AppError(e, 409);
+  }
+};
+
+exports.queryProduct = async (q, p) => {
+  const offset = helper.getOffset(p, config.listPerPage);
+  const product = await db.query(
+    `SELECT *
+    FROM Product
+    WHERE Available="1" AND (NameTH LIKE '%${q}%' OR NameEN LIKE '%${q}%' OR ProductID LIKE '%${q}%')
+    LIMIT ${offset},${config.listPerPage};`
   );
 
-  let message = "Error in deleting programming language";
-
-  if (result.affectedRows) {
-    message = "Programming language deleted successfully";
-  }
-
-  return { message };
+  return {
+    product,
+  };
 };

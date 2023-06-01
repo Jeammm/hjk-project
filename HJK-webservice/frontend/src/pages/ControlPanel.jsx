@@ -1,10 +1,14 @@
 import "../styles/ControlPanel.css";
 
-import { Outlet, Navigate, useLoaderData, useNavigate } from "react-router-dom";
+import {
+  Outlet,
+  Navigate,
+  useLoaderData,
+  useNavigate,
+  NavLink,
+} from "react-router-dom";
 
 import { isAuthorized, logout } from "../services/admin";
-
-import Cookies from "universal-cookie"
 
 export async function loader() {
   const data = async () => {
@@ -17,22 +21,25 @@ export async function loader() {
 }
 
 const logoutHandler = async () => {
-  await logout()
-}
+  await logout();
+};
 
 export default function ControlPanel() {
   const { user } = useLoaderData();
-  const navigate = useNavigate();
 
-  // console.log(user)
+  const navigate = useNavigate();
 
   return user ? (
     <div id="control-panel-container">
       <header className="header-bg">
         <div className="header-container">
-          <h2>Control Panel</h2>
+          <NavLink to="/admin">
+            <h2 style={{ cursor: "pointer" }}>Control Panel</h2>
+          </NavLink>
           <div className="left-m-auto">
-            {/* <p>Logged in as <big>{user.data.username}</big></p> */}
+            <p>
+              Logged in as <big>{user.freshUser.username}</big>
+            </p>
             <button
               id="logout-button"
               onClick={(event) => {
