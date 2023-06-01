@@ -39,3 +39,12 @@
   font-size: 1rem;
   font-weight: 400;
 }
+
+.unavailable * {
+  opacity: 0.5;
+  color: red;
+}
+
+.unavailable:hover {
+  scale: 1;
+}

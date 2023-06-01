@@ -33,7 +33,7 @@
 }
 nav {
   background-color: #f0f0f0;
-  height: 41px;
+  height: 30px;
   display: flex;
   justify-content: center;
 }
@@ -47,7 +47,7 @@ nav {
 
 header {
   display: flex;
-  height: 80px;
+  height: 70px;
   justify-content: space-between;
   align-items: center;
   justify-content: center;
@@ -169,6 +169,28 @@ header {
 }
 
 .outlet-container {
-  padding: 1rem;
+  padding-inline: 1rem;
   width: 100%;
+  /* flex-grow: 1; */
+}
+
+.paginator {
+  text-align: right;
+}
+
+.paginator-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+}
+
+.paginator {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#p {
+  width: 30px;
+  text-align: center;
 }
