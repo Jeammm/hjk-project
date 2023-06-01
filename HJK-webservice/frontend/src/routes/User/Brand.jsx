@@ -4,6 +4,8 @@ import { useLoaderData, NavLink } from "react-router-dom";
 
 import { getBrands } from "../../services/product";
 
+import { useEffect } from "react"
+
 export async function loader() {
   const brands = await getBrands();
   return { brands };
@@ -11,6 +13,10 @@ export async function loader() {
 
 export default function Category() {
   const { brands } = useLoaderData();
+
+  useEffect(() => {
+    document.title = "แบรนด์";
+  }, []);
 
   return (
     <div id="subcategory-list">

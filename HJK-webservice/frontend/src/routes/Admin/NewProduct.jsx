@@ -1,8 +1,14 @@
 import { useState } from "react";
 
-import { checkSubCategory, newProduct } from "../../services/product";
+import {
+  checkSubCategory,
+  newProduct,
+  getBrands,
+} from "../../services/product";
 
-import { useLoaderData, useNavigate, Form, redirect } from "react-router-dom";
+import { useLoaderData, useNavigate, Form, redirect, NavLink } from "react-router-dom";
+
+import Select from "react-select";
 
 export async function loader({ params }) {
   const subCategoryCheck = await checkSubCategory(
@@ -16,8 +22,10 @@ export async function loader({ params }) {
     });
   }
 
+  const brands = await getBrands();
+
   const subCategoryId = params.subcategoryId;
-  return { subCategoryId };
+  return { subCategoryId, brands };
 }
 
 export async function action({ request, params }) {
@@ -28,13 +36,15 @@ export async function action({ request, params }) {
   else data.IsColor = 1;
 
   const res = await newProduct(params.subcategoryId, data);
-  const productId = res.data.productId;
+  // const productId = res.data.productId;
   window.alert(res.data.data[0]);
-  return redirect(`/admin/category/${params.categoryId}/subcategory/${params.subcategoryId}/product/${productId}/edit`)
+  return redirect(
+    `/admin/category/${params.categoryId}/subcategory/${params.subcategoryId}/product/`
+  );
 }
 
 export default function NewProduct() {
-  const { subCategoryId } = useLoaderData();
+  const { brands } = useLoaderData();
 
   const navigate = useNavigate();
 
@@ -83,6 +93,10 @@ export default function NewProduct() {
     else return "grey";
   };
 
+  const brands_option = brands.map((b) => {
+    return { value: b.BrandID, label: `${b.NameTH} ${b.NameEN}` };
+  });
+
   return (
     <div id="product-detail">
       <div className="topic-with-close">
@@ -104,15 +118,41 @@ export default function NewProduct() {
               hidden
               name="SubCategory"
             /> */}
-            <input id="product-name" placeholder="ชื่อสินค้า..." name="NameTH"/>
-            <textarea id="product-desc" placeholder="รายละเอียดสินค้า..." name="DesTH"/>
+            <input
+              id="product-name"
+              placeholder="ชื่อสินค้า..."
+              name="NameTH"
+            />
+            <textarea
+              id="product-desc"
+              placeholder="รายละเอียดสินค้า..."
+              name="DesTH"
+            />
           </div>
         </div>
 
         <div className="color-checker-container">
-          <input type="checkbox" className="color-check-box" name="IsColor" />
           <label htmlFor="IsColor">
-            ติ๊กช่องนี้ถ้าสินค้านี้เป็นประเภท "สี"
+            <input type="checkbox" className="color-check-box" name="IsColor" />
+            ติ๊กช่องนี้ถ้าสินค้านี้ "มีหลายสีให้เลือก"
+          </label>
+
+          <label htmlFor="Brand">
+            เลือกแบรนด์
+            <NavLink
+              to="/admin/brand/new"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="add-brand-small-option"
+            >
+              คลิกถ้าหาแบรนด์ไม่เจอ
+            </NavLink>
+            <Select
+              options={brands_option}
+              name="Brand"
+              isClearable={true}
+              isSearchable={true}
+            />
           </label>
         </div>
 

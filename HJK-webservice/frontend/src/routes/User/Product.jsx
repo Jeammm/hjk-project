@@ -4,6 +4,8 @@ import { getProduct } from "../../services/product";
 
 import { useLoaderData, useNavigate, Form } from "react-router-dom";
 
+import { useEffect } from "react"
+
 export async function loader({ params }) {
   const { product, size } = await getProduct(params.productId);
   if (product.length === 0) {
@@ -29,6 +31,10 @@ export default function Product() {
     if (i % 2 === 0) return "dark";
     else return "grey";
   };
+
+  useEffect(() => {
+    document.title = productDetail.NameTH;
+  }, []);
 
   return (
     <div id="product-detail">

@@ -19,3 +19,40 @@
 .color-check-box {
   margin-right: 1rem;
 }
+
+.color-checker-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.add-brand-small-option {
+  margin-left: 0.7rem;
+  font-size:0.7rem;
+  color: blue;
+}
+
+.delete-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  background-color: transparent;
+  border: none;
+  margin-left: 2rem;
+}
+
+.delete-button-img {
+  width: 100%;
+}
+
+.new-size {
+  border: 1px solid green;
+  border-radius: 0.5rem;
+}
+
+.undo-size-button {
+  width: 30px;
+  text-align: center;
+  line-height: 2rem;
+}

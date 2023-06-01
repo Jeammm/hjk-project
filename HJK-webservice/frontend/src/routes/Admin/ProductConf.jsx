@@ -29,7 +29,7 @@ export default function ProductConf() {
         return (
           <NavLink
             to={`${product.ProductID}/edit`}
-            className="product-conf-item selectable"
+            className={`product-conf-item selectable ${product.Available? "" : "unavailable"}`}
             key={product.ProductID}
           >
             <img
@@ -38,7 +38,7 @@ export default function ProductConf() {
               className="product-conf-thumbnail"
             />
             <div className="product-conf-detail">
-              <h2>{product.ProductID}</h2>
+              <h2>{product.ProductID} {product.Available? "" : "(ไม่แสดง)"}</h2>
               <h3>{product.NameTH}</h3>
               <h4>{product.IsColor ? "หลายสี" : ""}</h4>
             </div>

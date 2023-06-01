@@ -1,9 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../styles/EditProduct.css";
 
-import { getProduct, editProduct } from "../../services/product";
+import { getProduct, editProduct, getBrands } from "../../services/product";
 
-import { useLoaderData, useNavigate, Form, Navigate } from "react-router-dom";
+import {
+  useLoaderData,
+  useNavigate,
+  Form,
+  NavLink,
+  redirect,
+} from "react-router-dom";
+
+import Select from "react-select";
+
+import trash from "../../assets/trash.png";
+import listing from "../../assets/listing.png";
 
 export async function loader({ params }) {
   const { product, size } = await getProduct(params.productId);
@@ -13,7 +24,10 @@ export async function loader({ params }) {
       statusText: "Not Found",
     });
   }
-  return { product, size };
+
+  const brands = await getBrands();
+
+  return { product, size, brands };
 }
 
 export async function action({ request, params }) {
@@ -22,64 +36,59 @@ export async function action({ request, params }) {
   if (data.IsColor === undefined) data.IsColor = 0;
   else data.IsColor = 1;
   const res = await editProduct(params.productId, data);
-  window.alert(res.data.data[0])
-  return null;
+  window.alert(res.data.data[0]);
+  return redirect(`../${params.subcategoryId}/product`);
 }
 
 export default function EditProduct() {
-  const { product, size } = useLoaderData();
+  const { product, size, brands } = useLoaderData();
   const navigate = useNavigate();
   const productDetail = product[0];
-  const [sizeNo, setSizeNo] = useState(size.length);
 
-  const sizeOptionGen = (amount) => {
-    const sizeOption = [];
-    const prod_id = productDetail.ProductID;
+  const [sizeOptions, setSizeOptions] = useState(size);
 
-    let biggest_size = 0;
+  const sizeOptionsGen = (productId) => {
+    const sizeComponents = sizeOptions.map((s, i) => {
+      const size_id = s.SizeID
+        ? cal_id(productId, s.SizeID)
+        : cal_id(productId, i + 1);
 
-    if (size.length) {
-      biggest_size = size[size.length - 1].SizeID;
-    }
-
-    for (let i = 0; i < amount; i++) {
-      let size_id;
-
-      if (size[i]) {
-        size_id = cal_id(size[i].ProductID, size[i].SizeID);
-      } else {
-        biggest_size += 1;
-        size_id = cal_id(prod_id, biggest_size);
-      }
-
-      sizeOption.push(
-        <div className="size-detail" key={size_id}>
+      return (
+        <div className={`size-detail ${s.SizeID ? "" : "new-size"}`} key={i}>
+          {!s.SizeID && i + 1 === sizeOptions.length ? (
+            <div
+              className="undo-size-button selectable"
+              onClick={() => undoSizeHandler(i)}
+            >
+              ลบ
+            </div>
+          ) : null}
+          
           <input
             className={`size-detail-box w-200 size-input-box ${cal_color(i)}`}
-            value={
-              size[i] ? cal_id(size[i].ProductID, size[i].SizeID) : size_id
-            }
+            value={size_id}
             readOnly
             // name={`${size_id}_Id`}
           />
+          
 
           <input
             className={`size-detail-box w-150 size-input-box ${cal_color(i)}`}
-            defaultValue={size[i] ? size[i].Des : ""}
+            defaultValue={s.Des}
             name={`${size_id}_Des`}
             required={true}
           />
 
           <input
             className={`size-detail-box w-150 size-input-box ${cal_color(i)}`}
-            defaultValue={size[i] ? size[i].Packing : ""}
+            defaultValue={s.Packing}
             name={`${size_id}_Packing`}
             required={true}
           />
 
           <input
             className={`size-detail-box w-150 size-input-box ${cal_color(i)}`}
-            defaultValue={size[i] ? size[i].Price : ""}
+            defaultValue={s.Price}
             name={`${size_id}_Price`}
             type="number"
             min={0}
@@ -87,8 +96,21 @@ export default function EditProduct() {
           />
         </div>
       );
-    }
-    return sizeOption;
+    });
+
+    return sizeComponents;
+  };
+
+  const undoSizeHandler = (i) => {
+    setSizeOptions((prev) => {
+      const before = prev.slice(0, i);
+      const after = prev.slice(i + 1);
+      const undoed = before.concat(after);
+
+      console.log(prev, undoed);
+
+      return undoed;
+    });
   };
 
   const cal_id = (productId, sizeId) => {
@@ -99,6 +121,34 @@ export default function EditProduct() {
   const cal_color = (i) => {
     if (i % 2 === 0) return "dark";
     else return "grey";
+  };
+
+  const brands_option = brands.map((b) => {
+    return { value: b.BrandID, label: `${b.NameTH} ${b.NameEN}` };
+  });
+
+  const default_brand = brands
+    .filter((b) => b.BrandID === product[0].Brand)
+    .map((b) => {
+      return { value: b.BrandID, label: `${b.NameTH} ${b.NameEN}` };
+    });
+
+  const deleteHandler = async (productId) => {
+    if (!window.confirm("ยืนยันการลบสินค้านี้?")) {
+      return;
+    } else {
+      await editProduct(productId, { Available: "0" });
+      window.alert("ลบสินค้านี้แล้ว");
+    }
+  };
+
+  const listingHandler = async (productId) => {
+    if (!window.confirm("ยืนยันนำสินค้านี้กลับมา?")) {
+      return;
+    } else {
+      await editProduct(productId, { Available: "1" });
+      window.alert("นำสินค้ากลับมาแล้ว");
+    }
   };
 
   return (
@@ -129,14 +179,33 @@ export default function EditProduct() {
         </div>
 
         <div className="color-checker-container">
-          <input
-            type="checkbox"
-            className="color-check-box"
-            name="IsColor"
-            defaultChecked={productDetail.IsColor}
-          />
           <label htmlFor="IsColor">
-            ติ๊กช่องนี้ถ้าสินค้านี้เป็นประเภท "สี"
+            <input
+              type="checkbox"
+              className="color-check-box"
+              name="IsColor"
+              defaultChecked={productDetail.IsColor}
+            />
+            ติ๊กช่องนี้ถ้าสินค้านี้ "มีหลายสีให้เลือก"
+          </label>
+
+          <label htmlFor="Brand">
+            เลือกแบรนด์
+            <NavLink
+              to="/admin/brand/new"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="add-brand-small-option"
+            >
+              คลิกถ้าหาแบรนด์ไม่เจอ
+            </NavLink>
+            <Select
+              options={brands_option}
+              name="Brand"
+              isClearable={true}
+              isSearchable={true}
+              defaultValue={default_brand[0]}
+            />
           </label>
         </div>
 
@@ -147,16 +216,21 @@ export default function EditProduct() {
             <p className="size-detail-box w-150 table-topic">บรรจุ</p>
             <p className="size-detail-box w-150 table-topic">ราคา</p>
           </div>
-          {sizeOptionGen(sizeNo)}
+          {sizeOptionsGen(productDetail.ProductID)}
           <div
             className="add-new-size selectable"
             onClick={() =>
-              setSizeNo((prev) => {
-                if (prev <= 19) return prev + 1;
-                else {
-                  window.alert("มีได้ไม่เกิน 20 ไซส์")
-                  return prev;
-                }
+              setSizeOptions((prev) => {
+                return [
+                  ...prev,
+                  {
+                    ProductID: "",
+                    SizeID: null,
+                    Des: "",
+                    Packing: "",
+                    Price: null,
+                  },
+                ];
               })
             }
           >
@@ -174,6 +248,32 @@ export default function EditProduct() {
             onClick={() => navigate(-1)}
           >
             ยกเลิก
+          </button>
+
+          <button
+            className="delete-button"
+            type="button"
+            style={{ display: productDetail.Available ? "" : "none" }}
+            onClick={() => deleteHandler(productDetail.ProductID)}
+          >
+            <img
+              src={trash}
+              alt="delete product"
+              className="delete-button-img"
+            />
+          </button>
+
+          <button
+            className="delete-button"
+            type="button"
+            style={{ display: productDetail.Available ? "none" : "" }}
+            onClick={() => listingHandler(productDetail.ProductID)}
+          >
+            <img
+              src={listing}
+              alt="delete product"
+              className="delete-button-img"
+            />
           </button>
         </div>
       </Form>
