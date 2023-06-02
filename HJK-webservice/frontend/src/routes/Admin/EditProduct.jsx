@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../../styles/EditProduct.css";
 
-import { getProduct, editProduct, getBrands } from "../../services/product";
+import { getProduct, editProduct, getBrands, delistProduct } from "../../services/product";
 import {
   useLoaderData,
   useNavigate,
@@ -141,7 +141,7 @@ export default function EditProduct() {
     if (!window.confirm("ยืนยันการลบสินค้านี้?")) {
       return;
     } else {
-      await editProduct(productId, { Available: "0" });
+      await delistProduct(productId, { Available: "0" });
       setIsAvailable(0)
       window.alert("ลบสินค้านี้แล้ว");
     }
@@ -151,7 +151,7 @@ export default function EditProduct() {
     if (!window.confirm("ยืนยันนำสินค้านี้กลับมา?")) {
       return;
     } else {
-      await editProduct(productId, { Available: "1" });
+      await delistProduct(productId, { Available: "1" });
       setIsAvailable(1)
       window.alert("นำสินค้ากลับมาแล้ว");
     }

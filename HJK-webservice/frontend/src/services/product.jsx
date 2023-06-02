@@ -117,6 +117,20 @@ export async function editProduct(id, detail) {
   }
 }
 
+export async function delistProduct(id, detail) {
+  try {
+    const res = await axios.put(`${url}/product/${id}`, detail, {
+      withCredentials: true,
+    });
+
+    return res;
+  } catch (err) {
+    // console.log(err)
+    // window.alert(err.response.message);
+    window.alert(err.response);
+  }
+}
+
 export async function newProduct(id, detail) {
   try {
     const res = await axios.post(`${url}/subcategory/${id}`, detail, {
