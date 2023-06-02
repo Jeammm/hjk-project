@@ -33,7 +33,10 @@ export default function Category() {
         {subCategory.map((sub) => {
           return (
             <li key={sub.SubCategoryID}>
-              <NavLink to={`/subCategory/${sub.SubCategoryID}`} className="subcat-item selectable">
+              <NavLink
+                to={`/subCategory/${sub.SubCategoryID}`}
+                className="subcat-item selectable"
+              >
                 <img
                   src={sub.Thumbnail}
                   alt={sub.SubNameTH}

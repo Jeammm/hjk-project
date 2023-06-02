@@ -35,7 +35,7 @@ export async function getItems(id, page) {
   const res = await axios.get(`${url}/subCategory/${id}`, {
     params: {
       page: page,
-    }
+    },
   });
   return res.data.data;
 }
@@ -112,7 +112,8 @@ export async function editProduct(id, detail) {
     return res;
   } catch (err) {
     // console.log(err)
-    window.alert(err.response.message);
+    // window.alert(err.response.message);
+    window.alert(err.response);
   }
 }
 

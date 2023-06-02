@@ -171,6 +171,7 @@ exports.createProduct = catchAsync(async (req, res, next) => {
     "Brand",
     "IsColor",
     "SubCategory",
+    "source",
   ];
 
   const detail = {};
@@ -226,6 +227,7 @@ exports.editProduct = catchAsync(async (req, res, next) => {
     "Brand",
     "IsColor",
     "Available",
+    "source",
   ];
 
   const detail = {};

@@ -6,9 +6,17 @@ import {
   getBrands,
 } from "../../services/product";
 
-import { useLoaderData, useNavigate, Form, redirect, NavLink } from "react-router-dom";
+import {
+  useLoaderData,
+  useNavigate,
+  Form,
+  redirect,
+  NavLink,
+} from "react-router-dom";
 
 import Select from "react-select";
+
+import ImgUploader from "../../components/ImgUploader";
 
 export async function loader({ params }) {
   const subCategoryCheck = await checkSubCategory(
@@ -107,9 +115,8 @@ export default function NewProduct() {
       </div>
       <Form method="post">
         <div id="img-with-desc">
-          <div id="product-img-container">
-            <img src="../assets/logo.svg" alt="product" id="product-img" />
-          </div>
+          {/* <img src="../assets/logo.svg" alt="product" id="product-img" /> */}
+          <ImgUploader img_field="Thumbnail"/>
           <div id="detail-beside-img">
             {/* <input
               type="text"

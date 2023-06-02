@@ -4,8 +4,14 @@ import { checkSubCategory, editSubCategory } from "../../services/product";
 
 import { useLoaderData, Form, useNavigate, redirect } from "react-router-dom";
 
+import ImgUploader from "../../components/ImgUploader"
+
+
 export async function loader({ params }) {
-  const subCategory = await checkSubCategory(params.categoryId, params.subcategoryId);
+  const subCategory = await checkSubCategory(
+    params.categoryId,
+    params.subcategoryId
+  );
 
   if (subCategory.length === 0) {
     throw new Response("", {
@@ -21,7 +27,9 @@ export async function action({ request, params }) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   await editSubCategory(params.subcategoryId, data);
-  return redirect(`/admin/category/${params.categoryId}/SubCategory/${params.subcategoryId}/product`);
+  return redirect(
+    `/admin/category/${params.categoryId}/SubCategory/${params.subcategoryId}/product`
+  );
 }
 
 export default function EditSubCategory() {
@@ -32,6 +40,7 @@ export default function EditSubCategory() {
     <div className="edit-category-form-conatiner">
       <h2>Sub-Category ID: {subCategory[0].SubCategoryID}</h2>
       <Form key={subCategory[0].SubCategoryID} method="post">
+        <ImgUploader prevImg={subCategory[0].Thumbnail} img_field="Thumbnail" />
         <div className="edit-input-field">
           <p>ชื่อหมวดหมู่ย่อย</p>
           <input

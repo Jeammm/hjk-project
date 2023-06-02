@@ -10,6 +10,11 @@
 }
 
 .edit-category-form-conatiner {
-  width: 500px;
+  width: 60%;
   padding: 1rem;
+}
+
+#product-img-container {
+  height: 300px !important;
+  width: 300px !important;
 }

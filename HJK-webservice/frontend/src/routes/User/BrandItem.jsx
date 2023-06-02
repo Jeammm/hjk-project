@@ -1,23 +1,32 @@
 import "../../styles/Brand.css";
 
-import { useLoaderData, NavLink } from "react-router-dom";
+import { useLoaderData, NavLink, useSubmit, Form } from "react-router-dom";
 
 import { getBrandItem, getBrands } from "../../services/product";
 
 import { useEffect } from "react";
 
-export async function loader({ params }) {
-  const brandItems = await getBrandItem(params.brandId);
+export async function loader({ request, params }) {
+  const url = new URL(request.url);
+  let p = url.searchParams.get("p");
+  if (!p) p = 1;
+  const brandItems = await getBrandItem(params.brandId, p);
   const brand = await getBrands();
   return { brandItems, brand };
 }
 
 export default function Category() {
-  const { brandItems, brand } = useLoaderData();
+  const { brandItems, brand, p } = useLoaderData();
+  const submit = useSubmit();
+
   useEffect(() => {
-    const brandName = brand.filter(b => b.BrandID === brandItems[0].Brand)
+    const brandName = brand.filter((b) => b.BrandID === brandItems[0].Brand);
     document.title = brandName[0].NameTH;
-  }, [brand]);
+  }, [brandItems, brand]);
+
+  useEffect(() => {
+    document.getElementById("p").value = p;
+  }, [p]);
 
   return (
     <div id="subcategory-list">
@@ -25,7 +34,10 @@ export default function Category() {
         {brandItems.map((b) => {
           return (
             <li key={b.ProductID}>
-              <NavLink to={`/product/${b.ProductID}`} className="subcat-item selectable">
+              <NavLink
+                to={`/product/${b.ProductID}`}
+                className="subcat-item selectable"
+              >
                 <img
                   src={b.Thumbnail}
                   alt={b.NameTH}
@@ -37,6 +49,39 @@ export default function Category() {
           );
         })}
       </ul>
+      <Form className="paginator">
+        <button
+          className="paginator-btn"
+          // type="button"
+          onClick={() => {
+            const page = parseInt(document.getElementById("p").value);
+            if (page > 1) document.getElementById("p").value = page - 1;
+          }}
+        >
+          ⬅️
+        </button>
+
+        <input
+          autoComplete="off"
+          id="p"
+          name="p"
+          // type="search"
+          defaultValue={1}
+          onChange={(event) => {
+            submit(event.currentTarget.form);
+          }}
+        />
+        <button
+          className="paginator-btn"
+          // type="button"
+          onClick={() => {
+            const page = parseInt(document.getElementById("p").value);
+            document.getElementById("p").value = page + 1;
+          }}
+        >
+          ➡️
+        </button>
+      </Form>
     </div>
   );
 }

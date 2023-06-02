@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "../../styles/EditProduct.css";
 
 import { getProduct, editProduct, getBrands } from "../../services/product";
-
 import {
   useLoaderData,
   useNavigate,
@@ -12,6 +11,8 @@ import {
 } from "react-router-dom";
 
 import Select from "react-select";
+
+import ImgUploader from "../../components/ImgUploader";
 
 import trash from "../../assets/trash.png";
 import listing from "../../assets/listing.png";
@@ -32,20 +33,24 @@ export async function loader({ params }) {
 
 export async function action({ request, params }) {
   const formData = await request.formData();
+
   const data = Object.fromEntries(formData);
+
   if (data.IsColor === undefined) data.IsColor = 0;
   else data.IsColor = 1;
+
   const res = await editProduct(params.productId, data);
   window.alert(res.data.data[0]);
   return redirect(`../${params.subcategoryId}/product`);
 }
 
 export default function EditProduct() {
-  const { product, size, brands } = useLoaderData();
   const navigate = useNavigate();
+  const { product, size, brands } = useLoaderData();
   const productDetail = product[0];
 
   const [sizeOptions, setSizeOptions] = useState(size);
+  const [isAvailable, setIsAvailable] = useState(productDetail.Available);
 
   const sizeOptionsGen = (productId) => {
     const sizeComponents = sizeOptions.map((s, i) => {
@@ -63,14 +68,13 @@ export default function EditProduct() {
               ลบ
             </div>
           ) : null}
-          
+
           <input
             className={`size-detail-box w-200 size-input-box ${cal_color(i)}`}
             value={size_id}
             readOnly
             // name={`${size_id}_Id`}
           />
-          
 
           <input
             className={`size-detail-box w-150 size-input-box ${cal_color(i)}`}
@@ -138,15 +142,17 @@ export default function EditProduct() {
       return;
     } else {
       await editProduct(productId, { Available: "0" });
+      setIsAvailable(0)
       window.alert("ลบสินค้านี้แล้ว");
     }
   };
-
+  
   const listingHandler = async (productId) => {
     if (!window.confirm("ยืนยันนำสินค้านี้กลับมา?")) {
       return;
     } else {
       await editProduct(productId, { Available: "1" });
+      setIsAvailable(1)
       window.alert("นำสินค้ากลับมาแล้ว");
     }
   };
@@ -154,16 +160,23 @@ export default function EditProduct() {
   return (
     <div id="product-detail">
       <div className="topic-with-close">
-        <h3 id="product-detail-topic">แก้ไขรายละเอียด</h3>
+        <div id="product-detail-topic">
+          <h3>แก้ไขรายละเอียด</h3>
+          <p className={isAvailable ? "hidden" : "show"}>(ไม่แสดง)</p>
+        </div>
         <button id="close-button" onClick={() => navigate(-1)}>
           X
         </button>
       </div>
       <Form method="post">
         <div id="img-with-desc">
-          <div id="product-img-container">
+          <ImgUploader
+            prevImg={productDetail.Thumbnail}
+            img_field="Thumbnail"
+          />
+          {/* <div id="product-img-container">
             <img src={productDetail.Thumbnail} alt="product" id="product-img" />
-          </div>
+          </div> */}
           <div id="detail-beside-img">
             <input
               id="product-name"
@@ -253,7 +266,7 @@ export default function EditProduct() {
           <button
             className="delete-button"
             type="button"
-            style={{ display: productDetail.Available ? "" : "none" }}
+            style={{ display: isAvailable ? "" : "none" }}
             onClick={() => deleteHandler(productDetail.ProductID)}
           >
             <img
@@ -266,7 +279,7 @@ export default function EditProduct() {
           <button
             className="delete-button"
             type="button"
-            style={{ display: productDetail.Available ? "none" : "" }}
+            style={{ display: isAvailable ? "none" : "" }}
             onClick={() => listingHandler(productDetail.ProductID)}
           >
             <img
