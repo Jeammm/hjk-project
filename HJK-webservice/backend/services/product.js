@@ -5,49 +5,21 @@ const config = require("../config");
 const AppError = require("../utils/AppError");
 const catchAsync = require("../utils/catchAsync");
 
-const query_gen = (data) => {
-  const keys = Object.keys(data);
-  let updateQuery = "";
-
-  keys.forEach((key, index) => {
-    if (data[key] === "") return;
-    if (index !== 0) {
-      updateQuery += ", ";
-    }
-    updateQuery += `${key}="${data[key]}"`;
-  });
-
-  return updateQuery;
-};
-
-exports.getMultiple = async (subCategory, page = 1) => {
-  const offset = helper.getOffset(page, config.listPerPage);
-  const rows = await db.query(
-    `SELECT * 
-    FROM Product 
-    WHERE SubCategory = ${subCategory}
-    LIMIT ${offset},${config.listPerPage}`
-  );
-  const data = helper.emptyOrRows(rows);
-  const meta = { page };
-
-  return {
-    data,
-    meta,
-  };
-};
+const { query_gen } = require("../utils/query_gen");
 
 exports.getProduct = async (productId) => {
   const product = await db.query(
     `SELECT * 
     FROM Product 
-    WHERE ProductID = ${productId}`
+    WHERE ProductID = ?`,
+    [productId]
   );
 
   const size = await db.query(
     `SELECT * 
     FROM Size 
-    WHERE ProductID = ${productId}`
+    WHERE ProductID = ?`,
+    [productId]
   );
 
   return {
@@ -60,7 +32,8 @@ exports.getProductByName = async (productName) => {
   const product = await db.query(
     `SELECT * 
     FROM Product 
-    WHERE NameTH = "${productName}"`
+    WHERE NameTH = ?`,
+    [productName]
   );
 
   return {
@@ -68,158 +41,24 @@ exports.getProductByName = async (productName) => {
   };
 };
 
-exports.getAllCategory = async () => {
-  const rows = await db.query(
-    `SELECT *
-    FROM Category`
-  );
-  return {
-    rows,
-  };
-};
-
-exports.checkCategory = async (categoryId) => {
-  const rows = await db.query(
-    `SELECT *
-    FROM Category
-    WHERE CategoryID = ${categoryId}`
-  );
-  return {
-    rows,
-  };
-};
-
-exports.getSubName = async (subcategoryId) => {
-  const rows = await db.query(
-    `SELECT *
-    FROM SubCategory
-    WHERE SubCategoryID = ${subcategoryId}`
-  );
-  return {
-    rows,
-  };
-};
-
-exports.checkSubCategory = async (categoryId, subCategoryId) => {
-  const rows = await db.query(
-    `SELECT *
-    FROM SubCategory
-    WHERE CategoryID = ${categoryId} AND SubCategoryID = ${subCategoryId}`
-  );
-  return {
-    rows,
-  };
-};
-
-exports.getAllBrands = async () => {
-  const rows = await db.query(
-    `SELECT *
-    FROM Brand`
-  );
-  return {
-    rows,
-  };
-};
-
-exports.getBrandItem = async (brandId) => {
-  const rows = await db.query(
-    `SELECT *
-    FROM Product
-    WHERE Brand = ${brandId}`
-  );
-  return {
-    rows,
-  };
-};
-
-exports.getAllSubCategory = async (param, p) => {
-  const offset = helper.getOffset(p, config.listPerPage);
-  const rows = await db.query(
-    `SELECT *
-    FROM SubCategory 
-    WHERE CategoryID = ${param}
-    LIMIT ${offset},${config.listPerPage};`
-  );
-  return {
-    rows,
-  };
-};
-
-exports.createCategory = async (categoryData) => {
-  try {
-    const result = await db.query(
-      `INSERT INTO Category 
-      (CategoryTH, CategoryEN) 
-      VALUES 
-      ("${categoryData.CategoryTH}", "${categoryData.CategoryEN}")`
-    );
-
-    return "New Category created successfully";
-  } catch (err) {
-    throw new AppError(err, 409);
-  }
-};
-
-exports.editCategory = async (id, categoryData) => {
-  const updateQuery = query_gen(categoryData);
-
-  try {
-    const result = await db.query(
-      `UPDATE Category 
-      SET ${updateQuery}
-      WHERE CategoryID=${id}`
-    );
-
-    return "Category data updated successfully";
-  } catch (err) {
-    throw new AppError(err, 409);
-  }
-};
-
-exports.createSubCategory = async (id, subCategoryData) => {
-  try {
-    const result = await db.query(
-      `INSERT INTO SubCategory 
-      (CategoryID, SubNameTH, SubNameEN, Thumbnail) 
-      VALUES 
-      ("${id}", "${subCategoryData.SubNameTH}", "${subCategoryData.SubNameEN}", "${subCategoryData.Thumbnail}")`
-    );
-    return "New Sub-Category created successfully";
-  } catch (e) {
-    throw new AppError(e, 409);
-  }
-};
-
-exports.editSubCategory = async (id, subCategoryData) => {
-  const updateQuery = query_gen(subCategoryData);
-
-  try {
-    const result = await db.query(
-      `UPDATE SubCategory 
-      SET ${updateQuery}
-      WHERE SubCategoryID="${id}"`
-    );
-    return "Sub-Category updated successfully";
-  } catch (e) {
-    throw new AppError(e, 409);
-  }
-};
-
 exports.createProduct = async (id, productData) => {
-  const keys = Object.keys(productData).filter(
-    (item) => productData[item] !== ""
-  );
-  const values = [];
-  keys.forEach((key) => {
-    values.push(`"${productData[key]}"`);
-  });
-
   try {
     const result = await db.query(
       `INSERT INTO Product 
-      (${keys.join(", ")}, SubCategory)
+      (NameTH, NameEN, Thumbnail, DesTH, DesEN, Brand, IsColor, SubCategory, source)
       VALUES 
-      ( ${values.join(", ")}, "${id}")`
+      (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        productData.NameTH || null,
+        productData.NameEN || null,
+        productData.Thumbnail || null,
+        productData.DesTH || null,
+        productData.DesEN || null,
+        productData.Brand || null,
+        productData.IsColor || 0,
+        id,
+        productData.source || null,
+      ]
     );
 
     return "New product detail inserted successfully";
@@ -228,14 +67,56 @@ exports.createProduct = async (id, productData) => {
   }
 };
 
+exports.delistProduct = async (id, listing) => {
+
+  console.log(listing)
+
+  try {
+    const result = await db.query(
+      `UPDATE Product
+      SET 
+        Available = ?
+      WHERE 
+        productID = ?`,
+      [
+        listing || 1,
+        id,
+      ]
+    );
+    return "Product listing updated successfully";
+  } catch (e) {
+    throw new AppError(e, 409);
+  }
+}
+
 exports.editProduct = async (id, productData) => {
   const updateQuery = query_gen(productData);
 
   try {
     const result = await db.query(
       `UPDATE Product
-      SET ${updateQuery}
-      WHERE ProductID="${id}"`
+      SET 
+        NameTH = ?,
+        NameEN = ?,
+        Thumbnail = ?,
+        DesTH = ?,
+        DesEN = ?,
+        Brand = ?,
+        IsColor = ?,
+        source = ?
+      WHERE 
+        productID = ?`,
+      [
+        productData.NameTH || null,
+        productData.NameEN || null,
+        productData.Thumbnail || null,
+        productData.DesTH || null,
+        productData.DesEN || null,
+        productData.Brand || null,
+        productData.IsColor || 0,
+        productData.source || null,
+        id,
+      ]
     );
     return "Product data updated successfully";
   } catch (e) {
@@ -284,35 +165,6 @@ exports.editSize = async (id, sizeData) => {
       }
     }
     return "Product data updated successfully";
-  } catch (e) {
-    throw new AppError(e, 409);
-  }
-};
-
-exports.createBrand = async (brandData) => {
-  try {
-    const result = await db.query(
-      `INSERT INTO Brand
-      (NameTH, NameEN, Logo) 
-      VALUES 
-      ("${brandData.NameTH}", "${brandData.NameEN}", "${brandData.Logo}")`
-    );
-    return "New Brand created successfully";
-  } catch (e) {
-    throw new AppError(e, 409);
-  }
-};
-
-exports.editBrand = async (id, brandData) => {
-  const updateQuery = query_gen(brandData);
-
-  try {
-    const result = await db.query(
-      `UPDATE Brand 
-      SET ${updateQuery}
-      WHERE BrandID="${id}"`
-    );
-    return "Brand updated successfully";
   } catch (e) {
     throw new AppError(e, 409);
   }
