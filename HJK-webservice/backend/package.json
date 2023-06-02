@@ -20,6 +20,7 @@
     "express": "^4.17.2",
     "express-rate-limit": "^6.7.0",
     "helmet": "^7.0.0",
+    "http-proxy-middleware": "^2.0.6",
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^2.3.3",
     "promisify": "^0.0.3",

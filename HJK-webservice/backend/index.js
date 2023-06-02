@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const compression = require("compression");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const AppError = require("./utils/AppError");
 const errorController = require("./controllers/errorController");
@@ -29,7 +30,13 @@ app.use(express.json({ limit: "10kb" }));
 //data sanitiztion against XSS
 app.use(xss());
 
-//enable cors
+//cors
+// const imgUploadProxy = createProxyMiddleware('/api/v1/imgupload', {
+//   target: 'https://freeimage.host/api/1/upload',
+//   changeOrigin: true,
+// });
+// app.use('/api/v1/imgupload', imgUploadProxy);
+
 app.use(
   cors({
     credentials: true,
