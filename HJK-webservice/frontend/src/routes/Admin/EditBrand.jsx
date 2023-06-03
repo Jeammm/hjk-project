@@ -2,6 +2,8 @@ import { getBrands, editBrand } from "../../services/product";
 
 import { useLoaderData, Form, useNavigate, redirect } from "react-router-dom";
 
+import ImgUploader from "../../components/ImgUploader";
+
 export async function loader({ params }) {
   const allBrands = await getBrands();
 
@@ -31,17 +33,8 @@ export default function EditCategory() {
   return (
     <div id="brand-edit-container">
       <Form id="brand-edit-form" method="post" key={brand[0].BrandID}>
-      <h1>แก้ไขแบรนด์</h1>
-        <label>
-          โลโก :
-          <input
-            type="text"
-            name="Logo"
-            defaultValue={brand[0].Logo}
-            aria-label="โลโก"
-            placeholder="โลโก"
-          />
-        </label>
+        <h1>แก้ไขแบรนด์</h1>
+        <ImgUploader prevImg={brand[0].Logo} img_field="Logo" />
         <label>
           ชื่อไทย :
           <input

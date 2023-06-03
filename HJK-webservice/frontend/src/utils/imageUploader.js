@@ -19,6 +19,6 @@ export async function imageUploader(img) {
     return imageUrl;
 
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };

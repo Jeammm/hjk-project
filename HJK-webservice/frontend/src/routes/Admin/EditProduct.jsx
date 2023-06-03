@@ -110,9 +110,6 @@ export default function EditProduct() {
       const before = prev.slice(0, i);
       const after = prev.slice(i + 1);
       const undoed = before.concat(after);
-
-      console.log(prev, undoed);
-
       return undoed;
     });
   };
@@ -171,7 +168,7 @@ export default function EditProduct() {
       <Form method="post">
         <div id="img-with-desc">
           <ImgUploader
-            prevImg={productDetail.Thumbnail}
+            prevImg={productDetail.Thumbnail || "placeholder.png"}
             img_field="Thumbnail"
           />
           {/* <div id="product-img-container">

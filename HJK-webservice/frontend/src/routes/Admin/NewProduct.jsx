@@ -116,7 +116,7 @@ export default function NewProduct() {
       <Form method="post">
         <div id="img-with-desc">
           {/* <img src="../assets/logo.svg" alt="product" id="product-img" /> */}
-          <ImgUploader img_field="Thumbnail"/>
+          <ImgUploader prevImg="placeholder.png" img_field="Thumbnail"/>
           <div id="detail-beside-img">
             {/* <input
               type="text"

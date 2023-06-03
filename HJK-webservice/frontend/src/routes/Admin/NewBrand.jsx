@@ -1,6 +1,8 @@
-import { useNavigate, Form, redirect } from "react-router-dom"
+import { useNavigate, Form, redirect } from "react-router-dom";
 
-import { newBrand } from "../../services/product"
+import { newBrand } from "../../services/product";
+
+import ImgUploader from "../../components/ImgUploader";
 
 export async function action({ request, params }) {
   const formData = await request.formData();
@@ -15,16 +17,11 @@ export default function NewCategory() {
   return (
     <div id="brand-edit-container">
       <Form id="brand-edit-form" method="post" key="new-brand">
-      <h1>เพิ่มแบรนด์ใหม่</h1>
-        <label>
-          โลโก :
-          <input
-            type="text"
-            name="Logo"
-            aria-label="โลโก"
-            placeholder="โลโก"
-          />
-        </label>
+        <h1>เพิ่มแบรนด์ใหม่</h1>
+        <ImgUploader
+          prevImg={"placeholder.png"}
+          img_field="Logo"
+        />
         <label>
           ชื่อไทย :
           <input
@@ -59,5 +56,5 @@ export default function NewCategory() {
         </div>
       </Form>
     </div>
-  )
+  );
 }

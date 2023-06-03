@@ -6,6 +6,7 @@ export default function ImgUploader({ prevImg, img_field }) {
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState(prevImg);
   const [imgUrl, SetImgUrl] = useState(prevImg);
+  const [uploading, setUploading] = useState("");
 
   // create a preview as a side effect, whenever selected file is changed
   useEffect(() => {
@@ -33,8 +34,17 @@ export default function ImgUploader({ prevImg, img_field }) {
 
     // I've kept this example simple by using the first image instead of multiple
     setSelectedFile(e.target.files[0]);
-    const res = await imageUploader(e.target.files[0]);
-    SetImgUrl(res);
+    setUploading("uploading")
+    let res = "";
+    try {
+      res = await imageUploader(e.target.files[0]);
+      setUploading("done")
+    } catch (e) {
+      res = "placeholder.png";
+      setUploading("error")
+    } finally {
+      SetImgUrl(res);
+    }
   };
 
   const removeSelected = () => {
@@ -50,8 +60,8 @@ export default function ImgUploader({ prevImg, img_field }) {
   };
 
   return (
-    <div id="product-img-container" >
-      
+    <div id="product-img-container">
+      <p>{uploading}</p>
       <div id="remove-img-btn-con">
         {selectedFile && (
           <button
@@ -67,7 +77,7 @@ export default function ImgUploader({ prevImg, img_field }) {
       {preview && <img src={preview} alt="preview" id="product-img" />}
 
       <input type="text" value={imgUrl} name={img_field} readOnly hidden />
-      
+
       <input
         type="file"
         onChange={onSelectFile}

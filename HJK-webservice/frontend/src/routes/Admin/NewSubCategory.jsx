@@ -2,6 +2,8 @@ import { useNavigate, Form, redirect} from "react-router-dom"
 
 import { newSubCategory } from "../../services/product"
 
+import ImgUploader from "../../components/ImgUploader";
+
 export async function action({ request, params }) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
@@ -17,6 +19,7 @@ export default function NewSubCategory() {
     <div className="edit-category-form-conatiner">
       <h2>สร้างหมวดหมู่ย่อยใหม่</h2>
       <Form method="post">
+        <ImgUploader prevImg="placeholder.png" img_field="Thumbnail"/>
         <div className="edit-input-field">
           <p>ชื่อหมวดหมู่ย่อย</p>
           <input
