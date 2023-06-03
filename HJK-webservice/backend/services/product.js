@@ -68,8 +68,7 @@ exports.createProduct = async (id, productData) => {
 };
 
 exports.delistProduct = async (id, listing) => {
-
-  console.log(listing)
+  console.log(listing);
 
   try {
     const result = await db.query(
@@ -78,16 +77,13 @@ exports.delistProduct = async (id, listing) => {
         Available = ?
       WHERE 
         productID = ?`,
-      [
-        listing || 1,
-        id,
-      ]
+      [listing || 1, id]
     );
     return "Product listing updated successfully";
   } catch (e) {
     throw new AppError(e, 409);
   }
-}
+};
 
 exports.editProduct = async (id, productData) => {
   const updateQuery = query_gen(productData);
@@ -126,32 +122,51 @@ exports.editProduct = async (id, productData) => {
 
 exports.editSize = async (id, sizeData) => {
   const checkIfRowExists = async (key, id) => {
-    const result = await db.query(`
+    const result = await db.query(
+      `
     SELECT *
     FROM Size
-    WHERE ProductID = "${id}" AND SizeID = "${key}"
-    `);
+    WHERE ProductID = ? AND SizeID = ?`,
+      [id, key]
+    );
     return result;
   };
 
   const updateRow = async (id, key, sizeData) => {
-    const updateQuery = query_gen(sizeData);
-
     result = await db.query(
       `UPDATE Size
-      SET ${updateQuery}
-      WHERE ProductID="${id}" AND SizeID="${key}"`
+      SET 
+        Des = ?,
+        Packing = ?,
+        Price = ?
+      WHERE 
+        ProductID = ? AND SizeID = ?`,
+      [
+        sizeData.Des || null,
+        sizeData.Packing || null,
+        sizeData.Price || null,
+        id,
+        key,
+      ]
     );
     return result.row;
   };
 
   const insertRow = async (id, key, sizeData) => {
-    const result = await db.query(`
+    const result = await db.query(
+      `
       INSERT INTO Size 
-      (ProductID, SizeID, Des, Packing, Price)
+        (ProductID, SizeID, Des, Packing, Price)
       VALUES 
-      ("${id}", ${key}, "${sizeData.Des}", "${sizeData.Packing}" ,"${sizeData.Price}")
-      `);
+        (?, ?, ?, ?, ?)`,
+      [
+        id,
+        key,
+        sizeData.Des || null,
+        sizeData.Packing || null,
+        sizeData.Price || null,
+      ]
+    );
   };
 
   try {
@@ -164,7 +179,7 @@ exports.editSize = async (id, sizeData) => {
         insertRow(id, key, sizeData[key]);
       }
     }
-    return "Product data updated successfully";
+    return "Product's size data updated successfully";
   } catch (e) {
     throw new AppError(e, 409);
   }
@@ -172,11 +187,22 @@ exports.editSize = async (id, sizeData) => {
 
 exports.queryProduct = async (q, p) => {
   const offset = helper.getOffset(p, config.listPerPage);
+
   const product = await db.query(
     `SELECT *
-    FROM Product
-    WHERE Available="1" AND (NameTH LIKE '%${q}%' OR NameEN LIKE '%${q}%' OR ProductID LIKE '%${q}%')
-    LIMIT ${offset},${config.listPerPage};`
+    FROM 
+      Product
+    WHERE 
+      Available="1" AND (NameTH LIKE ? OR NameEN LIKE ? OR ProductID LIKE ?)
+    LIMIT 
+      ?, ?;`,
+    [
+      `%${q}%`,
+      `%${q}%`,
+      `%${q}%`,
+      `${offset}`,
+      `${config.listPerPage}`,
+    ]
   );
 
   return {

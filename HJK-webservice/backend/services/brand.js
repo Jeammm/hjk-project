@@ -20,7 +20,8 @@ exports.getBrandItem = async (brandId) => {
   const rows = await db.query(
     `SELECT *
     FROM Product
-    WHERE Brand = ${brandId}`
+    WHERE Brand = ?`,
+    [brandId]
   );
   return {
     rows,
@@ -33,7 +34,8 @@ exports.createBrand = async (brandData) => {
       `INSERT INTO Brand
       (NameTH, NameEN, Logo) 
       VALUES 
-      ("${brandData.NameTH}", "${brandData.NameEN}", "${brandData.Logo}")`
+      (?, ?, ?)`,
+      [brandData.NameTH, brandData.NameEN || null, brandData.Logo || null]
     );
     return "New Brand created successfully";
   } catch (e) {
@@ -42,13 +44,16 @@ exports.createBrand = async (brandData) => {
 };
 
 exports.editBrand = async (id, brandData) => {
-  const updateQuery = query_gen(brandData);
-
   try {
     const result = await db.query(
       `UPDATE Brand 
-      SET ${updateQuery}
-      WHERE BrandID="${id}"`
+      SET 
+        NameTH = ?,
+        NameEN = ?,
+        Logo = ?
+      WHERE 
+        BrandID = ?`,
+      [brandData.NameTH, brandData.NameEN, brandData.Logo, id]
     );
     return "Brand updated successfully";
   } catch (e) {

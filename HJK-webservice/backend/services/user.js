@@ -7,15 +7,17 @@ exports.create = async (newUser) => {
     `INSERT INTO Users 
     (username, password) 
     VALUES 
-    ("${newUser.username}", "${newUser.password}")`
+    (?, ?)`,
+    [newUser.username, newUser.password]
   );
 
   if (result.affectedRows) {
     const userId = await db.query(
       `SELECT UserID
       FROM USER
-      WHERE username = "${newUser.username}"`
-    )
+      WHERE username = ?`,
+      [newUser.username]
+    );
     return userId[0].userID;
   }
 
@@ -26,7 +28,8 @@ exports.getUserCredential = async (username) => {
   const result = await db.query(
     `SELECT *
     FROM Users
-    WHERE username = "${username}"`
+    WHERE username = ?`,
+    [username]
   );
 
   return result[0];
@@ -36,7 +39,8 @@ exports.getUserById = async (userId) => {
   const result = await db.query(
     `SELECT *
     FROM Users
-    WHERE UserID = "${userId}"`
+    WHERE UserID = ?`,
+    [userId]
   );
 
   return result[0];

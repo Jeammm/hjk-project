@@ -20,7 +20,8 @@ exports.checkCategory = async (categoryId) => {
   const rows = await db.query(
     `SELECT *
     FROM Category
-    WHERE CategoryID = ${categoryId}`
+    WHERE CategoryID = ?`,
+    [categoryId]
   );
   return {
     rows,
@@ -33,7 +34,8 @@ exports.createCategory = async (categoryData) => {
       `INSERT INTO Category 
       (CategoryTH, CategoryEN) 
       VALUES 
-      ("${categoryData.CategoryTH}", "${categoryData.CategoryEN}")`
+      (?, ?)`,
+      [categoryData.CategoryTH, categoryData.CategoryEN || null]
     );
 
     return "New Category created successfully";
@@ -43,13 +45,18 @@ exports.createCategory = async (categoryData) => {
 };
 
 exports.editCategory = async (id, categoryData) => {
-  const updateQuery = query_gen(categoryData);
-
   try {
     const result = await db.query(
       `UPDATE Category 
-      SET ${updateQuery}
-      WHERE CategoryID=${id}`
+      SET 
+        CategoryTH = ?, 
+        CategoryEN = ?
+      WHERE CategoryID = ?`,
+      [
+        categoryData.CategoryTH,
+        categoryData.CategoryEN || null,
+        id
+      ]
     );
 
     return "Category data updated successfully";
