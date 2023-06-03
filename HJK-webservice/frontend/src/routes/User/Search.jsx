@@ -72,7 +72,7 @@ export default function Search(props) {
         <input
           id="q"
           name="q"
-          value={q}
+          value={q || ""}
           hidden
           onChange={(event) => {
             submit(event.currentTarget.form);

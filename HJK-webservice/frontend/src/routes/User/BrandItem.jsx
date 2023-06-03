@@ -12,17 +12,18 @@ export async function loader({ request, params }) {
   if (!p) p = 1;
   const brandItems = await getBrandItem(params.brandId, p);
   const brand = await getBrands();
-  return { brandItems, brand };
+  const brandId = params.brandId
+  return { brandItems, brand, p, brandId };
 }
 
 export default function Category() {
-  const { brandItems, brand, p } = useLoaderData();
+  const { brandItems, brand, p, brandId } = useLoaderData();
   const submit = useSubmit();
 
   useEffect(() => {
-    const brandName = brand.filter((b) => b.BrandID === brandItems[0].Brand);
+    const brandName = brand.filter((b) => b.BrandID == brandId);
     document.title = brandName[0].NameTH;
-  }, [brandItems, brand]);
+  }, [brandItems, brand, brandId]);
 
   useEffect(() => {
     document.getElementById("p").value = p;
