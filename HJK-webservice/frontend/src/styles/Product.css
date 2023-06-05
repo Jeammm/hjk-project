@@ -171,15 +171,17 @@
   border: 1px solid rgb(196, 196, 196);
   display: grid;
   grid-template-columns: 1fr; /* 1 column */
-  grid-template-rows: auto min-content auto; /* Row sizes: auto, minimum content, auto */
+  /* grid-template-rows: auto min-content auto; */
   /* height: 100%; */
   align-items: center;
 }
 
 #product-img {
   object-fit: contain;
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
+  /* max-width: 80%;
+  max-height: 80%; */
   justify-self: center;
   align-items: center;
 }

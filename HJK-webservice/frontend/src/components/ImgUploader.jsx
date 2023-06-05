@@ -59,10 +59,31 @@ export default function ImgUploader({ prevImg, img_field }) {
     SetImgUrl("placeholder.png");
   };
 
+  const statusComponent = (status) => {
+    if (status === "uploading") {
+      return (
+        <div className="uploading-spin">
+          <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+          <p>Uploading</p>
+        </div>
+      )
+    } else if (status === "done") {
+      return (
+        <p className="green-done">Done</p>
+        )
+      } else if (status === "error") {
+        return (
+        <p className="red-error">Error</p>
+      )
+    }
+  }
+
   return (
     <div id="product-img-container">
-      <p>{uploading}</p>
-      <div id="remove-img-btn-con">
+      <div className="status-container">
+        {statusComponent(uploading)}
+        <div id="remove-img-btn-con">
+      </div>
         {selectedFile && (
           <button
             onClick={removeSelected}
