@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const url = process.env.BACKEND_URL;
+const url = process.env.REACT_APP_BACKEND_URL;
 
 export async function getAllCategory() {
-  console.log(url, process.env.BACKEND_URL);
+  console.log(url, process.env.REACT_APP_BACKEND_URL);
   try {
     const res = await axios.get(`${url}/category`);
     if (!res.data.data) {

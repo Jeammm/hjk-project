@@ -33,7 +33,7 @@ function App() {
   const navigation = useNavigation();
   const submit = useSubmit();
 
-  console.log(process.env.BACKEND_URL)
+  console.log(process.env.REACT_APP_BACKEND_URL);
 
   const searching =
     navigation.location &&
