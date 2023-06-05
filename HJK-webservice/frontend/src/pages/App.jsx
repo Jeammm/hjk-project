@@ -30,7 +30,6 @@ export async function action({ request, params }) {
 
 function App() {
   const { category, q } = useLoaderData();
-  console.log("category > ", category);
   const navigation = useNavigation();
   const submit = useSubmit();
 
