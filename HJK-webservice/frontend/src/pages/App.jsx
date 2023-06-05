@@ -33,6 +33,8 @@ function App() {
   const navigation = useNavigation();
   const submit = useSubmit();
 
+  console.log(process.env.BACKEND_URL)
+
   const searching =
     navigation.location &&
     new URLSearchParams(navigation.location.search).has("q");
