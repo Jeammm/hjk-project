@@ -20,6 +20,10 @@ export async function action({ request }) {
     await login(loginDetail);
     return redirect(`/admin`);
   } catch (error) {
+    if (error.code === "ERR_NETWORK") {
+      window.alert("Cannot connect to server. Please try again later.");
+      return null;
+    }
     window.alert(error.response.data.message);
     window.location.href = window.location.href;
     return null;

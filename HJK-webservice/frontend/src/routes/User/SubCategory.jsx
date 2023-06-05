@@ -4,7 +4,7 @@ import { useLoaderData, NavLink, Form, useSubmit } from "react-router-dom";
 
 import { getItems, getSubName } from "../../services/product";
 
-import { useEffect } from "react"
+import { useEffect } from "react";
 
 ///subCategory/:subCategoryID
 
@@ -19,7 +19,7 @@ export async function loader({ request, params }) {
   //     statusText: "Not Found",
   //   });
   // }
-  const subcategory = await getSubName(params.subCategoryId)
+  const subcategory = await getSubName(params.subCategoryId);
   return { items, p, subcategory };
 }
 
@@ -29,20 +29,27 @@ export default function Category() {
   const submit = useSubmit();
 
   useEffect(() => {
-    document.getElementById("p").value = p;
+    if (document.getElementById("p")) {
+      document.getElementById("p").value = p;
+    }
   }, [p]);
 
   useEffect(() => {
     document.title = subcategory[0].SubNameTH;
   }, [subcategory]);
 
-  return (
+  return items.length === 0 ? (
+    <div className="nothing-here">ไม่มีสินค้าในหมวดหมู่ย่อยนี้...</div>
+  ) : (
     <div id="subcategory-list">
       <ul className="subcat-list">
         {items.map((sub) => {
           return (
             <li key={sub.ProductID}>
-              <NavLink to={`/product/${sub.ProductID}`} className="subcat-item selectable">
+              <NavLink
+                to={`/product/${sub.ProductID}`}
+                className="subcat-item selectable"
+              >
                 <img
                   src={sub.Thumbnail}
                   alt={sub.NameTH}

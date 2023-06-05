@@ -17,8 +17,6 @@ export async function isAuthorized() {
       { withCredentials: true }
     );
 
-    // console.log(res)
-
     return res.data;
   } catch (err) {
     if (err.code === 401) {

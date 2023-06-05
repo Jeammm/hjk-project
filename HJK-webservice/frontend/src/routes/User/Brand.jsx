@@ -4,7 +4,7 @@ import { useLoaderData, NavLink, useSubmit, Form } from "react-router-dom";
 
 import { getBrands } from "../../services/product";
 
-import { useEffect } from "react"
+import { useEffect } from "react";
 
 export async function loader({ request }) {
   const url = new URL(request.url);
@@ -19,14 +19,18 @@ export default function Category() {
   const submit = useSubmit();
 
   useEffect(() => {
-    document.getElementById("p").value = p;
+    if (document.getElementById("p")) {
+      document.getElementById("p").value = p;
+    }
   }, [p]);
 
   useEffect(() => {
     document.title = "แบรนด์";
   }, []);
 
-  return (
+  return brands.length === 0 ? (
+    <div className="nothing-here">ไม่มีสินค้าในแบรนด์นี้...</div>
+  ) : (
     <div id="subcategory-list">
       <ul className="subcat-list">
         {brands.map((b) => {

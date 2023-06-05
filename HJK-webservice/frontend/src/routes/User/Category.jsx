@@ -20,14 +20,20 @@ export default function Category() {
   const submit = useSubmit();
 
   useEffect(() => {
-    document.getElementById("p").value = p;
+    if (document.getElementById("p")) {
+      document.getElementById("p").value = p;
+    }
   }, [p]);
 
   useEffect(() => {
-    document.title = category[0].CategoryTH;
+    if (category[0]) {
+      document.title = category[0].CategoryTH;
+    }
   }, [category]);
-
-  return (
+  
+  return subCategory.length === 0 ? (
+    <div className="nothing-here">ไม่มีสินค้าในหมวดหมู่นี้...</div>
+  ) : (
     <div id="subcategory-list">
       <ul className="subcat-list">
         {subCategory.map((sub) => {

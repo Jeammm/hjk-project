@@ -67,7 +67,6 @@ module.exports = (err, req, res, next) => {
 
   
   if (process.env.NODE_ENV === "development") {
-    console.log(err)
     sendDevError(err, res);
   } else if (process.env.NODE_ENV.trim() === "production") {
     let error = new AppError(err.message || "error", err.statusCode);

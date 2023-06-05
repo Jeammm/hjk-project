@@ -12,7 +12,7 @@ export async function loader({ request, params }) {
   if (!p) p = 1;
   const brandItems = await getBrandItem(params.brandId, p);
   const brand = await getBrands();
-  const brandId = params.brandId
+  const brandId = params.brandId;
   return { brandItems, brand, p, brandId };
 }
 
@@ -26,10 +26,14 @@ export default function Category() {
   }, [brandItems, brand, brandId]);
 
   useEffect(() => {
-    document.getElementById("p").value = p;
+    if (document.getElementById("p")) {
+      document.getElementById("p").value = p;
+    }
   }, [p]);
 
-  return (
+  return brandItems.length === 0 ? (
+    <div className="nothing-here">ไม่มีสินค้าในแบรนด์นี้...</div>
+  ) : (
     <div id="subcategory-list">
       <ul className="subcat-list">
         {brandItems.map((b) => {

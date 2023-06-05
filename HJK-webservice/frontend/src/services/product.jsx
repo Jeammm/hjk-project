@@ -1,10 +1,14 @@
 import axios from "axios";
 
-const url = "http://localhost:8000/api/v1";
+const url = process.env.BACKEND_URL;
 
 export async function getAllCategory() {
-  const res = await axios.get(`${url}/category`);
-  return res.data.data;
+  try {
+    const res = await axios.get(`${url}/category`);
+    return res.data.data;
+  } catch (err) {
+    return [];
+  }
 }
 
 export async function checkCategory(id) {
@@ -45,13 +49,21 @@ export async function getProduct(id) {
   return res.data.data;
 }
 
-export async function getBrands() {
-  const res = await axios.get(`${url}/brands`);
+export async function getBrands(page) {
+  const res = await axios.get(`${url}/brands`, {
+    params: {
+      page: page,
+    },
+  });
   return res.data.data;
 }
 
-export async function getBrandItem(id) {
-  const res = await axios.get(`${url}/brands/${id}`);
+export async function getBrandItem(id, page) {
+  const res = await axios.get(`${url}/brands/${id}`, {
+    params: {
+      page: page,
+    },
+  });
   return res.data.data;
 }
 
@@ -62,7 +74,6 @@ export async function editCategory(id, detail) {
     });
     return res;
   } catch (err) {
-    // console.log(err)
     window.alert(err.response.message);
   }
 }
@@ -74,7 +85,6 @@ export async function newCategory(detail) {
     });
     return res;
   } catch (err) {
-    // console.log(err)
     window.alert(err.response.message);
   }
 }
@@ -86,7 +96,6 @@ export async function editSubCategory(id, detail) {
     });
     return res;
   } catch (err) {
-    // console.log(err)
     window.alert(err.response.message);
   }
 }
@@ -98,7 +107,6 @@ export async function newSubCategory(id, detail) {
     });
     return res;
   } catch (err) {
-    // console.log(err)
     window.alert(err.response.message);
   }
 }
@@ -111,8 +119,6 @@ export async function editProduct(id, detail) {
 
     return res;
   } catch (err) {
-    // console.log(err)
-    // window.alert(err.response.message);
     window.alert(err.response);
   }
 }
@@ -125,8 +131,6 @@ export async function delistProduct(id, detail) {
 
     return res;
   } catch (err) {
-    // console.log(err)
-    // window.alert(err.response.message);
     window.alert(err.response);
   }
 }
@@ -139,7 +143,6 @@ export async function newProduct(id, detail) {
 
     return res;
   } catch (err) {
-    // console.log(err)
     window.alert(err.response.message);
   }
 }
@@ -152,7 +155,6 @@ export async function editBrand(id, detail) {
 
     return res;
   } catch (err) {
-    // console.log(err)
     window.alert(err.response.message);
   }
 }
@@ -165,17 +167,12 @@ export async function newBrand(detail) {
 
     return res;
   } catch (err) {
-    // console.log(err)
     window.alert(err.response.message);
   }
 }
 
 export async function queryProduct(q, p) {
   const query = { q: q ? q : "", p: p ? p : 1 };
-  try {
-    const res = await axios.get(`${url}/products`, { params: query });
-    return res.data.data.product;
-  } catch (err) {
-    window.alert(err.response.message);
-  }
+  const res = await axios.get(`${url}/products`, { params: query });
+  return res.data.data.product;
 }
