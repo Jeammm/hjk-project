@@ -3,11 +3,12 @@ import axios from "axios";
 const url = process.env.BACKEND_URL;
 
 export async function getAllCategory() {
+  console.log(url)
   console.log(1)
   try {
     console.log(2)
     const res = await axios.get(`${url}/category`);
-    console.log(3)
+    console.log(res)
     return res.data.data;
   } catch (err) {
     console.log(4)
