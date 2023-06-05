@@ -8,12 +8,13 @@ const { query_gen } = require("../utils/query_gen");
 
 exports.getAllProducts = async (subCategory, page = 1) => {
   const offset = helper.getOffset(page, config.listPerPage);
+
   const rows = await db.query(
     `SELECT * 
     FROM Product 
     WHERE SubCategory = ?
     LIMIT ?, ?`,
-    [subCategory, offset, config.listPerPage]
+    [subCategory, `${offset}`, `${config.listPerPage}`]
   );
   const data = helper.emptyOrRows(rows);
   const meta = { page };
@@ -50,14 +51,15 @@ exports.checkSubCategory = async (categoryId, subCategoryId) => {
   };
 };
 
-exports.getAllSubCategory = async (categoryId, p) => {
+exports.getAllSubCategory = async (categoryId, p = 1) => {
   const offset = helper.getOffset(p, config.listPerPage);
+
   const rows = await db.query(
     `SELECT *
     FROM SubCategory 
     WHERE CategoryID = ?
     LIMIT ?, ?;`,
-    [categoryId, offset, config.listPerPage]
+    [categoryId, `${offset}`, `${config.listPerPage}`]
   );
   return {
     rows,

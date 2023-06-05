@@ -150,6 +150,7 @@ header {
 .category-list {
   background-color: #cb3435;
   padding: 1rem;
+  min-height: 80vh;
 }
 
 .link-text {

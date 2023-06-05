@@ -18,10 +18,7 @@ export default function NewCategory() {
     <div id="brand-edit-container">
       <Form id="brand-edit-form" method="post" key="new-brand">
         <h1>เพิ่มแบรนด์ใหม่</h1>
-        <ImgUploader
-          prevImg={"placeholder.png"}
-          img_field="Logo"
-        />
+        <ImgUploader prevImg={"placeholder.png"} img_field="Logo" />
         <label>
           ชื่อไทย :
           <input
@@ -29,6 +26,7 @@ export default function NewCategory() {
             name="NameTH"
             aria-label="ชื่อไทย"
             placeholder="ชื่อไทย"
+            autoComplete="off"
           />
         </label>
         <label>
@@ -38,6 +36,7 @@ export default function NewCategory() {
             name="NameEN"
             aria-label="ชื่อ EN"
             placeholder="ชื่อ EN"
+            autoComplete="off"
           />
         </label>
 

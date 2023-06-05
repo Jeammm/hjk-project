@@ -6,7 +6,7 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/AppError");
 
 exports.getAllBrands = catchAsync(async (req, res, next) => {
-  const result = await brand.getAllBrands();
+  const result = await brand.getAllBrands(req.query.page);
   const data = result.rows;
 
   res.status(200).json({
@@ -16,7 +16,7 @@ exports.getAllBrands = catchAsync(async (req, res, next) => {
 });
 
 exports.getBrandItem = catchAsync(async (req, res, next) => {
-  const result = await brand.getBrandItem(req.params.brandId);
+  const result = await brand.getBrandItem(req.params.brandId, req.query.page);
   const data = result.rows;
 
   res.status(200).json({

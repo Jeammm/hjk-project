@@ -68,7 +68,6 @@ exports.createProduct = async (id, productData) => {
 };
 
 exports.delistProduct = async (id, listing) => {
-  console.log(listing);
 
   try {
     const result = await db.query(

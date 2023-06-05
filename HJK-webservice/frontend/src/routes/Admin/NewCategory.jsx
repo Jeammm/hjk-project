@@ -1,6 +1,6 @@
-import { useNavigate, Form, redirect } from "react-router-dom"
+import { useNavigate, Form, redirect } from "react-router-dom";
 
-import { newCategory } from "../../services/product"
+import { newCategory } from "../../services/product";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -18,17 +18,11 @@ export default function NewCategory() {
       <Form method="post">
         <div className="edit-input-field">
           <p>ชื่อหมวดหมู่</p>
-          <input
-            type="text"
-            name="CategoryTH"
-          />
+          <input type="text" name="CategoryTH" autoComplete="off" />
         </div>
         <div className="edit-input-field">
           <p>ชื่อหมวดหมู่ (EN)</p>
-          <input
-            type="text"
-            name="CategoryEN"
-          />
+          <input type="text" name="CategoryEN" autoComplete="off" />
         </div>
 
         <div id="place-order-button-container">
@@ -46,5 +40,5 @@ export default function NewCategory() {
         </div>
       </Form>
     </div>
-  )
+  );
 }

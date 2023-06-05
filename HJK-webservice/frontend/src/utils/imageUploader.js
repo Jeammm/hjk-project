@@ -1,24 +1,23 @@
 import axios from "axios";
 
 export async function imageUploader(img) {
-  const img_hosting = "https://freeimage.host/api/1/upload";
+  const img_hosting = process.env.IMG_HOSTING;
 
   const formData = new FormData();
-  formData.append('source', img);
-  formData.append('key', "6d207e02198a847aa98d0a2a901485a5");
-  
+  formData.append("source", img);
+  formData.append("key", process.env.IMG_HOSTING_PASSWORD);
+
   try {
     const response = await axios.post(img_hosting, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
-  
+
     const imageUrl = response.data.image.url;
 
     return imageUrl;
-
   } catch (error) {
     throw error;
   }
-};
+}

@@ -6,22 +6,27 @@ const AppError = require("../utils/AppError");
 
 const { query_gen } = require("../utils/query_gen");
 
-exports.getAllBrands = async () => {
+exports.getAllBrands = async (page = 1) => {
+  const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
     `SELECT *
-    FROM Brand`
+    FROM Brand
+    LIMIT ?, ?`,
+    [`${offset}`, `${config.listPerPage}`]
   );
   return {
     rows,
   };
 };
 
-exports.getBrandItem = async (brandId) => {
+exports.getBrandItem = async (brandId, page = 1) => {
+  const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
     `SELECT *
     FROM Product
-    WHERE Brand = ?`,
-    [brandId]
+    WHERE Brand = ?
+    LIMIT ?, ?`,
+    [brandId, `${offset}`, `${config.listPerPage}`]
   );
   return {
     rows,

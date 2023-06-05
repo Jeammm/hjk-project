@@ -4,8 +4,7 @@ import { checkSubCategory, editSubCategory } from "../../services/product";
 
 import { useLoaderData, Form, useNavigate, redirect } from "react-router-dom";
 
-import ImgUploader from "../../components/ImgUploader"
-
+import ImgUploader from "../../components/ImgUploader";
 
 export async function loader({ params }) {
   const subCategory = await checkSubCategory(
@@ -47,6 +46,7 @@ export default function EditSubCategory() {
             type="text"
             name="SubNameTH"
             defaultValue={subCategory[0].SubNameTH}
+            autoComplete="off"
           />
         </div>
         <div className="edit-input-field">
@@ -55,6 +55,7 @@ export default function EditSubCategory() {
             type="text"
             name="SubNameEN"
             defaultValue={subCategory[0].SubNameEN}
+            autoComplete="off"
           />
         </div>
 

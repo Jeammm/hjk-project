@@ -1,7 +1,12 @@
 import { useState } from "react";
 import "../../styles/EditProduct.css";
 
-import { getProduct, editProduct, getBrands, delistProduct } from "../../services/product";
+import {
+  getProduct,
+  editProduct,
+  getBrands,
+  delistProduct,
+} from "../../services/product";
 import {
   useLoaderData,
   useNavigate,
@@ -139,17 +144,17 @@ export default function EditProduct() {
       return;
     } else {
       await delistProduct(productId, { Available: "0" });
-      setIsAvailable(0)
+      setIsAvailable(0);
       window.alert("ลบสินค้านี้แล้ว");
     }
   };
-  
+
   const listingHandler = async (productId) => {
     if (!window.confirm("ยืนยันนำสินค้านี้กลับมา?")) {
       return;
     } else {
       await delistProduct(productId, { Available: "1" });
-      setIsAvailable(1)
+      setIsAvailable(1);
       window.alert("นำสินค้ากลับมาแล้ว");
     }
   };
@@ -179,6 +184,7 @@ export default function EditProduct() {
               id="product-name"
               defaultValue={productDetail.NameTH}
               name="NameTH"
+              autoComplete="off"
             />
             <textarea
               id="product-desc"

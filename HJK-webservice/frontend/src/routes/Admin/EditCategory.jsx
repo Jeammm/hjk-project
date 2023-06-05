@@ -38,6 +38,7 @@ export default function EditCategory() {
             type="text"
             name="CategoryTH"
             defaultValue={category[0].CategoryTH}
+            autoComplete="off"
           />
         </div>
         <div className="edit-input-field">
@@ -46,6 +47,7 @@ export default function EditCategory() {
             type="text"
             name="CategoryEN"
             defaultValue={category[0].CategoryEN}
+            autoComplete="off"
           />
         </div>
 

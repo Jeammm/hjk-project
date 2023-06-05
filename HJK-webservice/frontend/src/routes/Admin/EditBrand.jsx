@@ -43,6 +43,7 @@ export default function EditCategory() {
             defaultValue={brand[0].NameTH}
             aria-label="ชื่อไทย"
             placeholder="ชื่อไทย"
+            autoComplete="off"
           />
         </label>
         <label>
@@ -53,6 +54,7 @@ export default function EditCategory() {
             defaultValue={brand[0].NameEN}
             aria-label="ชื่อ EN"
             placeholder="ชื่อ EN"
+            autoComplete="off"
           />
         </label>
 

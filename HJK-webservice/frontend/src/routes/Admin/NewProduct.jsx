@@ -39,7 +39,6 @@ export async function loader({ params }) {
 export async function action({ request, params }) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  console.log(data);
   if (data.IsColor === undefined) data.IsColor = 0;
   else data.IsColor = 1;
 
@@ -116,7 +115,7 @@ export default function NewProduct() {
       <Form method="post">
         <div id="img-with-desc">
           {/* <img src="../assets/logo.svg" alt="product" id="product-img" /> */}
-          <ImgUploader prevImg="placeholder.png" img_field="Thumbnail"/>
+          <ImgUploader prevImg="placeholder.png" img_field="Thumbnail" />
           <div id="detail-beside-img">
             {/* <input
               type="text"
@@ -129,6 +128,7 @@ export default function NewProduct() {
               id="product-name"
               placeholder="ชื่อสินค้า..."
               name="NameTH"
+              autoComplete="off"
             />
             <textarea
               id="product-desc"
