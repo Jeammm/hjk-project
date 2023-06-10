@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const url = "http://localhost:8000/api/v1/user";
+// const url = "http://localhost:8000/api/v1/user";
+const url = `${process.env.REACT_APP_BACKEND_URL}/user`;
 
 export async function login(loginDetail) {
   const res = await axios.post(`${url}/login`, loginDetail, {
