@@ -39,9 +39,9 @@ function App() {
     navigation.location &&
     new URLSearchParams(navigation.location.search).has("q");
 
-  // useEffect(() => {
-  //   document.getElementById("q").value = q;
-  // }, [q]);
+  useEffect(() => {
+    document.getElementById("q").value = q;
+  }, [q]);
 
   const debounce = (fn, delay) => {
     let timerId;
@@ -51,7 +51,7 @@ function App() {
     };
   };
 
-  const searchBox = useCallback(debounce(submit, 300), [submit]);
+  const searchBox = useCallback(debounce(submit, 800), [submit]);
 
   return (
     <div className="App">
