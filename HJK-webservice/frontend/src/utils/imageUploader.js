@@ -1,11 +1,11 @@
 import axios from "axios";
 
 export async function imageUploader(img) {
-  const img_hosting = process.env.IMG_HOSTING;
+  const img_hosting = process.env.REACT_APP_IMG_HOSTING;
 
   const formData = new FormData();
   formData.append("source", img);
-  formData.append("key", process.env.IMG_HOSTING_PASSWORD);
+  formData.append("key", process.env.REACT_APP_IMG_HOSTING_PASSWORD);
 
   try {
     const response = await axios.post(img_hosting, formData, {

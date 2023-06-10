@@ -3,9 +3,14 @@ import axios from "axios";
 const url = process.env.REACT_APP_BACKEND_URL;
 
 export async function getAllCategory() {
-  console.log(url, process.env.REACT_APP_BACKEND_URL);
+  const config = {
+    headers: {
+      "ngrok-skip-browser-warning": true,
+    },
+  };
+
   try {
-    const res = await axios.get(`${url}/category`);
+    const res = await axios.get(`${url}/category`, config);
     if (!res.data.data) {
       throw new Error();
     }
