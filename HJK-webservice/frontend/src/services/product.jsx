@@ -2,13 +2,13 @@ import axios from "axios";
 
 const url = process.env.REACT_APP_BACKEND_URL;
 
-export async function getAllCategory() {
-  const config = {
-    headers: {
-      "ngrok-skip-browser-warning": true,
-    },
-  };
+const config = {
+  headers: {
+    "ngrok-skip-browser-warning": true,
+  },
+};
 
+export async function getAllCategory() {
   try {
     const res = await axios.get(`${url}/category`, config);
     if (!res.data.data) {
@@ -21,17 +21,20 @@ export async function getAllCategory() {
 }
 
 export async function checkCategory(id) {
-  const res = await axios.get(`${url}/checkCategory/${id}`);
+  const res = await axios.get(`${url}/checkCategory/${id}`, config);
   return res.data.data;
 }
 
 export async function checkSubCategory(catId, subId) {
-  const res = await axios.get(`${url}/checkSubCategory/${catId}/${subId}`);
+  const res = await axios.get(
+    `${url}/checkSubCategory/${catId}/${subId}`,
+    config
+  );
   return res.data.data;
 }
 
 export async function getSubName(subId) {
-  const res = await axios.get(`${url}/getSubName/${subId}`);
+  const res = await axios.get(`${url}/getSubName/${subId}`, config);
   return res.data.data;
 }
 
@@ -40,12 +43,16 @@ export async function getSubCategory(id, page) {
     params: {
       page: page,
     },
+    headers: {
+      "ngrok-skip-browser-warning": true,
+    },
   });
   return res.data.data;
 }
 
 export async function getItems(id, page) {
   const res = await axios.get(`${url}/subCategory/${id}`, {
+    ...config,
     params: {
       page: page,
     },
@@ -54,12 +61,13 @@ export async function getItems(id, page) {
 }
 
 export async function getProduct(id) {
-  const res = await axios.get(`${url}/product/${id}`);
+  const res = await axios.get(`${url}/product/${id}`, { ...config });
   return res.data.data;
 }
 
 export async function getBrands(page) {
   const res = await axios.get(`${url}/brands`, {
+    ...config,
     params: {
       page: page,
     },
@@ -69,6 +77,7 @@ export async function getBrands(page) {
 
 export async function getBrandItem(id, page) {
   const res = await axios.get(`${url}/brands/${id}`, {
+    ...config,
     params: {
       page: page,
     },
@@ -79,6 +88,7 @@ export async function getBrandItem(id, page) {
 export async function editCategory(id, detail) {
   try {
     const res = await axios.patch(`${url}/category/${id}`, detail, {
+      ...config,
       withCredentials: true,
     });
     return res;
@@ -90,6 +100,7 @@ export async function editCategory(id, detail) {
 export async function newCategory(detail) {
   try {
     const res = await axios.post(`${url}/category`, detail, {
+      ...config,
       withCredentials: true,
     });
     return res;
@@ -101,6 +112,7 @@ export async function newCategory(detail) {
 export async function editSubCategory(id, detail) {
   try {
     const res = await axios.patch(`${url}/subcategory/${id}`, detail, {
+      ...config,
       withCredentials: true,
     });
     return res;
@@ -112,6 +124,7 @@ export async function editSubCategory(id, detail) {
 export async function newSubCategory(id, detail) {
   try {
     const res = await axios.post(`${url}/category/${id}`, detail, {
+      ...config,
       withCredentials: true,
     });
     return res;
@@ -123,6 +136,7 @@ export async function newSubCategory(id, detail) {
 export async function editProduct(id, detail) {
   try {
     const res = await axios.patch(`${url}/product/${id}`, detail, {
+      ...config,
       withCredentials: true,
     });
 
@@ -135,6 +149,7 @@ export async function editProduct(id, detail) {
 export async function delistProduct(id, detail) {
   try {
     const res = await axios.put(`${url}/product/${id}`, detail, {
+      ...config,
       withCredentials: true,
     });
 
@@ -147,6 +162,7 @@ export async function delistProduct(id, detail) {
 export async function newProduct(id, detail) {
   try {
     const res = await axios.post(`${url}/subcategory/${id}`, detail, {
+      ...config,
       withCredentials: true,
     });
 
@@ -159,6 +175,7 @@ export async function newProduct(id, detail) {
 export async function editBrand(id, detail) {
   try {
     const res = await axios.patch(`${url}/brands/${id}`, detail, {
+      ...config,
       withCredentials: true,
     });
 
@@ -171,6 +188,7 @@ export async function editBrand(id, detail) {
 export async function newBrand(detail) {
   try {
     const res = await axios.post(`${url}/brands/`, detail, {
+      ...config,
       withCredentials: true,
     });
 
@@ -182,6 +200,6 @@ export async function newBrand(detail) {
 
 export async function queryProduct(q, p) {
   const query = { q: q ? q : "", p: p ? p : 1 };
-  const res = await axios.get(`${url}/products`, { params: query });
+  const res = await axios.get(`${url}/products`, { ...config, params: query });
   return res.data.data.product;
 }
