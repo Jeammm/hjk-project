@@ -177,7 +177,7 @@ export default function EditProduct() {
             img_field="Thumbnail"
           />
           {/* <div id="product-img-container">
-            <img src={productDetail.Thumbnail} alt="product" id="product-img" />
+            <img loading="lazy" src={productDetail.Thumbnail} alt="product" id="product-img" />
           </div> */}
           <div id="detail-beside-img">
             <input

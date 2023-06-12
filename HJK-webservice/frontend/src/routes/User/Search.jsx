@@ -28,7 +28,12 @@ export default function Search(props) {
   }, [props.title]);
 
   return products.length === 0 ? (
-    <div className="nothing-here">ไม่มีสินค้านี้...</div>
+    <div className="nothing-here">
+      <p>ไม่มีสินค้านี้...</p>
+      <NavLink to={-1} className="go-back">
+        {` < ย้อนกลับ`}
+      </NavLink>
+    </div>
   ) : (
     <div id="subcategory-list">
       <ul className="subcat-list">

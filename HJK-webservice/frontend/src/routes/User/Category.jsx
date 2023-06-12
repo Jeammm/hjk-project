@@ -30,11 +30,16 @@ export default function Category() {
       document.title = category[0].CategoryTH;
     }
   }, [category]);
-  
+
   return subCategory.length === 0 ? (
-    <div className="nothing-here">ไม่มีสินค้าในหมวดหมู่นี้...</div>
+    <div className="nothing-here">
+      <h2>{category[0].CategoryTH}</h2>
+      <p>ไม่มีสินค้าในหมวดหมู่ย่อยนี้...</p>
+      <NavLink to={-1} className="go-back">{`< ย้อนกลับ`}</NavLink>
+    </div>
   ) : (
     <div id="subcategory-list">
+      <h2>{category[0].CategoryTH}</h2>
       <ul className="subcat-list">
         {subCategory.map((sub) => {
           return (

@@ -7,10 +7,11 @@ import {
   NavLink,
   useNavigation,
   useSubmit,
+  useLocation,
 } from "react-router-dom";
 
 import { useEffect, useCallback, useState } from "react";
-import Hamburger from 'hamburger-react'
+import Hamburger from "hamburger-react";
 
 import { getAllCategory } from "../services/product";
 
@@ -31,6 +32,7 @@ export async function action({ request, params }) {
 function App() {
   const { category, q } = useLoaderData();
   const navigation = useNavigation();
+  const location = useLocation();
   const submit = useSubmit();
 
   const searching =
@@ -51,7 +53,12 @@ function App() {
 
   const searchBox = useCallback(debounce(submit, 800), [submit]);
 
-  const [isOpen, setOpen] = useState(false)
+  const [isOpen, setOpen] = useState(false);
+
+  useEffect(() => {
+    // execute on location change
+    setOpen(false);
+  }, [location]);
 
   return (
     <div className="App">
@@ -100,20 +107,28 @@ function App() {
 
       <div id="menu-tab">
         <div className="menu-tab-container">
-          <Hamburger id="category-hamburger" toggled={isOpen} toggle={setOpen} />
+          <Hamburger
+            id="category-hamburger"
+            toggled={isOpen}
+            toggle={setOpen}
+          />
           <div id="space-350"></div>
-          <NavLink to={`brands`}>
-            <p className="menu-item selectable link-text">แบรนด์</p>
+          <NavLink to={`brands`} className="menu-item selectable">
+            แบรนด์
           </NavLink>
-          <p className="menu-item left-line selectable">ติดต่อ</p>
-          <p className="menu-item left-line selectable">แผนที่</p>
+          <NavLink to={`brands`} className="menu-item left-line selectable">
+          ติดต่อ
+          </NavLink>
+          <NavLink to={`brands`} className="menu-item left-line selectable">
+          แผนที่
+          </NavLink>
         </div>
       </div>
 
       <div id="detail">
         <div className="detail-container">
           <div className="category-container">
-            <div id="by-category">หมวดหมู่สินค้า</div>
+            <div className="by-category">หมวดหมู่สินค้า</div>
 
             <div className="category-list">
               {category.map((cat) => {
@@ -129,6 +144,27 @@ function App() {
               })}
             </div>
           </div>
+
+          <div
+            className={`category-container-m ${
+              isOpen ? "cat-list-open" : "cat-list-close"
+            }`}
+          >
+            <div className={`category-list `}>
+              {category.map((cat) => {
+                return (
+                  <NavLink
+                    to={`category/${cat.CategoryID}`}
+                    className="category-item selectable link-text"
+                    key={cat.CategoryID}
+                  >
+                    <p>{cat.CategoryTH}</p>
+                  </NavLink>
+                );
+              })}
+            </div>
+          </div>
+
           <div className="outlet-container">
             <Outlet />
           </div>

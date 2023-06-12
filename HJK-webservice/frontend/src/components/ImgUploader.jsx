@@ -34,14 +34,14 @@ export default function ImgUploader({ prevImg, img_field }) {
 
     // I've kept this example simple by using the first image instead of multiple
     setSelectedFile(e.target.files[0]);
-    setUploading("uploading")
+    setUploading("uploading");
     let res = "";
     try {
       res = await imageUploader(e.target.files[0]);
-      setUploading("done")
+      setUploading("done");
     } catch (e) {
       res = "placeholder.png";
-      setUploading("error")
+      setUploading("error");
     } finally {
       SetImgUrl(res);
     }
@@ -63,27 +63,27 @@ export default function ImgUploader({ prevImg, img_field }) {
     if (status === "uploading") {
       return (
         <div className="uploading-spin">
-          <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+          <div className="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
           <p>Uploading</p>
         </div>
-      )
+      );
     } else if (status === "done") {
-      return (
-        <p className="green-done">Done</p>
-        )
-      } else if (status === "error") {
-        return (
-        <p className="red-error">Error</p>
-      )
+      return <p className="green-done">Done</p>;
+    } else if (status === "error") {
+      return <p className="red-error">Error</p>;
     }
-  }
+  };
 
   return (
     <div id="product-img-container">
       <div className="status-container">
         {statusComponent(uploading)}
-        <div id="remove-img-btn-con">
-      </div>
+        <div id="remove-img-btn-con"></div>
         {selectedFile && (
           <button
             onClick={removeSelected}
@@ -95,7 +95,9 @@ export default function ImgUploader({ prevImg, img_field }) {
         )}
       </div>
 
-      {preview && <img src={preview} alt="preview" id="product-img" />}
+      {preview && (
+        <img loading="lazy" src={preview} alt="preview" id="product-img" />
+      )}
 
       <input type="text" value={imgUrl} name={img_field} readOnly hidden />
 

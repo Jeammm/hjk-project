@@ -39,7 +39,19 @@ button:hover, .selectable:hover {
 }
 
 .nothing-here {
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.nothing-here p {
   padding: 2rem;
   font-size: 2rem;
   color: var(--darkgrey);
+}
+
+.go-back {
+  margin-left: auto;
+  align-self: flex-end;
+  font-size: 1.2rem;
 }

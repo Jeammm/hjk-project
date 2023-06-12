@@ -4,7 +4,7 @@ import { getProduct } from "../../services/product";
 
 import { useLoaderData, useNavigate, Form } from "react-router-dom";
 
-import { useEffect } from "react"
+import { useEffect } from "react";
 
 export async function loader({ params }) {
   const { product, size } = await getProduct(params.productId);
@@ -40,11 +40,18 @@ export default function Product() {
     <div id="product-detail">
       <div className="topic-with-close">
         <h3 id="product-detail-topic">รายละเอียดสินค้า</h3>
-        <button id="close-button" onClick={() => navigate(-1)}>X</button>
+        <button id="close-button" onClick={() => navigate(-1)}>
+          X
+        </button>
       </div>
       <div id="img-with-desc">
         <div id="product-img-container">
-          <img src={productDetail.Thumbnail} alt="product" id="product-img" />
+          <img
+            loading="lazy"
+            src={productDetail.Thumbnail}
+            alt="product"
+            id="product-img"
+          />
         </div>
         <div id="detail-beside-img">
           <h3 id="product-name">{productDetail.NameTH}</h3>
@@ -58,7 +65,7 @@ export default function Product() {
             <p className="size-detail-box w-150 table-topic">ขนาด</p>
             <p className="size-detail-box w-150 table-topic">บรรจุ</p>
             <p className="size-detail-box w-150 table-topic">ราคา</p>
-            <p className="size-detail-box w-150 table-topic">จำนวนที่สั่ง</p>
+            <p className="size-detail-box w-150 table-topic">จำนวน</p>
             <p
               className="size-detail-box w-150 table-topic"
               hidden={!productDetail.IsColor}
@@ -79,10 +86,10 @@ export default function Product() {
                   {s.Packing}
                 </p>
                 <p className={`size-detail-box w-150 ${cal_color(i)}`}>
-                  {s.Price} บาท
+                  {s.Price}
                 </p>
                 <div className={`size-detail-box w-150 ${cal_color(i)}`}>
-                  <input type="number" className="order-amount" min="0"/>
+                  <input type="number" className="order-amount" min="0" />
                 </div>
                 <div
                   className={`size-detail-box w-150 ${cal_color(i)}`}
@@ -95,8 +102,17 @@ export default function Product() {
           })}
         </div>
         <div id="place-order-button-container">
-          <button type="submit" className="order-button" id="add-to-basket">เพิ่มลงในตะกร้า</button>
-          <button type="reset" className="order-button" id="cancel" value="ยกเลิก">ยกเลิก</button>
+          <button type="submit" className="order-button" id="add-to-basket">
+            เพิ่มลงในตะกร้า
+          </button>
+          <button
+            type="reset"
+            className="order-button"
+            id="cancel"
+            value="ยกเลิก"
+          >
+            ยกเลิก
+          </button>
         </div>
       </Form>
     </div>

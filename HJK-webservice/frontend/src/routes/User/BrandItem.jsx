@@ -31,10 +31,20 @@ export default function Category() {
     }
   }, [p]);
 
+  const b = () => {
+    const b = brand.filter((b) => b.BrandID == brandId);
+    return b[0].NameTH;
+  };
+
   return brandItems.length === 0 ? (
-    <div className="nothing-here">ไม่มีสินค้าในแบรนด์นี้...</div>
+    <div className="nothing-here">
+      <h2>{b()}</h2>
+      <p>ไม่มีสินค้าในแบรนด์นี้...</p>
+      <NavLink to={-1} className="go-back">{`< ย้อนกลับ`}</NavLink>
+    </div>
   ) : (
     <div id="subcategory-list">
+      <h2>{b()}</h2>
       <ul className="subcat-list">
         {brandItems.map((b) => {
           return (

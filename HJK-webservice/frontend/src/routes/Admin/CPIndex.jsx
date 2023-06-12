@@ -8,13 +8,13 @@ import { NavLink } from "react-router-dom";
 export default function Index() {
   return (
     <div id="control-section">
-      <NavLink to="category" className="cpindex-menu-item selectable" >
-        <img src={product_icon} alt="product setting" />
+      <NavLink to="category" className="cpindex-menu-item selectable">
+        <img loading="lazy" src={product_icon} alt="product setting" />
         <p>เพิ่มหมวดหมู่/สินค้า</p>
       </NavLink>
 
-      <NavLink to="brand" className="cpindex-menu-item selectable" >
-        <img src={brand_icon} alt="brand setting" />
+      <NavLink to="brand" className="cpindex-menu-item selectable">
+        <img loading="lazy" src={brand_icon} alt="brand setting" />
         <p>เพิ่มแบรนด์</p>
       </NavLink>
     </div>

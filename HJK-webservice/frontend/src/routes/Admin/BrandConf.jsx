@@ -2,7 +2,13 @@ import "../../styles/BrandConf.css";
 
 import { getBrands } from "../../services/product";
 
-import { useLoaderData, Outlet, NavLink, useParams, useLocation } from "react-router-dom";
+import {
+  useLoaderData,
+  Outlet,
+  NavLink,
+  useParams,
+  useLocation,
+} from "react-router-dom";
 
 import { useState } from "react";
 
@@ -47,11 +53,17 @@ export default function BrandConf() {
               return (
                 <NavLink
                   to={`${b.BrandID}/edit`}
-                  className={`brand-item selectable ${b.BrandID == brandIdSelecting ? "brand-isSelected" : ""}`}
-
+                  className={`brand-item selectable ${
+                    b.BrandID == brandIdSelecting ? "brand-isSelected" : ""
+                  }`}
                   key={b.BrandID}
                 >
-                  <img src={b.Logo} alt={b.nameEN} className="brand-img" />
+                  <img
+                    loading="lazy"
+                    src={b.Logo}
+                    alt={b.nameEN}
+                    className="brand-img"
+                  />
                   <div className="brand-text">
                     <h3>{b.NameTH}</h3>
                     <h4>{b.NameEN}</h4>
@@ -60,7 +72,12 @@ export default function BrandConf() {
               );
             })}
 
-          <NavLink to="new" className={`brand-item selectable ${location.pathname.endsWith("new") ? "brand-isSelected" : ""}`}>
+          <NavLink
+            to="new"
+            className={`brand-item selectable ${
+              location.pathname.endsWith("new") ? "brand-isSelected" : ""
+            }`}
+          >
             <img
               src="https://cdn-icons-png.flaticon.com/512/2661/2661440.png"
               alt="New Brand"
