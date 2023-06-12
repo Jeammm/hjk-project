@@ -48,10 +48,8 @@ export async function logout() {
         withCredentials: true,
       }
     );
-    console.log(res);
     return res;
   } catch (err) {
-    // console.log(err)
     window.alert(err.response.data.message);
   }
 }

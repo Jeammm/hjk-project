@@ -9,7 +9,6 @@ import ControlPanel, { loader as adminLoader } from "./pages/ControlPanel";
 
 import ErrorPage from "./routes/ErrorPage";
 import CPIndex from "./routes/Admin/CPIndex";
-import Index from "./routes/User/Index";
 
 import Search, { loader as searchLoader} from "./routes/User/Search"
 

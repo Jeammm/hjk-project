@@ -27,7 +27,7 @@
   display: flex;
   padding-block: 0.5rem;
   padding-inline: 0.5rem;
-  background-color: rgb(246, 246, 246);
+  background-color: var(--lightgrey);
   align-items: center;
   gap: 1rem;
   border-radius: 0.5rem;
@@ -71,6 +71,6 @@
 }
 
 .brand-isSelected {
-  border: 3px solid #193d73;
+  border: 3px solid var(--darkblue);
   /* color: white */
 }

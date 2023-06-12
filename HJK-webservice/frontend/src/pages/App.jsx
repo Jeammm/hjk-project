@@ -5,12 +5,12 @@ import {
   Outlet,
   useLoaderData,
   NavLink,
-  redirect,
   useNavigation,
   useSubmit,
 } from "react-router-dom";
 
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
+import Hamburger from 'hamburger-react'
 
 import { getAllCategory } from "../services/product";
 
@@ -33,8 +33,6 @@ function App() {
   const navigation = useNavigation();
   const submit = useSubmit();
 
-  console.log(process.env.REACT_APP_BACKEND_URL);
-
   const searching =
     navigation.location &&
     new URLSearchParams(navigation.location.search).has("q");
@@ -53,6 +51,8 @@ function App() {
 
   const searchBox = useCallback(debounce(submit, 800), [submit]);
 
+  const [isOpen, setOpen] = useState(false)
+
   return (
     <div className="App">
       <nav>
@@ -65,12 +65,12 @@ function App() {
 
       <header>
         <div className="header-container">
-          <div id="logo-container">
+          <NavLink id="logo-container" to="/">
             <h2 id="logo-text-th">
               ห้างหุ้นส่วนจำกัด กิจเจริญรุ่งเรือง การค้า
             </h2>
             <h3 id="logo-text-en">KITCHARERNRUNGROENG LIMITED</h3>
-          </div>
+          </NavLink>
           <div id="contact-serach-container">
             <div id="contact">
               <p>ติดต่อเรา</p>
@@ -100,12 +100,13 @@ function App() {
 
       <div id="menu-tab">
         <div className="menu-tab-container">
+          <Hamburger id="category-hamburger" toggled={isOpen} toggle={setOpen} />
           <div id="space-350"></div>
           <NavLink to={`brands`}>
-            <div className="menu-item selectable link-text">แบรนด์</div>
+            <p className="menu-item selectable link-text">แบรนด์</p>
           </NavLink>
-          <div className="menu-item left-line selectable">ติดต่อ</div>
-          <div className="menu-item left-line selectable">แผนที่</div>
+          <p className="menu-item left-line selectable">ติดต่อ</p>
+          <p className="menu-item left-line selectable">แผนที่</p>
         </div>
       </div>
 

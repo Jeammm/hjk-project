@@ -7,7 +7,8 @@ import ImgUploader from "../../components/ImgUploader";
 export async function action({ request, params }) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  const newCatId = await newSubCategory(params.categoryId, data);
+  await newSubCategory(params.categoryId, data);
+  // const newCatId = await newSubCategory(params.categoryId, data);
   return redirect(`/admin/category/${params.categoryId}/subcategory`);
 }
 

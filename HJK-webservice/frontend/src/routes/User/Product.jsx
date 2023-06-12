@@ -34,7 +34,7 @@ export default function Product() {
 
   useEffect(() => {
     document.title = productDetail.NameTH;
-  }, []);
+  }, [productDetail.NameTH]);
 
   return (
     <div id="product-detail">

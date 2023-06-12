@@ -5,7 +5,8 @@ import { newCategory } from "../../services/product";
 export async function action({ request }) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  const newCatId = await newCategory(data);
+  // const newCatId = await newCategory(data);
+  await newCategory(data);
   return redirect(`/admin/category/`);
 }
 
