@@ -53,6 +53,28 @@ export default function Product() {
     },
   ];
 
+  const targetHeight = 30;
+
+  const styles = {
+    control: (base) => ({
+      ...base,
+      minHeight: "initial",
+    }),
+    valueContainer: (base) => ({
+      ...base,
+      height: `${targetHeight - 1 - 1}px`,
+      padding: "0 8px",
+    }),
+    clearIndicator: (base) => ({
+      ...base,
+      padding: `${(targetHeight - 20 - 1 - 1) / 2}px`,
+    }),
+    dropdownIndicator: (base) => ({
+      ...base,
+      padding: `${(targetHeight - 20 - 1 - 1) / 2}px`,
+    }),
+  };
+
   return (
     <div id="product-detail">
       <div className="topic-with-close">
@@ -109,7 +131,9 @@ export default function Product() {
                   <input type="number" className="order-amount" min="0" />
                 </div>
                 <div
-                  className={`size-detail-box w-150 ${cal_color(i)} color-select-box`}
+                  className={`size-detail-box w-150 ${cal_color(
+                    i
+                  )} color-select-box`}
                   hidden={!productDetail.IsColor}
                 >
                   {/* <input type="text" className="order-amount" /> */}
@@ -117,6 +141,7 @@ export default function Product() {
                     options={color_option}
                     name="color"
                     isSearchable={true}
+                    styles={styles}
                     // defaultValue=""
                   />
                 </div>
