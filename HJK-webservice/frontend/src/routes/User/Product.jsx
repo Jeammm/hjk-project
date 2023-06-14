@@ -116,7 +116,6 @@ export default function Product() {
                   <Select
                     options={color_option}
                     name="color"
-                    isClearable={true}
                     isSearchable={true}
                     // defaultValue=""
                   />
