@@ -6,6 +6,8 @@ import { useLoaderData, useNavigate, Form } from "react-router-dom";
 
 import { useEffect } from "react";
 
+import Select from "react-select";
+
 export async function loader({ params }) {
   const { product, size } = await getProduct(params.productId);
   if (product.length === 0) {
@@ -35,6 +37,21 @@ export default function Product() {
   useEffect(() => {
     document.title = productDetail.NameTH;
   }, [productDetail.NameTH]);
+
+  const color_option = [
+    {
+      value: "เขียว",
+      label: "#32a852 เขียว",
+    },
+    {
+      value: "แดง",
+      label: "#a83232 แดง",
+    },
+    {
+      value: "น้ำเงิน",
+      label: "#0004ff น้ำเงิน",
+    },
+  ];
 
   return (
     <div id="product-detail">
@@ -92,10 +109,17 @@ export default function Product() {
                   <input type="number" className="order-amount" min="0" />
                 </div>
                 <div
-                  className={`size-detail-box w-150 ${cal_color(i)}`}
+                  className={`size-detail-box w-150 ${cal_color(i)} color-select-box`}
                   hidden={!productDetail.IsColor}
                 >
-                  <input type="text" className="order-amount" />
+                  {/* <input type="text" className="order-amount" /> */}
+                  <Select
+                    options={color_option}
+                    name="color"
+                    isClearable={true}
+                    isSearchable={true}
+                    // defaultValue=""
+                  />
                 </div>
               </div>
             );

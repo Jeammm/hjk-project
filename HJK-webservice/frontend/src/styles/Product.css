@@ -202,3 +202,8 @@
     padding-top: 1rem;
   }
 }
+
+.color-select-box {
+  display:flex;
+  flex:1
+}
