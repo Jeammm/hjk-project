@@ -131,10 +131,14 @@ export default function Product() {
                   <input type="number" className="order-amount" min="0" />
                 </div>
                 <div
-                  className={`size-detail-box w-150 ${cal_color(
-                    i
-                  )} color-select-box`}
+                  className={`
+                  size-detail-box w-150 
+                  ${cal_color(i)} 
+                  color-select-box
+                  ${productDetail.IsColor ? "" : "hidden-box"}
+                  `}
                   hidden={!productDetail.IsColor}
+                  // hidden
                 >
                   {/* <input type="text" className="order-amount" /> */}
                   <Select
