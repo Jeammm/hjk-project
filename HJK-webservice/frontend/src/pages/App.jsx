@@ -64,6 +64,7 @@ function App() {
   const [isOpen, setOpen] = useState(false);
   useEffect(() => {
     setOpen(false);
+    setQ("");
   }, [location]);
 
   return (
