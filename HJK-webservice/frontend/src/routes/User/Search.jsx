@@ -1,6 +1,12 @@
 import { queryProduct } from "../../services/product";
 
-import { useLoaderData, NavLink, useSubmit, Form } from "react-router-dom";
+import {
+  useLoaderData,
+  NavLink,
+  useSubmit,
+  Form,
+  useLocation,
+} from "react-router-dom";
 
 import { useEffect } from "react";
 
@@ -15,6 +21,7 @@ export async function loader({ request }) {
 
 export default function Search(props) {
   const { products, q, p } = useLoaderData();
+  const location = useLocation();
   const submit = useSubmit();
 
   useEffect(() => {
@@ -22,6 +29,12 @@ export default function Search(props) {
       document.getElementById("p").value = p;
     }
   }, [p]);
+
+  useEffect(() => {
+    if (document.getElementById("q")) {
+      document.getElementById("q").value = "";
+    }
+  }, [location]);
 
   useEffect(() => {
     document.title = props.title || "";

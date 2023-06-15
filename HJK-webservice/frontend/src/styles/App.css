@@ -30,15 +30,6 @@
   /* height: 60px; */
 }
 
-#search-result {
-  position: absolute;
-  top: 40px;
-  width: 100%;
-  background-color: green;
-  border-radius: 0.5rem;
-}
-
-
 #q {
   border: 2px solid var();
   outline: none;

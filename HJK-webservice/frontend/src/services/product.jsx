@@ -16,10 +16,6 @@ export async function getHome() {
     category: await cat,
     brand: await brand,
   };
-
-  console.log(finalResult)
-
-  // console.log(finalResult)
   return finalResult;
 }
 
@@ -217,4 +213,39 @@ export async function queryProduct(q, p) {
   const query = { q: q ? q : "", p: p ? p : 1 };
   const res = await axios.get(`${url}/products`, { ...config, params: query });
   return res.data.data.product;
+}
+
+export async function searchProduct(q) {
+  //simulate delay
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  const res = {
+    category: [
+      { CategoryID: 1, CategoryTH: "กระดาษทราย" },
+      { CategoryID: 2, CategoryTH: "กระดาษทราย" },
+    ],
+    subCategory: [
+      { SubCategoryID: "0102", SubNameTH: "กระดาษทรายน้ำ" },
+      { SubCategoryID: "0103", SubNameTH: "กระดาษทรายน้ำ" },
+    ],
+    product: [
+      {
+        ProductID: "01101",
+        NameTH: "กระดาษทรายน้ำ ตรา ทีโอเอ",
+        Thumbnail: "https://iili.io/H6oPIF2.jpg",
+      },
+      {
+        ProductID: "01102",
+        NameTH: "กระดาษทรายน้ำ ตรา ทีโอเอ",
+        Thumbnail: "https://iili.io/H6oPIF2.jpg",
+      },
+      {
+        ProductID: "01103",
+        NameTH: "กระดาษทรายน้ำ ตรา ทีโอเอ",
+        Thumbnail: "https://iili.io/H6oPIF2.jpg",
+      },
+    ],
+  };
+
+  return res;
 }

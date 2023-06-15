@@ -8,6 +8,7 @@ import {
   useNavigation,
   useSubmit,
   useLocation,
+  redirect,
 } from "react-router-dom";
 
 import { useEffect, useCallback, useState } from "react";
@@ -15,45 +16,50 @@ import Hamburger from "hamburger-react";
 
 import { getAllCategory } from "../services/product";
 
-import SearchDropDown from "../components/SearchDropDown"
+import SearchDropDown from "../components/SearchDropDown";
 
 export async function loader({ request }) {
-  const url = new URL(request.url);
-  const q = url.searchParams.get("q");
+  // const url = new URL(request.url);
+  // const q = url.searchParams.get("q");
   const category = await getAllCategory();
-  return { category, q };
+  return { category };
 }
 
 export async function action({ request, params }) {
-  // const formData = await request.formData();
-  // const data = Object.fromEntries(formData);
-  // return redirect(`/search`);
-  return null;
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  const queryValue = encodeURIComponent(data.q);
+  return redirect(`/search/?q=${queryValue}`);
 }
 
 function App() {
-  const { category, q } = useLoaderData();
-  const navigation = useNavigation();
+  const { category } = useLoaderData();
   const location = useLocation();
-  const submit = useSubmit();
+  // const navigation = useNavigation();
+  // const submit = useSubmit();
+  const [q, setQ] = useState("");
 
-  const searching =
-    navigation.location &&
-    new URLSearchParams(navigation.location.search).has("q");
-
-  useEffect(() => {
-    document.getElementById("q").value = q;
-  }, [q]);
-
-  const debounce = (fn, delay) => {
-    let timerId;
-    return (...args) => {
-      clearTimeout(timerId);
-      timerId = setTimeout(() => fn(...args), delay);
-    };
+  const searchBox = (data) => {
+    setQ(data);
   };
 
-  const searchBox = useCallback(debounce(submit, 800), [submit]);
+  // const searching =
+  //   navigation.location &&
+  //   new URLSearchParams(navigation.location.search).has("q");
+
+  // useEffect(() => {
+  //   document.getElementById("q").value = q;
+  // }, [q]);
+
+  // const debounce = (fn, delay) => {
+  //   let timerId;
+  //   return (...args) => {
+  //     clearTimeout(timerId);
+  //     timerId = setTimeout(() => fn(...args), delay);
+  //   };
+  // };
+
+  // const searchBox = useCallback(debounce(submit, 800), [submit]);
 
   const [isOpen, setOpen] = useState(false);
   useEffect(() => {
@@ -106,19 +112,24 @@ function App() {
           </NavLink>
 
           <div id="contact-serach-container">
-            <Form id="search-form" role="search">
+            <Form id="search-form" role="search" method="post" onSubmit={() => {
+              setQ("")
+            }}>
               <input
                 id="q"
                 aria-label="ค้นหาสินค้า"
                 placeholder="ค้นหาสินค้า..."
                 type="search"
                 name="q"
-                defaultValue={q}
+                value={q}
+                // onChange={(event) => {
+                //   const isFirstSearch = q === null;
+                //   searchBox(event.currentTarget.form, {
+                //     replace: !isFirstSearch,
+                //   });
+                // }}
                 onChange={(event) => {
-                  const isFirstSearch = q === null;
-                  searchBox(event.currentTarget.form, {
-                    replace: !isFirstSearch,
-                  });
+                  searchBox(event.target.value);
                 }}
                 autoComplete="off"
               />
@@ -126,7 +137,7 @@ function App() {
                 SEARCH
               </button>
             </Form>
-            <SearchDropDown />
+            <SearchDropDown q={q}/>
           </div>
         </div>
       </header>
