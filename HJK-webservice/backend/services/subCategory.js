@@ -107,3 +107,33 @@ exports.editSubCategory = async (id, subCategoryData) => {
     throw new AppError(e, 409);
   }
 };
+
+exports.search = async (q) => {
+  const queryStrings = q.split(" "); // Array of query strings
+  const conditions = [];
+  const param = [];
+
+  queryStrings.forEach((queryString) => {
+    conditions.push(
+      `(
+        SubNameTH LIKE ? 
+        OR SubNameEN LIKE ? 
+        OR SubCategoryID LIKE ? 
+      )`
+    );
+    param.push(`%${queryString}%`, `%${queryString}%`, `%${queryString}%`);
+  });
+
+  const sub = await db.query(
+    `
+    SELECT *
+    FROM SubCategory
+    WHERE ${conditions.join(" OR ")}
+    `,
+    param
+  );
+
+  return {
+    sub,
+  };
+};

@@ -64,3 +64,38 @@ exports.editCategory = async (id, categoryData) => {
     throw new AppError(err, 409);
   }
 };
+
+exports.search = async (q) => {
+  const queryStrings = q.split(" "); // Array of query strings
+  const conditions = [];
+  const param = [];
+
+  queryStrings.forEach((queryString) => {
+    conditions.push(
+      `(
+        CategoryTH LIKE ? 
+        OR CategoryEN LIKE ? 
+        OR CategoryID LIKE ? 
+      )`
+    );
+    param.push(
+      `%${queryString}%`,
+      `%${queryString}%`,
+      `%${queryString}%`,
+    );
+  });
+
+  const category = await db.query(
+    `
+    SELECT *
+    FROM Category
+    WHERE ${conditions.join(" OR ")}
+    `,
+    // [`%${q}%`, `%${q}%`, `%${q}%`, `${offset}`, `${config.listPerPage}`]
+    param
+  );
+
+  return {
+    category,
+  };
+};

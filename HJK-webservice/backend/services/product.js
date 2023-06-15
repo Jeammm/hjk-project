@@ -68,7 +68,6 @@ exports.createProduct = async (id, productData) => {
 };
 
 exports.delistProduct = async (id, listing) => {
-
   try {
     const result = await db.query(
       `UPDATE Product
@@ -195,13 +194,46 @@ exports.queryProduct = async (q, p) => {
       Available="1" AND (NameTH LIKE ? OR NameEN LIKE ? OR ProductID LIKE ?)
     LIMIT 
       ?, ?;`,
-    [
-      `%${q}%`,
-      `%${q}%`,
-      `%${q}%`,
-      `${offset}`,
-      `${config.listPerPage}`,
-    ]
+    [`%${q}%`, `%${q}%`, `%${q}%`, `${offset}`, `${config.listPerPage}`]
+  );
+
+  return {
+    product,
+  };
+};
+
+exports.search = async (q) => {
+  const queryStrings = q.split(" "); // Array of query strings
+  const conditions = [];
+  const param = [];
+
+  queryStrings.forEach((queryString) => {
+    conditions.push(
+      `(
+        p.NameTH LIKE ? 
+        OR p.NameEN LIKE ? 
+        OR p.ProductID LIKE ? 
+        OR s.Des LIKE ?)`
+    );
+    param.push(
+      `%${queryString}%`,
+      `%${queryString}%`,
+      `%${queryString}%`,
+      `%${queryString}%`
+    );
+  });
+
+  console.log(param);
+
+  const product = await db.query(
+    `
+    SELECT p.*, (SELECT MIN(s.Price) FROM Size s WHERE s.ProductID = p.ProductID) AS MinPrice
+    FROM Product p
+    JOIN Size s ON p.ProductID = s.ProductID
+    WHERE ${conditions.join(" AND ")}
+    `,
+    // [`%${q}%`, `%${q}%`, `%${q}%`, `${offset}`, `${config.listPerPage}`]
+    param
   );
 
   return {

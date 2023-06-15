@@ -5,6 +5,7 @@ const categoryController = require("../controllers/categoryController");
 const subCategoryController = require("../controllers/subCategoryController");
 const productController = require("../controllers/productController");
 const brandController = require("../controllers/brandController");
+const searchController = require("../controllers/searchController");
 
 const authController = require("../controllers/authController");
 
@@ -45,6 +46,8 @@ router
   
 
 router.route("/products").get(productController.queryProduct);
+
+router.route("/search").get(searchController.search);
 
 router
   .route("/brands")
