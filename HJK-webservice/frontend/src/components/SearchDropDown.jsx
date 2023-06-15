@@ -2,21 +2,25 @@ import "../styles/SearchDropDown.css";
 
 import { useEffect, useState } from "react";
 import { searchProduct } from "../services/product";
+import { NavLink } from "react-router-dom";
 
-const SearchDropDown = ({q}) => {
+const SearchDropDown = ({ q, setQ }) => {
   const [searchResult, setSearchResult] = useState({
     category: [],
     subCategory: [],
     product: [],
   });
 
+  const clearQ = () => {
+    setQ("")
+  }
 
   useEffect(() => {
     const fetchData = async () => {
       if (q.length >= 3) {
         try {
           const result = await searchProduct(q);
-          setSearchResult(result);
+          setSearchResult(result.data);
         } catch (error) {
           console.error(error);
         }
@@ -30,13 +34,13 @@ const SearchDropDown = ({q}) => {
     return cs.length === 0
       ? "ไม่มีหมวดหมู่นี้"
       : cs.map((c) => (
-          <div
+          <NavLink to={`category/${c.CategoryID}`} onClick={clearQ}
             className="searchCat-item  search-item"
             key={`s-${c.CategoryID}`}
           >
             <p>{c.CategoryID}</p>
             <p>{c.CategoryTH}</p>
-          </div>
+          </NavLink>
         ));
   };
 
@@ -44,13 +48,13 @@ const SearchDropDown = ({q}) => {
     return subs.length === 0
       ? "ไม่มีหมวดหมู่ย่อยนี้"
       : subs.map((sub) => (
-          <div
+          <NavLink to={`subcategory/${sub.SubCategoryID}`} onClick={clearQ}
             className="searchCat-item search-item"
             key={`s-${sub.SubCategoryID}`}
           >
             <p>{sub.SubCategoryID}</p>
             <p>{sub.SubNameTH}</p>
-          </div>
+          </NavLink>
         ));
   };
 
@@ -58,7 +62,7 @@ const SearchDropDown = ({q}) => {
     return prods.length === 0
       ? "ไม่มีสินค้านี้"
       : prods.map((prod) => (
-          <div
+          <NavLink to={`product/${prod.ProductID}`} onClick={clearQ}
             className="searchProd-item  search-item"
             key={`s-${prod.ProductID}`}
           >
@@ -67,7 +71,7 @@ const SearchDropDown = ({q}) => {
             </div>
             <p>{prod.ProductID}</p>
             <p>{prod.NameTH}</p>
-          </div>
+          </NavLink>
         ));
   };
 

@@ -137,7 +137,7 @@ function App() {
                 SEARCH
               </button>
             </Form>
-            <SearchDropDown q={q}/>
+            <SearchDropDown q={q} setQ={setQ}/>
           </div>
         </div>
       </header>

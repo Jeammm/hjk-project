@@ -220,6 +220,7 @@ export async function searchProduct(q) {
 
   const query = { q };
   const res = await axios.get(`${url}/search`, { ...config, params: query });
+  // console.log(res)
   return res.data;
 
   // await new Promise((resolve) => setTimeout(resolve, 500));
