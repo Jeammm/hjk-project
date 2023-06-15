@@ -223,8 +223,6 @@ exports.search = async (q) => {
     );
   });
 
-  console.log(param);
-
   const product = await db.query(
     `
     SELECT p.*, (SELECT MIN(s.Price) FROM Size s WHERE s.ProductID = p.ProductID) AS MinPrice
