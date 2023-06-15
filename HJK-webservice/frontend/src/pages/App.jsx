@@ -113,9 +113,14 @@ function App() {
           </NavLink>
 
           <div id="contact-serach-container">
-            <Form id="search-form" role="search" method="post" onSubmit={() => {
-              setQ("")
-            }}>
+            <Form
+              id="search-form"
+              role="search"
+              method="post"
+              onSubmit={() => {
+                setQ("");
+              }}
+            >
               <input
                 id="q"
                 aria-label="ค้นหาสินค้า"
@@ -138,8 +143,72 @@ function App() {
                 SEARCH
               </button>
             </Form>
-            <SearchDropDown q={q} setQ={setQ}/>
+            <SearchDropDown q={q} setQ={setQ} />
           </div>
+        </div>
+        <div className="header-container-m">
+          <Hamburger
+            id="category-hamburger"
+            toggled={isOpen}
+            toggle={setOpen}
+          />
+
+          <div
+            className={`category-container-m ${
+              isOpen ? "cat-list-open" : "cat-list-close"
+            }`}
+          >
+            <div className={`category-list `}>
+              {category.map((cat) => {
+                return (
+                  <NavLink
+                    to={`category/${cat.CategoryID}`}
+                    className="category-item selectable link-text"
+                    key={cat.CategoryID}
+                  >
+                    <p>{cat.CategoryTH}</p>
+                  </NavLink>
+                );
+              })}
+            </div>
+          </div>
+
+          <div id="contact-serach-container-small">
+            <Form
+              id="search-form"
+              role="search"
+              method="post"
+              onSubmit={() => {
+                setQ("");
+              }}
+            >
+              <input
+                id="q"
+                aria-label="ค้นหาสินค้า"
+                placeholder="ค้นหาสินค้า..."
+                type="search"
+                name="q"
+                value={q}
+                // onChange={(event) => {
+                //   const isFirstSearch = q === null;
+                //   searchBox(event.currentTarget.form, {
+                //     replace: !isFirstSearch,
+                //   });
+                // }}
+                onChange={(event) => {
+                  searchBox(event.target.value);
+                }}
+                autoComplete="off"
+              />
+              <button id="search-button" type="submit">
+                SEARCH
+              </button>
+            </Form>
+            <SearchDropDown q={q} setQ={setQ} />
+          </div>
+          <NavLink id="small-logo" to="/">
+            <h2 id="small-logo-text-th">KJR</h2>
+          </NavLink>
         </div>
       </header>
 
