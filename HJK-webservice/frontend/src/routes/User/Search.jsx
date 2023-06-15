@@ -36,6 +36,7 @@ export default function Search(props) {
     </div>
   ) : (
     <div id="subcategory-list">
+      <h2>สินค้าทั้งหมด</h2>
       <ul className="subcat-list">
         {products.map((sub) => {
           return (

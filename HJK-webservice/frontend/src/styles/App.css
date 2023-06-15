@@ -24,13 +24,25 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-grow: 1;
+  margin-left: 5rem;
+  position: relative;
+  /* height: 60px; */
+}
+
+#search-result {
+  position: absolute;
+  top: 40px;
+  width: 100%;
+  background-color: green;
+  border-radius: 0.5rem;
 }
 
 
 #q {
-  border: 2px solid var(--darkblue);
+  border: 2px solid var();
   outline: none;
-  padding: 0.3rem;
+  padding-inline: 1rem;
   width: 100%;
 }
 nav {
@@ -59,10 +71,11 @@ header {
   max-width: 1400px;
   display: flex;
   height: 100%;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
-  padding: 1rem;
+  padding: 0.5rem;
   gap: 0.5rem;
+  position: relative;
 }
 
 #menu-tab {
@@ -71,14 +84,13 @@ header {
   justify-content: center;
   background-color: var(--darkblue);
   color: white;
-  height: 60px;
+  height: 55px;
   font-size: 1.2rem;
 }
 
 .menu-tab-container {
   display: flex;
   max-width: 1400px;
-  height: 100%;
   width: 100%;
   align-items: center;
   padding-inline: 1rem;
@@ -98,8 +110,7 @@ header {
 
 
 .menu-item {
-  padding-inline: 4rem;
-  line-height: 2rem;
+  padding-inline: 2rem;
 }
 
 .left-line {
@@ -209,9 +220,35 @@ header {
   position: absolute;
   transition: visibility 0s, opacity 0.1s linear;
   z-index: 1;
+  top: 60px;
 }
 
-@media screen and (max-width: 900px) {
+#search-form {
+  display: flex;
+  width: 100%;
+}
+
+#q {
+  flex-grow: 1;
+}
+
+#search-form, #q {
+  /* width: 100%; */
+  height: 40px;
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+
+#search-button {
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding-inline: 0.5rem;
+  background-color: var(--darkblue);
+  border: 1px solid var(--darkblue);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+@media screen and (max-width: 9000px) {
   .category-container {
     display: none;
   }
@@ -220,19 +257,10 @@ header {
     display: none;
   }
 
-  .menu-item {
-    padding-inline: 0rem;
-    /* margin-inline: 1rem; */
-  }
 
   .menu-tab-container {
     /* justify-content: flex-end; */
     padding-right: 4rem;
-  }
-
-  .menu-item {
-    flex-grow: 1;
-    text-align: center;
   }
 
   .left-line {
@@ -255,7 +283,7 @@ header {
   
 }
 
-@media screen and (max-width: 520px) {
+/* @media screen and (max-width: 520px) {
   .header-container {
     padding: 0.2rem;
   }
@@ -263,4 +291,4 @@ header {
   #menu-tab {
     height: auto;
   }
-}
+} */

@@ -8,6 +8,21 @@ const config = {
   },
 };
 
+export async function getHome() {
+  const cat = getAllCategory();
+  const brand = getBrands(1);
+
+  const finalResult = {
+    category: await cat,
+    brand: await brand,
+  };
+
+  console.log(finalResult)
+
+  // console.log(finalResult)
+  return finalResult;
+}
+
 export async function getAllCategory() {
   try {
     const res = await axios.get(`${url}/category`, config);

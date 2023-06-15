@@ -15,6 +15,8 @@ import Hamburger from "hamburger-react";
 
 import { getAllCategory } from "../services/product";
 
+import SearchDropDown from "../components/SearchDropDown"
+
 export async function loader({ request }) {
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
@@ -54,9 +56,7 @@ function App() {
   const searchBox = useCallback(debounce(submit, 800), [submit]);
 
   const [isOpen, setOpen] = useState(false);
-
   useEffect(() => {
-    // execute on location change
     setOpen(false);
   }, [location]);
 
@@ -72,78 +72,11 @@ function App() {
 
       <header>
         <div className="header-container">
-          <NavLink id="logo-container" to="/">
-            <h2 id="logo-text-th">
-              ห้างหุ้นส่วนจำกัด กิจเจริญรุ่งเรือง การค้า
-            </h2>
-            <h3 id="logo-text-en">KITCHARERNRUNGROENG LIMITED</h3>
-          </NavLink>
-          <div id="contact-serach-container">
-            <div id="contact">
-              <p>ติดต่อเรา</p>
-              <p>088-888-8888</p>
-            </div>
-            <Form id="search-form" role="search">
-              <input
-                id="q"
-                aria-label="ค้นหาสินค้า"
-                placeholder="ค้นหาสินค้า"
-                type="search"
-                name="q"
-                defaultValue={q}
-                onChange={(event) => {
-                  const isFirstSearch = q === null;
-                  searchBox(event.currentTarget.form, {
-                    replace: !isFirstSearch,
-                  });
-                }}
-              />
-              <div id="search-spinner" aria-hidden hidden={!searching} />
-              <div className="sr-only" aria-live="polite"></div>
-            </Form>
-          </div>
-        </div>
-      </header>
-
-      <div id="menu-tab">
-        <div className="menu-tab-container">
           <Hamburger
             id="category-hamburger"
             toggled={isOpen}
             toggle={setOpen}
           />
-          <div id="space-350"></div>
-          <NavLink to={`brands`} className="menu-item selectable">
-            แบรนด์
-          </NavLink>
-          <NavLink to={`brands`} className="menu-item left-line selectable">
-          ติดต่อ
-          </NavLink>
-          <NavLink to={`brands`} className="menu-item left-line selectable">
-          แผนที่
-          </NavLink>
-        </div>
-      </div>
-
-      <div id="detail">
-        <div className="detail-container">
-          <div className="category-container">
-            <div className="by-category">หมวดหมู่สินค้า</div>
-
-            <div className="category-list">
-              {category.map((cat) => {
-                return (
-                  <NavLink
-                    to={`category/${cat.CategoryID}`}
-                    className="category-item selectable link-text"
-                    key={cat.CategoryID}
-                  >
-                    <p>{cat.CategoryTH}</p>
-                  </NavLink>
-                );
-              })}
-            </div>
-          </div>
 
           <div
             className={`category-container-m ${
@@ -165,6 +98,58 @@ function App() {
             </div>
           </div>
 
+          <NavLink id="logo-container" to="/">
+            <h2 id="logo-text-th">
+              ห้างหุ้นส่วนจำกัด กิจเจริญรุ่งเรือง การค้า
+            </h2>
+            <h3 id="logo-text-en">KITCHARERNRUNGROENG LIMITED</h3>
+          </NavLink>
+
+          <div id="contact-serach-container">
+            <Form id="search-form" role="search">
+              <input
+                id="q"
+                aria-label="ค้นหาสินค้า"
+                placeholder="ค้นหาสินค้า..."
+                type="search"
+                name="q"
+                defaultValue={q}
+                onChange={(event) => {
+                  const isFirstSearch = q === null;
+                  searchBox(event.currentTarget.form, {
+                    replace: !isFirstSearch,
+                  });
+                }}
+                autoComplete="off"
+              />
+              <button id="search-button" type="submit">
+                SEARCH
+              </button>
+            </Form>
+            <SearchDropDown />
+          </div>
+        </div>
+      </header>
+
+      <div id="menu-tab">
+        <div className="menu-tab-container">
+          <NavLink to="" className="menu-item selectable">
+            หน้าแรก
+          </NavLink>
+          <NavLink to="brands" className="menu-item selectable">
+            แบรนด์
+          </NavLink>
+          <NavLink to="contact" className="menu-item left-line selectable">
+            ติดต่อ
+          </NavLink>
+          <NavLink to="map" className="menu-item left-line selectable">
+            แผนที่
+          </NavLink>
+        </div>
+      </div>
+
+      <div id="detail">
+        <div className="detail-container">
           <div className="outlet-container">
             <Outlet />
           </div>

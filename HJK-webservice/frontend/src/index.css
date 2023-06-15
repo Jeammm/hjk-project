@@ -11,6 +11,7 @@ html, * {
   --red: #992828;
   --lightred: #cb3435;
   --darkblue: #193d73;
+  --darkblue-hover: #3c5175;
   --darkgrey: #BDBDBD;
   --lightgrey: #f0f0f0;
 }

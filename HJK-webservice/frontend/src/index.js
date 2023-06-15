@@ -10,6 +10,7 @@ import ControlPanel, { loader as adminLoader } from "./pages/ControlPanel";
 import ErrorPage from "./routes/ErrorPage";
 import CPIndex from "./routes/Admin/CPIndex";
 
+import Home, { loader as homeLoader } from "./routes/User/Home";
 import Search, { loader as searchLoader} from "./routes/User/Search"
 
 import Category, { loader as categoryLoader } from "./routes/User/Category";
@@ -75,9 +76,14 @@ const router = createBrowserRouter([
       {
         errorElement: <ErrorPage />,
         children: [
-          { 
+          {
             index: true, 
-            element: <Search title="สินค้าทั้งหมด"/>,
+            element: <Home title="หจก.กิจเจริญรุ่งเรืองการค้า"/>,
+            loader: homeLoader,
+          },
+          { 
+            path: "search",
+            element: <Search title="ค้นหาสินค้า"/>,
             loader: searchLoader, 
           },
           {
