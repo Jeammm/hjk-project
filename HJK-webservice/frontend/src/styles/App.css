@@ -35,6 +35,7 @@
   outline: none;
   padding-left: 0.5rem;
   width: 100%;
+  font-size: 1rem;
 }
 nav {
   background-color: var(--nav-bar);
