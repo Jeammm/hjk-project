@@ -17,7 +17,7 @@ export async function loader({ params }) {
   }
 
   const products = await getItems(params.subcategoryId);
-  return { products };
+  return { products: products.product };
 }
 
 export default function ProductConf() {

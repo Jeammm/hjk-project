@@ -18,6 +18,8 @@ import { getAllCategory } from "../services/product";
 
 import SearchDropDown from "../components/SearchDropDown";
 
+import searchIcon from "../assets/search.png";
+
 export async function loader({ request }) {
   // const url = new URL(request.url);
   // const q = url.searchParams.get("q");
@@ -201,7 +203,11 @@ function App() {
                 autoComplete="off"
               />
               <button id="search-button" type="submit">
-                SEARCH
+                <img
+                  src={searchIcon}
+                  className="small-search-button"
+                  alt="search"
+                />
               </button>
             </Form>
             <SearchDropDown q={q} setQ={setQ} />
