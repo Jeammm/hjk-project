@@ -58,8 +58,8 @@
 }
 
 .price {
-  justify-self: flex-end;
   color: rgb(0, 122, 0);
+  flex-shrink: 0;
 }
 
 .img-name {
@@ -104,5 +104,9 @@
 @media screen and (max-width: 600px) {
   .cat-sub-search-container {
     flex-direction: column;
+  }
+
+  #search-results {
+    padding: 0.3rem;
   }
 }
