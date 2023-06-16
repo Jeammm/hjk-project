@@ -9,6 +9,7 @@ export async function action({ request, params }) {
   const data = Object.fromEntries(formData);
   await newSubCategory(params.categoryId, data);
   // const newCatId = await newSubCategory(params.categoryId, data);
+  window.alert("New Sub-Category created successfully")
   return redirect(`/admin/category/${params.categoryId}/subcategory`);
 }
 

@@ -39,7 +39,7 @@ export default function Category() {
     </div>
   ) : (
     <div id="subcategory-list">
-      <h2>{category[0].CategoryTH}</h2>
+      <h2>หมวดหมู่สินค้า : {category[0].CategoryTH}</h2>
       <ul className="subcat-list">
         {subCategory.map((sub) => {
           return (
@@ -48,11 +48,12 @@ export default function Category() {
                 to={`/subCategory/${sub.SubCategoryID}`}
                 className="subcat-item selectable"
               >
-                <img
-                  src={sub.Thumbnail}
-                  alt={sub.SubNameTH}
-                  className="category-thumbnail"
-                />
+                <div className="category-thumbnail-container">
+                  <img
+                    src={sub.Thumbnail}
+                    alt={sub.SubNameTH}
+                  />
+                </div>
                 <p className="link-text">{sub.SubNameTH}</p>
               </NavLink>
             </li>

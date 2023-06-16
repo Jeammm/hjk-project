@@ -1,6 +1,7 @@
 const express = require("express");
 
 const subCategory = require("../services/subCategory");
+const product = require("../services/product");
 
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/AppError");
@@ -48,12 +49,18 @@ exports.getAllSubCategory = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getAllItemBySub = catchAsync(async (req, res, next) => {
-  const result = await subCategory.getAllProducts(
+exports.getSubById = catchAsync(async (req, res, next) => {
+  const products = await subCategory.getAllProducts(
     req.params.subCategoryId,
-    req.query.page
+    req.query.page,
+    req.query.q
   );
-  const data = result.data;
+
+  const options = await product.getOptions(req.params.subCategoryId);
+
+
+  const data = { product: products.data, options: options.options };
+
 
   res.status(200).json({
     status: "success",

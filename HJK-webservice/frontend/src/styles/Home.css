@@ -14,11 +14,15 @@
 
 .cat-img-container, .brand-img-conatiner {
   width: 100%;
-  height: 150px;
-  padding: 0.5rem;
+  height: 100px;
+  padding: 0.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.brand-img-conatiner {
+  height: 150px;
 }
 
 .cat-img-container img, .brand-img-conatiner img {
@@ -43,6 +47,7 @@
 }
 
 .cut-off-2-line {
+  text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;

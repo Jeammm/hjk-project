@@ -2,11 +2,14 @@ import { useNavigate, Form, redirect } from "react-router-dom";
 
 import { newCategory } from "../../services/product";
 
+import ImgUploader from "../../components/ImgUploader";
+
 export async function action({ request }) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   // const newCatId = await newCategory(data);
   await newCategory(data);
+  window.alert("New Category created successfully")
   return redirect(`/admin/category/`);
 }
 
@@ -17,6 +20,7 @@ export default function NewCategory() {
     <div className="edit-category-form-conatiner">
       <h2>สร้างหมวดหมู่ใหม่</h2>
       <Form method="post">
+        <ImgUploader prevImg="placeholder.png" img_field="Thumbnail" />
         <div className="edit-input-field">
           <p>ชื่อหมวดหมู่</p>
           <input type="text" name="CategoryTH" autoComplete="off" />

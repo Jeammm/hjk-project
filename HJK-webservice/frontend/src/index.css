@@ -14,7 +14,22 @@ html, * {
   --darkblue-hover: #3c5175;
   --darkgrey: #BDBDBD;
   --lightgrey: #f0f0f0;
+  --nav-bar: #eeeeee;
+  --header: white;
+  --detail: white;
 }
+
+/* :root {
+  --red: #992828;
+  --lightred: #cb3435;
+  --darkblue: #7E1717;
+  --darkblue-hover: #3c5175;
+  --darkgrey: #BDBDBD;
+  --lightgrey: #068DA9;
+  --nav-bar: #7E1717;
+  --header: #E55807;
+  --detail: #ECF8F9;
+} */
 
 *, *:before, *:after {
   box-sizing: inherit;

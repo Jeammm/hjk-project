@@ -4,6 +4,8 @@ import { checkCategory, editCategory } from "../../services/product";
 
 import { useLoaderData, Form, useNavigate, redirect } from "react-router-dom";
 
+import ImgUploader from "../../components/ImgUploader";
+
 export async function loader({ params }) {
   const category = await checkCategory(params.categoryId);
 
@@ -21,6 +23,7 @@ export async function action({ request, params }) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   await editCategory(params.categoryId, data);
+  window.alert("Category updated successfully");
   return redirect(`/admin/category/${params.categoryId}/SubCategory`);
 }
 
@@ -32,6 +35,7 @@ export default function EditCategory() {
     <div className="edit-category-form-conatiner">
       <h2>Category ID: {category[0].CategoryID}</h2>
       <Form key={category[0].CategoryID} method="post">
+        <ImgUploader prevImg={category[0].Thumbnail} img_field="Thumbnail" />
         <div className="edit-input-field">
           <p>ชื่อหมวดหมู่</p>
           <input

@@ -238,3 +238,23 @@ exports.search = async (q) => {
     product,
   };
 };
+
+exports.getOptions = async (id) => {
+  const options = await db.query(
+    `
+    SELECT 
+      DISTINCT b.NameTH, b.NameEN, b.BrandID 
+    FROM 
+      Product p 
+    JOIN 
+      Brand b ON p.Brand = b.BrandID 
+    WHERE 
+      p.SubCategory = ?;`,
+    // [`%${q}%`, `%${q}%`, `%${q}%`, `${offset}`, `${config.listPerPage}`]
+    [id]
+  );
+
+  return {
+    options,
+  };
+}

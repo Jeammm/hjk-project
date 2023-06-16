@@ -12,8 +12,8 @@ const SearchDropDown = ({ q, setQ }) => {
   });
 
   const clearQ = () => {
-    setQ("")
-  }
+    setQ("");
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,12 +34,15 @@ const SearchDropDown = ({ q, setQ }) => {
     return cs.length === 0
       ? "ไม่มีหมวดหมู่นี้"
       : cs.map((c) => (
-          <NavLink to={`category/${c.CategoryID}`} onClick={clearQ}
+          <NavLink
+            to={`category/${c.CategoryID}`}
+            onClick={clearQ}
             className="searchCat-item  search-item"
             key={`s-${c.CategoryID}`}
           >
-            <p>{c.CategoryID}</p>
-            <p>{c.CategoryTH}</p>
+            <p>
+              {c.CategoryID} : {c.CategoryTH}
+            </p>
           </NavLink>
         ));
   };
@@ -48,12 +51,15 @@ const SearchDropDown = ({ q, setQ }) => {
     return subs.length === 0
       ? "ไม่มีหมวดหมู่ย่อยนี้"
       : subs.map((sub) => (
-          <NavLink to={`subcategory/${sub.SubCategoryID}`} onClick={clearQ}
+          <NavLink
+            to={`subcategory/${sub.SubCategoryID}`}
+            onClick={clearQ}
             className="searchCat-item search-item"
             key={`s-${sub.SubCategoryID}`}
           >
-            <p>{sub.SubCategoryID}</p>
-            <p>{sub.SubNameTH}</p>
+            <p>
+              {sub.SubCategoryID} : {sub.SubNameTH}
+            </p>
           </NavLink>
         ));
   };
@@ -62,15 +68,22 @@ const SearchDropDown = ({ q, setQ }) => {
     return prods.length === 0
       ? "ไม่มีสินค้านี้"
       : prods.map((prod) => (
-          <NavLink to={`product/${prod.ProductID}`} onClick={clearQ}
+          <NavLink
+            to={`product/${prod.ProductID}`}
+            onClick={clearQ}
             className="searchProd-item  search-item"
             key={`s-${prod.ProductID}`}
           >
-            <div className="prod-img-serch-container">
-              <img src={prod.Thumbnail} alt={prod.NameTH} />
+            <div className="img-name">
+              <div className="prod-img-serch-container">
+                <img src={prod.Thumbnail} alt={prod.NameTH} />
+              </div>
+              <div className="name-tag">
+                <p className="blue">{prod.NameTH}</p>
+                <p>{prod.ProductID}</p>
+              </div>
             </div>
-            <p>{prod.ProductID}</p>
-            <p>{prod.NameTH}</p>
+            <p className="price">{prod.MinPrice}</p>
           </NavLink>
         ));
   };

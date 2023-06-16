@@ -26,6 +26,7 @@ export async function action({ request, params }) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   await editSubCategory(params.subcategoryId, data);
+  window.alert("Sub-Category updated successfully");
   return redirect(
     `/admin/category/${params.categoryId}/SubCategory/${params.subcategoryId}/product`
   );

@@ -1,15 +1,12 @@
 #search-result {
   position: absolute;
   top: 40px;
-  width: 100%;
+  width: calc(100% - 81px);
   background-color: rgb(255, 255, 255);
   border: 2px solid var(--lightgrey);
   border-radius: 0.5rem;
   z-index: 1;
   padding: 1rem;
-}
-
-#search-result {
   display: flex;
 }
 
@@ -32,12 +29,44 @@
 
 .searchProd-item {
   display: flex;
+  justify-content: space-between;
 }
 
 .cat-sub-search-container {
   width: 30%;
 }
 
-.search-item, .row-2 {
-  margin-top: 0.2rem;
+.search-item {
+  padding: 0.3rem;
+  width: 100%;
+  gap: 0.5rem;
+  border-radius: 0.3rem;
+}
+
+.search-item:hover {
+  background-color: aliceblue;
+}
+
+.search-item-container {
+  flex-grow: 1;
+}
+
+.price {
+  justify-self: flex-end;
+  color: rgb(0, 122, 0);
+}
+
+.img-name {
+  display: flex;
+  gap: 1rem;
+}
+
+.blue {
+  color: rgb(33, 55, 255);
+}
+
+@media screen and (max-width: 900px) {
+  #search-result {
+    width: 100%;
+  }
 }

@@ -97,6 +97,7 @@ export async function getBrandItem(id, page) {
 }
 
 export async function editCategory(id, detail) {
+
   try {
     const res = await axios.patch(`${url}/category/${id}`, detail, {
       ...config,

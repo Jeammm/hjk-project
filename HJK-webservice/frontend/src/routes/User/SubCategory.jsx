@@ -36,6 +36,7 @@ export default function Category() {
 
   useEffect(() => {
     document.title = subcategory[0].SubNameTH;
+    console.log(items);
   }, [subcategory]);
 
   return items.length === 0 ? (
@@ -45,28 +46,70 @@ export default function Category() {
       <NavLink to={-1} className="go-back">{`< ย้อนกลับ`}</NavLink>
     </div>
   ) : (
-    <div id="subcategory-list">
-      <h2>{subcategory[0].SubNameTH}</h2>
-      <ul className="subcat-list">
-        {items.map((sub) => {
-          return (
-            <li key={sub.ProductID}>
-              <NavLink
-                to={`/product/${sub.ProductID}`}
-                className="subcat-item selectable"
-              >
-                <img
-                  src={sub.Thumbnail}
-                  alt={sub.NameTH}
-                  className="category-thumbnail"
-                />
-                <p className="link-text">{sub.NameTH}</p>
-              </NavLink>
-            </li>
-          );
-        })}
-      </ul>
-      <Form className="paginator">
+    <div id="product-list">
+      <h1>{subcategory[0].SubNameTH}</h1>
+      <div className="product-detail-container">
+        <Form className="filter-container">
+          <div className="filter-header">
+            <h3>ค้นหาแบบละเอียด</h3>
+            <div className="filter-sting">
+              <input type="search" placeholder="กรองสินค้า" id="s" />
+              <button type="submit">ค้นหา</button>
+            </div>
+          </div>
+
+          <div className="filter-section">
+            <h3>แบรนด์</h3>
+            {items.options.map((o) => {
+              return (
+                <div className="filter-item-container" key={o.BrandID}>
+                  <input type="checkbox" id={o.BrandID} className="filter-item-checkbox"/>
+                  <label htmlFor={o.BrandID} className="checkbox-label">
+                    {o.NameTH} / {o.NameEN}
+                  </label>
+                </div>
+              );
+            })}
+          </div>
+          <div className="filter-section">
+            <h3>แบรนด์</h3>
+            {items.options.map((o) => {
+              return (
+                <div className="filter-item-container" key={o.BrandID}>
+                  <input type="checkbox" id={o.BrandID} className="filter-item-checkbox"/>
+                  <label htmlFor={o.BrandID} className="checkbox-label">
+                    {o.NameTH} / {o.NameEN}
+                  </label>
+                </div>
+              );
+            })}
+          </div>
+        </Form>
+        <ul className="product-item-list">
+          {items.product.map((sub) => {
+            return (
+              <li key={sub.ProductID} className="product-item selectable">
+                <NavLink to={`/product/${sub.ProductID}`}>
+                  <div className="product-list-img-container">
+                    <img src={sub.Thumbnail} alt={sub.NameTH} />
+                  </div>
+                  <div className="product-list-detail">
+                    <p className="link-text">{sub.NameTH}</p>
+                    <div className="prod-detail-bottom">
+                      <p className="prod-brand">{sub.Brand ? sub.Brand : "No Brand"}</p>
+                      {/* <p className="right-end">{sub.MinPrice}</p> */}
+                      <p className="right-end prod-price">1205.50</p>
+                      <p className="prod-id">{sub.ProductID}</p>
+                      <p className="right-end avilability">มีสินค้า</p>
+                    </div>
+                  </div>
+                </NavLink>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      {/* <Form className="paginator">
         <button
           className="paginator-btn"
           // type="button"
@@ -99,7 +142,7 @@ export default function Category() {
         >
           ➡️
         </button>
-      </Form>
+      </Form> */}
     </div>
   );
 }

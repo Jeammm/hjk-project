@@ -37,7 +37,7 @@
   width: 100%;
 }
 nav {
-  background-color: var(--lightgrey);
+  background-color: var(--nav-bar);
   height: 30px;
   display: flex;
   justify-content: center;
@@ -55,6 +55,7 @@ header {
   justify-content: space-between;
   align-items: center;
   justify-content: center;
+  background-color: var(--header);
 }
 
 .header-container, .header-container-m {
@@ -126,6 +127,7 @@ header {
 #detail {
   display: flex;
   justify-content: center;
+  background-color: var(--lightgrey);
 }
 
 .detail-container {
@@ -133,6 +135,7 @@ header {
   width: 100%;
   display: flex;
   padding-inline: 1rem;
+  background-color: var(--detail);
 }
 
 .category-container {

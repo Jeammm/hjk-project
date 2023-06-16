@@ -1,0 +1,134 @@
+#product-list {
+  margin-top: 0.7rem
+}
+
+.filter-container {
+  width: 280px;
+  /* background-color: var(--lightgrey); */
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.product-detail-container {
+  display: flex;
+}
+
+.product-item-list {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-rows: repeat(3, 1fr);
+  grid-auto-flow: dense;
+  grid-gap: 5px;
+  margin-left: 0.5rem;
+}
+
+.product-item {
+  border: 1px solid var(--lightgrey);
+  border-radius: 0.2rem;
+  padding: 0.2rem;
+}
+
+.product-list-img-container {
+  height: 200px;
+  border-bottom: 1px solid var(--lightgrey);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-list-img-container img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.product-list-detail {
+  margin-top: 0.3rem;
+}
+
+.product-list-detail .link-text {
+  color: var(--darkblue);
+  font-size: 0.9rem;
+}
+
+.prod-detail-bottom {
+    display: grid;
+    overflow: hidden;
+    line-height: 1.2em;
+    padding: 5px 0;
+    -ms-grid-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "detail price";
+}
+
+.right-end {
+  text-align: end;
+}
+
+.filter-section {
+  margin-top: 0.5rem;
+}
+
+.filter-container h3 {
+  border-bottom: 1px solid var(--darkgrey);
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.checkbox-label {
+  padding-left: 0.5rem;
+}
+
+.prod-brand,.prod-id {
+  font-size: 0.8rem;
+  color: rgb(117, 117, 117);
+}
+
+.avilability {
+  color: rgb(0, 206, 0);
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.prod-price {
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.filter-sting {
+  display: flex;
+}
+
+#s {
+  width: 0;
+  flex-grow: 1;
+}
+
+.filter-header {
+  min-width: 160px;
+}
+
+@media screen and (max-width: 900px) {
+  .product-detail-container {
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  .filter-container {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+  }
+  .filter-header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .filter-section {
+    padding-left: 0.5rem;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+  }
+}

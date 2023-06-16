@@ -34,7 +34,7 @@ router
 
 router
   .route("/subCategory/:subCategoryId")
-  .get(subCategoryController.getAllItemBySub)
+  .get(subCategoryController.getSubById)
   .patch(authController.protect, subCategoryController.editSubCategory)
   .post(authController.protect, productController.createProduct);
 
