@@ -282,6 +282,7 @@ header {
 
 #small-logo {
   width: 48px;
+  text-align: center;
 }
 
 @media screen and (max-width: 900px) {
@@ -290,6 +291,7 @@ header {
   }
   .header-container-m {
     display: flex;
+    padding-inline: 0.1rem;
   }
 
   .menu-item {
@@ -317,5 +319,11 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #contact-serach-container-small {
+    margin-inline: 0;
   }
 }
