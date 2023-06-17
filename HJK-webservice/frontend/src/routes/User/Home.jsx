@@ -6,6 +6,8 @@ import { useLoaderData, NavLink } from "react-router-dom";
 
 import { useEffect } from "react"
 
+import banner from "../../assets/banner/7582414.jpg";
+
 export async function loader() {
   try {
     const { category, brand } = await getHome();
@@ -49,6 +51,9 @@ export default function Home() {
 
   return (
     <div id="home">
+      <div className="banner-container">
+        <img loading="lazy" src={banner} alt="banner" />
+      </div>
       <div className="category-home">
         <div className="category-header">
           <h2>หมวดหมู่</h2>

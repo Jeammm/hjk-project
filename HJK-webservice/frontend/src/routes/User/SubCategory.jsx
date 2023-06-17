@@ -1,6 +1,11 @@
 import "../../styles/SubCategory.css";
 
-import { useLoaderData, NavLink, Form, useSubmit } from "react-router-dom";
+import {
+  useLoaderData,
+  NavLink,
+  Form,
+  // useSubmit
+} from "react-router-dom";
 
 import { getItems, getSubName } from "../../services/product";
 
@@ -13,12 +18,6 @@ export async function loader({ request, params }) {
   let p = url.searchParams.get("p");
   if (!p) p = 1;
   const items = await getItems(params.subCategoryId, p);
-  // if (!items) {
-  //   throw new Response("", {
-  //     status: 404,
-  //     statusText: "Not Found",
-  //   });
-  // }
   const subcategory = await getSubName(params.subCategoryId);
   return { items, p, subcategory };
 }
@@ -26,7 +25,7 @@ export async function loader({ request, params }) {
 export default function Category() {
   const { items, p, subcategory } = useLoaderData();
 
-  const submit = useSubmit();
+  // const submit = useSubmit();
 
   useEffect(() => {
     if (document.getElementById("p")) {
@@ -36,7 +35,6 @@ export default function Category() {
 
   useEffect(() => {
     document.title = subcategory[0].SubNameTH;
-    console.log(items);
   }, [subcategory]);
 
   return items.length === 0 ? (
@@ -47,7 +45,10 @@ export default function Category() {
     </div>
   ) : (
     <div id="product-list">
-      <h1>{subcategory[0].SubNameTH}</h1>
+      <div className="path-container">
+        <NavLink className="selectable" to={`/category/${subcategory[0].CategoryID}`}>{subcategory[0].CategoryTH}{" > "}</NavLink>
+        <NavLink className="current-path selectable" to={`/subcategory/${subcategory[0].SubCategoryID}`}>{subcategory[0].SubNameTH}</NavLink>
+      </div>
       <div className="product-detail-container">
         <Form className="filter-container">
           <div className="filter-header">
@@ -63,7 +64,11 @@ export default function Category() {
             {items.options.map((o) => {
               return (
                 <div className="filter-item-container" key={o.BrandID}>
-                  <input type="checkbox" id={o.BrandID} className="filter-item-checkbox"/>
+                  <input
+                    type="checkbox"
+                    id={o.BrandID}
+                    className="filter-item-checkbox"
+                  />
                   <label htmlFor={o.BrandID} className="checkbox-label">
                     {o.NameTH} / {o.NameEN}
                   </label>
@@ -76,7 +81,11 @@ export default function Category() {
             {items.options.map((o) => {
               return (
                 <div className="filter-item-container" key={o.BrandID}>
-                  <input type="checkbox" id={o.BrandID} className="filter-item-checkbox"/>
+                  <input
+                    type="checkbox"
+                    id={o.BrandID}
+                    className="filter-item-checkbox"
+                  />
                   <label htmlFor={o.BrandID} className="checkbox-label">
                     {o.NameTH} / {o.NameEN}
                   </label>
@@ -96,7 +105,9 @@ export default function Category() {
                   <div className="product-list-detail">
                     <p className="link-text">{sub.NameTH}</p>
                     <div className="prod-detail-bottom">
-                      <p className="prod-brand">{sub.Brand ? sub.Brand : "No Brand"}</p>
+                      <p className="prod-brand">
+                        {sub.Brand ? sub.Brand : "No Brand"}
+                      </p>
                       {/* <p className="right-end">{sub.MinPrice}</p> */}
                       <p className="right-end prod-price">1205.50</p>
                       <p className="prod-id">{sub.ProductID}</p>

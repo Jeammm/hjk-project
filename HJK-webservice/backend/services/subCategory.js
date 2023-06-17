@@ -28,8 +28,9 @@ exports.getAllProducts = async (subCategory, page = 1) => {
 exports.getSubName = async (subcategoryId) => {
   const rows = await db.query(
     `SELECT *
-    FROM SubCategory
-    WHERE SubCategoryID = ?`,
+    FROM SubCategory s
+    JOIN Category c ON s.CategoryID = c.CategoryID
+    WHERE s.SubCategoryID = ?`,
     [subcategoryId]
   );
   return {

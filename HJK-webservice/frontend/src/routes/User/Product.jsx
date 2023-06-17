@@ -2,7 +2,7 @@ import "../../styles/Product.css";
 
 import { getProduct } from "../../services/product";
 
-import { useLoaderData, useNavigate, Form } from "react-router-dom";
+import { useLoaderData, useNavigate, Form, NavLink } from "react-router-dom";
 
 import { useEffect } from "react";
 
@@ -77,11 +77,16 @@ export default function Product() {
 
   return (
     <div id="product-detail">
+      <div className="path-container">
+        <NavLink className="selectable" to={`/category/${productDetail.CategoryID}`}>{productDetail.CategoryTH}{" > "}</NavLink>
+        <NavLink className="selectable" to={`/subcategory/${productDetail.SubCategoryID}`}>{productDetail.SubNameTH}{" > "}</NavLink>
+        <NavLink className="current-path selectable" to={`/product/${productDetail.ProductID}`}>{productDetail.NameTH}</NavLink>
+      </div>
       <div className="topic-with-close">
         <h3 id="product-detail-topic">รายละเอียดสินค้า</h3>
-        <button id="close-button" onClick={() => navigate(-1)}>
+        <NavLink to={`/subcategory/${productDetail.SubCategoryID}`} id="close-button" className="selectable">
           X
-        </button>
+        </NavLink>
       </div>
       <div id="img-with-desc">
         <div id="product-img-container">

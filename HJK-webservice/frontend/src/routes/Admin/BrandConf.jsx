@@ -21,7 +21,7 @@ export default function BrandConf() {
 
   const location = useLocation();
   const params = useParams();
-  const brandIdSelecting = params.brandId;
+  const brandIdSelecting = parseInt(params.brandId);
 
   const [query, setQuery] = useState("");
 
@@ -54,7 +54,7 @@ export default function BrandConf() {
                 <NavLink
                   to={`${b.BrandID}/edit`}
                   className={`brand-item selectable ${
-                    b.BrandID == brandIdSelecting ? "brand-isSelected" : ""
+                    b.BrandID === brandIdSelecting ? "brand-isSelected" : ""
                   }`}
                   key={b.BrandID}
                 >

@@ -10,8 +10,14 @@ const { query_gen } = require("../utils/query_gen");
 exports.getProduct = async (productId) => {
   const product = await db.query(
     `SELECT * 
-    FROM Product 
-    WHERE ProductID = ?`,
+    FROM 
+      Product
+    INNER JOIN
+      SubCategory ON Product.SubCategory = SubCategory.SubCategoryID
+    INNER JOIN
+      Category ON SubCategory.CategoryID = Category.CategoryID
+    WHERE 
+      ProductID = ?`,
     [productId]
   );
 

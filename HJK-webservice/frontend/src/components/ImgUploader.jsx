@@ -22,9 +22,8 @@ export default function ImgUploader({ prevImg, img_field }) {
     const objectUrl = URL.createObjectURL(selectedFile);
     setPreview(objectUrl);
 
-    // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedFile]);
+  }, [selectedFile, prevImg]);
 
   const onSelectFile = async (e) => {
     if (!e.target.files || e.target.files.length === 0) {

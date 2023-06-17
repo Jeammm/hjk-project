@@ -3,7 +3,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  /* padding-left: 3rem; */
+  padding-inline: 1rem;
   padding-top: 1rem;
 }
 
@@ -123,6 +123,7 @@
 .topic-with-close {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 #close-button {
@@ -200,6 +201,10 @@
 
   #product-name {
     padding-top: 1rem;
+  }
+
+  #product-detail {
+    padding-inline: 0.3rem;
   }
 }
 

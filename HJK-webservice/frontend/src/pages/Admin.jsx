@@ -25,7 +25,7 @@ export async function action({ request }) {
       return null;
     }
     window.alert(error.response.data.message);
-    window.location.href = window.location.href;
+    window.location.href = `${window.location.href}`;
     return null;
   }
 }

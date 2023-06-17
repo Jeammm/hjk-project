@@ -5,13 +5,17 @@ import {
   Outlet,
   useLoaderData,
   NavLink,
-  useNavigation,
-  useSubmit,
+  // useNavigation,
+  // useSubmit,
   useLocation,
   redirect,
 } from "react-router-dom";
 
-import { useEffect, useCallback, useState } from "react";
+import {
+  useEffect,
+  //  useCallback,
+  useState,
+} from "react";
 import Hamburger from "hamburger-react";
 
 import { getAllCategory } from "../services/product";

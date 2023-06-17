@@ -7,7 +7,7 @@ import ImgUploader from "../../components/ImgUploader";
 export async function loader({ params }) {
   const allBrands = await getBrands();
 
-  const brand = allBrands.filter((b) => b.BrandID == params.brandId);
+  const brand = allBrands.filter((b) => b.BrandID === parseInt(params.brandId));
 
   if (brand.length === 0) {
     throw new Response("", {

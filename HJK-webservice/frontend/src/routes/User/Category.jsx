@@ -39,7 +39,7 @@ export default function Category() {
     </div>
   ) : (
     <div id="subcategory-list">
-      <h2>หมวดหมู่ : {category[0].CategoryTH}</h2>
+      <h2>{category[0].CategoryTH}</h2>
       <ul className="subcat-list">
         {subCategory.map((sub) => {
           return (
