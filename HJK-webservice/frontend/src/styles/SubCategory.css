@@ -111,6 +111,7 @@
 #s {
   width: 0;
   flex-grow: 1;
+  font-size: 1rem;
 }
 
 .filter-header {
