@@ -13,7 +13,7 @@ export default function Index() {
         <p>เพิ่มหมวดหมู่/สินค้า</p>
       </NavLink>
 
-      <NavLink to="brand" className="cpindex-menu-item selectable">
+      <NavLink to="brand" className="cpindex- selectable">
         <img loading="lazy" src={brand_icon} alt="brand setting" />
         <p>เพิ่มแบรนด์</p>
       </NavLink>

@@ -7,6 +7,19 @@ html, * {
   text-decoration: none;
 }
 
+body, #root, .App {
+  min-height: 100svh;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+}
+
+#detail {
+  flex-grow: 1;
+}
+
 :root {
   --red: #992828;
   --lightred: #cb3435;
@@ -17,6 +30,7 @@ html, * {
   --nav-bar: #eeeeee;
   --header: white;
   --detail: white;
+  /* --darkred:  */
 }
 
 /* :root {
@@ -29,6 +43,10 @@ html, * {
   --nav-bar: #7E1717;
   --header: #E55807;
   --detail: #ECF8F9;
+} */
+
+/* .App {
+  overflow: hidden;
 } */
 
 *, *:before, *:after {
@@ -55,13 +73,12 @@ button:hover, .selectable:hover {
 }
 
 .nothing-here {
-  padding-top: 1rem;
   display: flex;
   flex-direction: column;
 }
 
 .nothing-here p {
-  padding: 2rem;
+  padding: 1rem 2rem;
   font-size: 2rem;
   color: var(--darkgrey);
 }

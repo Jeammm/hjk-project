@@ -11,7 +11,7 @@ export default function ImgUploader({ prevImg, img_field }) {
   // create a preview as a side effect, whenever selected file is changed
   useEffect(() => {
     if (!selectedFile) {
-      if (prevImg && prevImg !== "placeholder.png") {
+      if (prevImg && prevImg !== "http://via.placeholder.com/640x360") {
         setPreview(prevImg);
         return;
       }
@@ -39,7 +39,7 @@ export default function ImgUploader({ prevImg, img_field }) {
       res = await imageUploader(e.target.files[0]);
       setUploading("done");
     } catch (e) {
-      res = "placeholder.png";
+      res = "http://via.placeholder.com/640x360";
       setUploading("error");
     } finally {
       SetImgUrl(res);
@@ -55,7 +55,7 @@ export default function ImgUploader({ prevImg, img_field }) {
       return;
     }
     setPreview(undefined);
-    SetImgUrl("placeholder.png");
+    SetImgUrl("http://via.placeholder.com/640x360");
   };
 
   const statusComponent = (status) => {

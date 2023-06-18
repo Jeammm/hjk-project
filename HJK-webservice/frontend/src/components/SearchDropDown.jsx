@@ -31,61 +31,72 @@ const SearchDropDown = ({ q, setQ }) => {
   }, [q]);
 
   const categoryDiv = (cs) => {
-    return cs.length === 0
-      ? "ไม่มีหมวดหมู่นี้"
-      : cs.map((c) => (
-          <NavLink
-            to={`category/${c.CategoryID}`}
-            onClick={clearQ}
-            className="searchCat-item  search-item"
-            key={`s-${c.CategoryID}`}
-          >
-            <p>
-              {c.CategoryID} : {c.CategoryTH}
-            </p>
-          </NavLink>
-        ));
+    return cs.length === 0 ? (
+      <p className="no-result">- ไม่มีหมวดหมู่นี้</p>
+    ) : (
+      cs.map((c) => (
+        <NavLink
+          to={`category/${c.CategoryID}`}
+          onClick={clearQ}
+          className="searchCat-item  search-item"
+          key={`s-${c.CategoryID}`}
+        >
+          <p>
+            {c.CategoryID} : {c.CategoryTH}
+          </p>
+        </NavLink>
+      ))
+    );
   };
 
   const subCategoryDiv = (subs) => {
-    return subs.length === 0
-      ? "ไม่มีหมวดหมู่ย่อยนี้"
-      : subs.map((sub) => (
-          <NavLink
-            to={`subcategory/${sub.SubCategoryID}`}
-            onClick={clearQ}
-            className="searchCat-item search-item"
-            key={`s-${sub.SubCategoryID}`}
-          >
-            <p>
-              {sub.SubCategoryID} : {sub.SubNameTH}
-            </p>
-          </NavLink>
-        ));
+    return subs.length === 0 ? (
+      <p className="no-result">- ไม่มีหมวดหมู่ย่อยนี้</p>
+    ) : (
+      subs.map((sub) => (
+        <NavLink
+          to={`subcategory/${sub.SubCategoryID}`}
+          onClick={clearQ}
+          className="searchCat-item search-item"
+          key={`s-${sub.SubCategoryID}`}
+        >
+          <p>
+            {sub.SubCategoryID} : {sub.SubNameTH}
+          </p>
+        </NavLink>
+      ))
+    );
   };
 
   const productDiv = (prods) => {
-    return prods.length === 0
-      ? "ไม่มีสินค้านี้"
-      : prods.map((prod) => (
-          <NavLink
-            to={`product/${prod.ProductID}`}
-            onClick={clearQ}
-            className="searchProd-item  search-item"
-            key={`s-${prod.ProductID}`}
-          >
-            <div className="img-name">
-              <div className="prod-img-serch-container">
-                <img src={prod.Thumbnail} alt={prod.NameTH} />
-              </div>
-              <div className="name-tag">
-                <p className="blue">{prod.NameTH}</p>
-                <p>{prod.ProductID}</p>
-              </div>
+    return prods.length === 0 ? (
+      <p className="no-result">- ไม่มีสินค้านี้</p>
+    ) : (
+      prods.map((prod) => (
+        <NavLink
+          to={`product/${prod.ProductID}`}
+          onClick={clearQ}
+          className="searchProd-item  search-item"
+          key={`s-${prod.ProductID}`}
+        >
+          <div className="img-name">
+            <div className="prod-img-serch-container">
+              <img src={prod.Thumbnail} alt={prod.NameTH} />
             </div>
-            <p className="price">{prod.MinPrice}</p>
-          </NavLink>
-        ));
+            <div className="name-tag">
+              <p className="blue">{prod.NameTH}</p>
+              <p>{prod.ProductID}</p>
+            </div>
+          </div>
+          <p className="price">
+            {prod.MinPrice && prod.MinPrice.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </p>
+        </NavLink>
+      ))
+    );
   };
 
   if (q.length < 3) {

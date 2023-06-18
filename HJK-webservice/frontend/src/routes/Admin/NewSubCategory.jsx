@@ -20,7 +20,7 @@ export default function NewSubCategory() {
     <div className="edit-category-form-conatiner">
       <h2>สร้างหมวดหมู่ย่อยใหม่</h2>
       <Form method="post">
-        <ImgUploader prevImg="placeholder.png" img_field="Thumbnail" />
+        <ImgUploader prevImg="http://via.placeholder.com/640x360" img_field="Thumbnail" />
         <div className="edit-input-field">
           <p>ชื่อหมวดหมู่ย่อย</p>
           <input type="text" name="SubNameTH" autoComplete="off" />

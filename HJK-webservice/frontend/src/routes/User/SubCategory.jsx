@@ -22,10 +22,68 @@ export async function loader({ request, params }) {
   return { items, p, subcategory };
 }
 
+const Product = ({ products }) => {
+  if (products.length === 0) {
+    return (
+      <div className="nothing-here">
+        <p>ไม่มีสินค้านี้</p>
+      </div>
+    );
+  }
+  return (
+    <ul className="product-item-list">
+      {products.map((sub) => {
+        return (
+          <li key={sub.ProductID} className="product-item selectable">
+            <NavLink to={`/product/${sub.ProductID}`}>
+              <div className="product-list-img-container">
+                <img src={sub.Thumbnail} alt={sub.NameTH} />
+              </div>
+              <div className="product-list-detail">
+                <p className="link-text">{sub.NameTH}</p>
+                <div className="prod-detail-bottom">
+                  <p className="prod-brand">
+                    {sub.Brand ? `${sub.BrandEN}` : "No Brand"}
+                  </p>
+                  {/* <p className="right-end">{sub.MinPrice}</p> */}
+                  <p className="right-end prod-price">
+                    {sub.MinPrice &&
+                      sub.MinPrice.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                  </p>
+                  <p className="prod-id">{sub.ProductID}</p>
+                  <p className="right-end avilability">มีสินค้า</p>
+                </div>
+              </div>
+            </NavLink>
+          </li>
+        );
+      })}
+    </ul>
+  );
+};
+
+const Options = ({ options }) => {
+  return options.map((o) => {
+    return (
+      <div className="filter-item-container" key={o.BrandID}>
+        <input
+          type="checkbox"
+          id={o.BrandID}
+          className="filter-item-checkbox"
+        />
+        <label htmlFor={o.BrandID} className="checkbox-label">
+          {o.NameTH} / {o.NameEN}
+        </label>
+      </div>
+    );
+  });
+};
+
 export default function Category() {
   const { items, p, subcategory } = useLoaderData();
-
-  // const submit = useSubmit();
 
   useEffect(() => {
     if (document.getElementById("p")) {
@@ -46,8 +104,19 @@ export default function Category() {
   ) : (
     <div id="product-list">
       <div className="path-container">
-        <NavLink className="selectable" to={`/category/${subcategory[0].CategoryID}`}>{subcategory[0].CategoryTH}{" > "}</NavLink>
-        <NavLink className="current-path selectable" to={`/subcategory/${subcategory[0].SubCategoryID}`}>{subcategory[0].SubNameTH}</NavLink>
+        <NavLink
+          className="selectable"
+          to={`/category/${subcategory[0].CategoryID}`}
+        >
+          {subcategory[0].CategoryTH}
+          {" > "}
+        </NavLink>
+        <NavLink
+          className="current-path selectable"
+          to={`/subcategory/${subcategory[0].SubCategoryID}`}
+        >
+          {subcategory[0].SubNameTH}
+        </NavLink>
       </div>
       <div className="product-detail-container">
         <Form className="filter-container">
@@ -61,64 +130,10 @@ export default function Category() {
 
           <div className="filter-section">
             <h3>แบรนด์</h3>
-            {items.options.map((o) => {
-              return (
-                <div className="filter-item-container" key={o.BrandID}>
-                  <input
-                    type="checkbox"
-                    id={o.BrandID}
-                    className="filter-item-checkbox"
-                  />
-                  <label htmlFor={o.BrandID} className="checkbox-label">
-                    {o.NameTH} / {o.NameEN}
-                  </label>
-                </div>
-              );
-            })}
-          </div>
-          <div className="filter-section">
-            <h3>แบรนด์</h3>
-            {items.options.map((o) => {
-              return (
-                <div className="filter-item-container" key={o.BrandID}>
-                  <input
-                    type="checkbox"
-                    id={o.BrandID}
-                    className="filter-item-checkbox"
-                  />
-                  <label htmlFor={o.BrandID} className="checkbox-label">
-                    {o.NameTH} / {o.NameEN}
-                  </label>
-                </div>
-              );
-            })}
+            <Options options={items.options} />
           </div>
         </Form>
-        <ul className="product-item-list">
-          {items.product.map((sub) => {
-            return (
-              <li key={sub.ProductID} className="product-item selectable">
-                <NavLink to={`/product/${sub.ProductID}`}>
-                  <div className="product-list-img-container">
-                    <img src={sub.Thumbnail} alt={sub.NameTH} />
-                  </div>
-                  <div className="product-list-detail">
-                    <p className="link-text">{sub.NameTH}</p>
-                    <div className="prod-detail-bottom">
-                      <p className="prod-brand">
-                        {sub.Brand ? sub.BrandTH : "No Brand"}
-                      </p>
-                      {/* <p className="right-end">{sub.MinPrice}</p> */}
-                      <p className="right-end prod-price">{sub.MinPrice}</p>
-                      <p className="prod-id">{sub.ProductID}</p>
-                      <p className="right-end avilability">มีสินค้า</p>
-                    </div>
-                  </div>
-                </NavLink>
-              </li>
-            );
-          })}
-        </ul>
+        <Product products={items.product} />
       </div>
       {/* <Form className="paginator">
         <button

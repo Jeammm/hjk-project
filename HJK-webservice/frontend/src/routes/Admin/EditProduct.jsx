@@ -173,7 +173,7 @@ export default function EditProduct() {
       <Form method="post">
         <div id="img-with-desc">
           <ImgUploader
-            prevImg={productDetail.Thumbnail || "placeholder.png"}
+            prevImg={productDetail.Thumbnail || "http://via.placeholder.com/640x360"}
             img_field="Thumbnail"
           />
           {/* <div id="product-img-container">
