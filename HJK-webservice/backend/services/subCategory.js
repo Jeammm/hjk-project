@@ -10,9 +10,14 @@ exports.getAllProducts = async (subCategory, page = 1) => {
   const offset = helper.getOffset(page, config.listPerPage);
 
   const rows = await db.query(
-    `SELECT * 
-    FROM Product 
-    WHERE SubCategory = ?
+    `SELECT DISTINCT
+      *, Product.NameTH, Product.NameEN, Brand.NameTH AS BrandTH, Brand.NameEN AS BrandEN, (SELECT MIN(Size.Price) FROM Size WHERE Size.ProductID = Product.ProductID) AS MinPrice
+    FROM 
+      Product
+    LEFT JOIN 
+      Brand ON Brand.BrandID = Product.Brand
+    WHERE 
+      SubCategory = ?
     LIMIT ?, ?`,
     [subCategory, `${offset}`, `${config.listPerPage}`]
   );

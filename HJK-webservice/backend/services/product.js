@@ -218,10 +218,18 @@ exports.search = async (q) => {
       `(
         p.NameTH LIKE ? 
         OR p.NameEN LIKE ? 
-        OR p.ProductID LIKE ? 
+        OR p.ProductID LIKE ?
+        OR p.DesTH LIKE ?
+        OR p.DesEN LIKE ?
+        OR b.NameTH LIKE ?
+        OR b.NameEN LIKE ?
         OR s.Des LIKE ?)`
     );
     param.push(
+      `%${queryString}%`,
+      `%${queryString}%`,
+      `%${queryString}%`,
+      `%${queryString}%`,
       `%${queryString}%`,
       `%${queryString}%`,
       `%${queryString}%`,
@@ -231,12 +239,12 @@ exports.search = async (q) => {
 
   const product = await db.query(
     `
-    SELECT p.*, (SELECT MIN(s.Price) FROM Size s WHERE s.ProductID = p.ProductID) AS MinPrice
+    SELECT DISTINCT p.*, (SELECT MIN(s.Price) FROM Size s WHERE s.ProductID = p.ProductID) AS MinPrice
     FROM Product p
-    JOIN Size s ON p.ProductID = s.ProductID
+    LEFT JOIN Size s ON p.ProductID = s.ProductID
+    LEFT JOIN Brand b ON p.Brand = b.BrandID
     WHERE ${conditions.join(" AND ")}
     `,
-    // [`%${q}%`, `%${q}%`, `%${q}%`, `${offset}`, `${config.listPerPage}`]
     param
   );
 
@@ -263,4 +271,4 @@ exports.getOptions = async (id) => {
   return {
     options,
   };
-}
+};
