@@ -53,6 +53,7 @@
 
 .product-list-detail {
   margin-top: 0.3rem;
+  overflow: hidden;
 }
 
 .product-list-detail .link-text {

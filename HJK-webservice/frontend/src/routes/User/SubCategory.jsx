@@ -106,10 +106,10 @@ export default function Category() {
                     <p className="link-text">{sub.NameTH}</p>
                     <div className="prod-detail-bottom">
                       <p className="prod-brand">
-                        {sub.Brand ? sub.Brand : "No Brand"}
+                        {sub.Brand ? sub.BrandTH : "No Brand"}
                       </p>
                       {/* <p className="right-end">{sub.MinPrice}</p> */}
-                      <p className="right-end prod-price">1205.50</p>
+                      <p className="right-end prod-price">{sub.MinPrice}</p>
                       <p className="prod-id">{sub.ProductID}</p>
                       <p className="right-end avilability">มีสินค้า</p>
                     </div>
