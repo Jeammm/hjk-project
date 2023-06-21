@@ -99,7 +99,7 @@ const SearchDropDown = ({ q, setQ }) => {
     );
   };
 
-  if (q.length < 3) {
+  if (q.length < 3 ) {
     return null; // Return null if 'q' length is less than 3
   }
 

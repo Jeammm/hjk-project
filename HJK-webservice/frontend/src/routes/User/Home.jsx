@@ -6,6 +6,7 @@ import { useLoaderData, NavLink } from "react-router-dom";
 
 import { useEffect } from "react"
 
+import CarouselBanner from "../../components/CarouselBanner";
 import banner from "../../assets/banner/7582414.jpg";
 
 export async function loader() {
@@ -52,7 +53,7 @@ export default function Home() {
   return (
     <div id="home">
       <div className="banner-container">
-        <img loading="lazy" src={banner} alt="banner" />
+        <CarouselBanner />
       </div>
       <div className="category-home">
         <div className="category-header">

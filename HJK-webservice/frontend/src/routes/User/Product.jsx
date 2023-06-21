@@ -2,7 +2,7 @@ import "../../styles/Product.css";
 
 import { getProduct } from "../../services/product";
 
-import { useLoaderData, useNavigate, Form, NavLink } from "react-router-dom";
+import { useLoaderData, Form, NavLink } from "react-router-dom";
 
 import { useEffect } from "react";
 
@@ -21,7 +21,6 @@ export async function loader({ params }) {
 
 export default function Product() {
   const { product, size } = useLoaderData();
-  const navigate = useNavigate();
   const productDetail = product[0];
 
   const cal_id = (productId, sizeId) => {
