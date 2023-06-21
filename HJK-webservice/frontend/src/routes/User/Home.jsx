@@ -7,7 +7,6 @@ import { useLoaderData, NavLink } from "react-router-dom";
 import { useEffect } from "react"
 
 import CarouselBanner from "../../components/CarouselBanner";
-import banner from "../../assets/banner/7582414.jpg";
 
 export async function loader() {
   try {
