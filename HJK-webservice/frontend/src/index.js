@@ -33,6 +33,9 @@ import ProductConf, {
 import BrandConf, {
   loader as BrandConfLoader,
 } from "./routes/Admin/BrandConf";
+import BannerConf, {
+  loader as bannerConfLoader,
+} from "./routes/Admin/BannerConf";
 
 import NewProduct, {
   loader as NewProductLoader,
@@ -203,6 +206,11 @@ const router = createBrowserRouter([
             ]
           }
         ]
+      },
+      {
+        path: "banner",
+        element: <BannerConf />,
+        loader: bannerConfLoader,
       }
     ],
   },

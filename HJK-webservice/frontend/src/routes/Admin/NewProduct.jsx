@@ -52,6 +52,11 @@ export async function action({ request, params }) {
 
 export default function NewProduct() {
   const { brands } = useLoaderData();
+  const [brandOptions, setBrandOptions] = useState(brands);
+  const fetchOption = async () => {
+    const brands = await getBrands();
+    setBrandOptions(brands);
+  };
 
   const navigate = useNavigate();
 
@@ -100,7 +105,7 @@ export default function NewProduct() {
     else return "grey";
   };
 
-  const brands_option = brands.map((b) => {
+  const brands_option = brandOptions.map((b) => {
     return { value: b.BrandID, label: `${b.NameTH} ${b.NameEN}` };
   });
 
@@ -115,7 +120,10 @@ export default function NewProduct() {
       <Form method="post">
         <div id="img-with-desc">
           {/* <img loading="lazy" src="../assets/logo.svg" alt="product" id="product-img" /> */}
-          <ImgUploader prevImg="http://via.placeholder.com/640x360" img_field="Thumbnail" />
+          <ImgUploader
+            prevImg="http://via.placeholder.com/640x360"
+            img_field="Thumbnail"
+          />
           <div id="detail-beside-img">
             {/* <input
               type="text"
@@ -154,12 +162,18 @@ export default function NewProduct() {
             >
               คลิกถ้าหาแบรนด์ไม่เจอ
             </NavLink>
-            <Select
-              options={brands_option}
-              name="Brand"
-              isClearable={true}
-              isSearchable={true}
-            />
+            <div className="select-container">
+              <Select
+                options={brands_option}
+                name="Brand"
+                isClearable={true}
+                isSearchable={true}
+                className="select-component"
+              />
+              <button type="button" onClick={fetchOption}>
+                refresh
+              </button>
+            </div>
           </label>
         </div>
 

@@ -112,3 +112,21 @@
     transform: rotate(360deg);
   }
 }
+
+.select-container {
+  display: flex;
+  width: 100%;
+}
+
+.select-component {
+  flex-grow: 1;
+}
+
+.select-container button {
+  border: none;
+  color: white;
+  background-color: green;
+  padding: 0.5rem;
+  margin-inline: 0.5rem;
+  border-radius: 0.5rem;
+}

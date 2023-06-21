@@ -2,6 +2,8 @@ import "../../styles/CPIndex.css";
 
 import product_icon from "../../assets/product-icon.png";
 import brand_icon from "../../assets/brand.png";
+import banner_icon from "../../assets/banner.png";
+
 
 import { NavLink } from "react-router-dom";
 
@@ -13,9 +15,14 @@ export default function Index() {
         <p>เพิ่มหมวดหมู่/สินค้า</p>
       </NavLink>
 
-      <NavLink to="brand" className="cpindex- selectable">
+      <NavLink to="brand" className="cpindex-menu-item selectable">
         <img loading="lazy" src={brand_icon} alt="brand setting" />
         <p>เพิ่มแบรนด์</p>
+      </NavLink>
+      
+      <NavLink to="banner" className="cpindex-menu-item selectable">
+        <img loading="lazy" src={banner_icon} alt="banner setting" />
+        <p>ตั้งค่าแบนเนอร์</p>
       </NavLink>
     </div>
   );

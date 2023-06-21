@@ -221,38 +221,5 @@ export async function searchProduct(q) {
 
   const query = { q };
   const res = await axios.get(`${url}/search`, { ...config, params: query });
-  // console.log(res)
   return res.data;
-
-  // await new Promise((resolve) => setTimeout(resolve, 500));
-
-  // const res = {
-  //   category: [
-  //     { CategoryID: 1, CategoryTH: "กระดาษทราย" },
-  //     { CategoryID: 2, CategoryTH: "กระดาษทราย" },
-  //   ],
-  //   subCategory: [
-  //     { SubCategoryID: "0102", SubNameTH: "กระดาษทรายน้ำ" },
-  //     { SubCategoryID: "0103", SubNameTH: "กระดาษทรายน้ำ" },
-  //   ],
-  //   product: [
-  //     {
-  //       ProductID: "01101",
-  //       NameTH: "กระดาษทรายน้ำ ตรา ทีโอเอ",
-  //       Thumbnail: "https://iili.io/H6oPIF2.jpg",
-  //     },
-  //     {
-  //       ProductID: "01102",
-  //       NameTH: "กระดาษทรายน้ำ ตรา ทีโอเอ",
-  //       Thumbnail: "https://iili.io/H6oPIF2.jpg",
-  //     },
-  //     {
-  //       ProductID: "01103",
-  //       NameTH: "กระดาษทรายน้ำ ตรา ทีโอเอ",
-  //       Thumbnail: "https://iili.io/H6oPIF2.jpg",
-  //     },
-  //   ],
-  // };
-
-  // return res;
 }
