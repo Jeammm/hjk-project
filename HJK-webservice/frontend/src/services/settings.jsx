@@ -9,13 +9,17 @@ const config = {
 };
 
 export async function getBannerSettings() {
-  const res = await axios.get(
-    `${url}/banner/`,
-    {},
-    {
-      ...config,
-      withCredentials: true,
-    }
-  );
-  return res;
+  const res = await axios.get(`${url}/banner`, {
+    ...config,
+    withCredentials: true,
+  });
+  return res.data.data;
+}
+
+export async function addBanner(detail) {
+  const res = await axios.post(`${url}/banner`, detail, {
+    ...config,
+    withCredentials: true,
+  });
+  return res.data.data;
 }

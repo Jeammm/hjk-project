@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 
 import { imageUploader } from "../utils/imageUploader";
 
-export default function ImgUploader({ prevImg, img_field }) {
+export default function ImgUploader({
+  prevImg,
+  img_field,
+  width = 300,
+  height = 300,
+}) {
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState(prevImg);
   const [imgUrl, SetImgUrl] = useState(prevImg);
@@ -11,7 +16,7 @@ export default function ImgUploader({ prevImg, img_field }) {
   // create a preview as a side effect, whenever selected file is changed
   useEffect(() => {
     if (!selectedFile) {
-      if (prevImg && prevImg !== "http://via.placeholder.com/640x360") {
+      if (prevImg && !prevImg.includes("placeholder")) {
         setPreview(prevImg);
         return;
       }
@@ -39,7 +44,7 @@ export default function ImgUploader({ prevImg, img_field }) {
       res = await imageUploader(e.target.files[0]);
       setUploading("done");
     } catch (e) {
-      res = "http://via.placeholder.com/640x360";
+      res = prevImg;
       setUploading("error");
     } finally {
       SetImgUrl(res);
@@ -55,7 +60,7 @@ export default function ImgUploader({ prevImg, img_field }) {
       return;
     }
     setPreview(undefined);
-    SetImgUrl("http://via.placeholder.com/640x360");
+    SetImgUrl(prevImg);
   };
 
   const statusComponent = (status) => {
@@ -79,7 +84,7 @@ export default function ImgUploader({ prevImg, img_field }) {
   };
 
   return (
-    <div id="product-img-container">
+    <div id="product-img-upload-container">
       <div className="status-container">
         {statusComponent(uploading)}
         <div id="remove-img-btn-con"></div>
@@ -93,12 +98,14 @@ export default function ImgUploader({ prevImg, img_field }) {
           </button>
         )}
       </div>
+      
+      <div id="product-image-upload-display"  style={{ width: width, height: height }}>
+        {preview && (
+          <img loading="lazy" src={preview} alt="preview" id="product-img" />
+        )}
+      </div>
 
-      {preview && (
-        <img loading="lazy" src={preview} alt="preview" id="product-img" />
-      )}
-
-      <input type="text" value={imgUrl} name={img_field} readOnly hidden />
+      <input type="text" value={imgUrl} name={img_field} readOnly hidden/>
 
       <input
         type="file"

@@ -51,11 +51,9 @@ export async function getSubName(subId) {
 
 export async function getSubCategory(id, page) {
   const res = await axios.get(`${url}/category/${id}`, {
+    ...config,
     params: {
       page: page,
-    },
-    headers: {
-      "ngrok-skip-browser-warning": true,
     },
   });
   return res.data.data;

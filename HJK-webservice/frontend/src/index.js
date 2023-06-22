@@ -4,14 +4,17 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import App, { loader as rootLoader, action as rootAction } from "./pages/App";
-import Admin, { action as loginAction, loader as loginLoader } from "./pages/Admin";
+import Admin, {
+  action as loginAction,
+  loader as loginLoader,
+} from "./pages/Admin";
 import ControlPanel, { loader as adminLoader } from "./pages/ControlPanel";
 
 import ErrorPage from "./routes/ErrorPage";
 import CPIndex from "./routes/Admin/CPIndex";
 
 import Home, { loader as homeLoader } from "./routes/User/Home";
-import Search, { loader as searchLoader} from "./routes/User/Search"
+import Search, { loader as searchLoader } from "./routes/User/Search";
 
 import Category, { loader as categoryLoader } from "./routes/User/Category";
 import SubCategory, {
@@ -30,11 +33,10 @@ import SubCategoryConf, {
 import ProductConf, {
   loader as ProductConfLoader,
 } from "./routes/Admin/ProductConf";
-import BrandConf, {
-  loader as BrandConfLoader,
-} from "./routes/Admin/BrandConf";
+import BrandConf, { loader as BrandConfLoader } from "./routes/Admin/BrandConf";
 import BannerConf, {
   loader as bannerConfLoader,
+  action as bannerConfAction,
 } from "./routes/Admin/BannerConf";
 
 import NewProduct, {
@@ -47,9 +49,8 @@ import NewCategory, {
 import NewSubCategory, {
   action as NewSubCategoryAction,
 } from "./routes/Admin/NewSubCategory";
-import NewBrand, {
-  action as NewBrandAction,
-} from "./routes/Admin/NewBrand";
+import NewBrand, { action as NewBrandAction } from "./routes/Admin/NewBrand";
+import NewBanner, { action as NewBannerAction } from "./routes/Admin/NewBanner";
 
 import EditProduct, {
   loader as EditProductLoader,
@@ -80,14 +81,14 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
           {
-            index: true, 
-            element: <Home title="หจก.กิจเจริญรุ่งเรืองการค้า"/>,
+            index: true,
+            element: <Home title="หจก.กิจเจริญรุ่งเรืองการค้า" />,
             loader: homeLoader,
           },
-          { 
+          {
             path: "search",
-            element: <Search title="ค้นหาสินค้า"/>,
-            loader: searchLoader, 
+            element: <Search title="ค้นหาสินค้า" />,
+            loader: searchLoader,
           },
           {
             path: "category/:categoryId",
@@ -202,16 +203,24 @@ const router = createBrowserRouter([
                 path: "new",
                 element: <NewBrand />,
                 action: NewBrandAction,
-              }
-            ]
-          }
-        ]
+              },
+            ],
+          },
+        ],
       },
       {
         path: "banner",
         element: <BannerConf />,
         loader: bannerConfLoader,
-      }
+        action: bannerConfAction,
+        children: [
+          {
+            path: "new",
+            element: <NewBanner />,
+            action: NewBannerAction,
+          },
+        ],
+      },
     ],
   },
 ]);

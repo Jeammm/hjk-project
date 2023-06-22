@@ -1,0 +1,10 @@
+
+.upload-button {
+  background-color: rgb(35, 161, 35);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  /* justify-self: flex-start; */
+  /* flex-grow: 0; */
+  color: white;
+  border: none;
+}
