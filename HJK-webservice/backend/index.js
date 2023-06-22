@@ -11,6 +11,7 @@ const AppError = require("./utils/AppError");
 const errorController = require("./controllers/errorController");
 const productRouter = require("./routes/productRouter");
 const userRouter = require("./routes/userRouter");
+const settingsRouter = require("./routes/settingsRouter");
 
 const app = express();
 
@@ -57,6 +58,7 @@ app.use(cookieParser());
 //routes
 app.use("/api/v1", productRouter);
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1", settingsRouter);
 
 //error middleware routes
 app.all("*", (req, res, next) => {

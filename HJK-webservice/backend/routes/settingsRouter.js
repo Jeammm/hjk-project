@@ -7,5 +7,10 @@ const authController = require("../controllers/authController");
 
 router
   .route("/banner")
-  .get(authController.protect, settingsController.getBannerSettings)
-  // .post(authController.protect, categoryController.createCategory);
+  .get(settingsController.getBannerSettings)
+  .post(authController.protect, settingsController.addBanner)
+  .delete(authController.protect, settingsController.deleteBanner)
+  .patch(authController.protect, settingsController.selectBanner);
+// .post(authController.protect, categoryController.createCategory);
+
+module.exports = router;
