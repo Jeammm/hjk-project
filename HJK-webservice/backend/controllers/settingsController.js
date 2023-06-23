@@ -6,7 +6,7 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/AppError");
 
 exports.getBannerSettings = catchAsync(async (req, res, next) => {
-  const result = await settings.getBannerSettings();
+  const result = await settings.getBannerSettings(req.headers.role);
   const data = result;
   res.status(200).json({
     status: "success",

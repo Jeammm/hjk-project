@@ -5,12 +5,13 @@ const config = require("../config");
 const AppError = require("../utils/AppError");
 const catchAsync = require("../utils/catchAsync");
 
-exports.getBannerSettings = async () => {
+exports.getBannerSettings = async (role) => {
   return await db.query(`
     SELECT *, Banner.BannerID 
     FROM 
       Banner
     LEFT JOIN BannerSelected ON BannerSelected.BannerID = Banner.BannerID
+    ${role === "user" ? "WHERE BannerNo IS NOT NULL" : ""}
     `);
 };
 
