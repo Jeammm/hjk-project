@@ -1,30 +1,24 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
 
-export default function CarouselBanner() {
+export default function CarouselBanner({ data }) {
   return (
-    <Carousel showThumbs={false} autoPlay interval={10000} emulateTouch infiniteLoop >
-      <div>
-        <img
-          src="https://iili.io/HPxNgou.jpg"
-          alt="promotion"
-        />
-        {/* <p className="legend">Legend 1</p> */}
-      </div>
-      <div>
-        <img
-          src="https://iili.io/HPxOIUl.png"
-          alt="promotion"
-        />
-        {/* <p className="legend">Legend 2</p> */}
-      </div>
-      <div>
-        <img
-          src="https://iili.io/HPxN4Pj.png"
-          alt="promotion"
-        />
-        {/* <p className="legend">Legend 3</p> */}
-      </div>
+    <Carousel
+      showThumbs={false}
+      autoPlay
+      interval={3000}
+      emulateTouch
+      infiniteLoop
+    >
+      {data
+        .filter((b) => b.BannerNo)
+        .map((b) => {
+          return (
+            <div key={b.BannerID}>
+              <img src={b.BannerURL} alt={b.BannerName} />
+            </div>
+          );
+        })}
     </Carousel>
   );
 }

@@ -1,6 +1,7 @@
 import "../../styles/Home.css";
 
 import { getHome } from "../../services/product";
+import { getBannerSettings } from "../../services/settings";
 
 import { useLoaderData, NavLink } from "react-router-dom";
 
@@ -11,7 +12,8 @@ import CarouselBanner from "../../components/CarouselBanner";
 export async function loader() {
   try {
     const { category, brand } = await getHome();
-    return { category, brand };
+    const bannerSettings = await getBannerSettings('user');
+    return { category, brand, bannerSettings };
   } catch (err) {
     throw new Error(err);
   }
@@ -43,7 +45,7 @@ const brandComponent = (brand) => {
 };
 
 export default function Home() {
-  const { category, brand } = useLoaderData();
+  const { category, brand, bannerSettings } = useLoaderData();
 
   useEffect(() => {
     document.title = "หกจ.กิจเจริญรุ่งเรืองการค้า";
@@ -52,7 +54,7 @@ export default function Home() {
   return (
     <div id="home">
       <div className="banner-container">
-        <CarouselBanner />
+        <CarouselBanner data={bannerSettings}/>
       </div>
       <div className="category-home">
         <div className="category-header">
