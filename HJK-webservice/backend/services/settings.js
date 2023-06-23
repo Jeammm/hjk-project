@@ -20,7 +20,7 @@ exports.addBanner = async (bannerData) => {
       `INSERT INTO Banner 
       (BannerURL, BannerName , BannerDes)
       VALUES 
-      (?, ?)`,
+      (?, ?, ?)`,
       [
         bannerData.BannerURL,
         bannerData.BannerName,
@@ -51,7 +51,7 @@ exports.deleteBanner = async (id) => {
 };
 
 exports.selectBanner = async (selected) => {
-  console.log(selected.Interval || "5000");
+  console.log(selected)
   try {
     const result = await db.query(
       `
