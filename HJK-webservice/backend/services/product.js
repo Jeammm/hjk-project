@@ -9,7 +9,7 @@ const { query_gen } = require("../utils/query_gen");
 
 exports.getProduct = async (productId) => {
   const product = await db.query(
-    `SELECT * 
+    `SELECT *, Product.Thumbnail
     FROM 
       Product
     INNER JOIN
