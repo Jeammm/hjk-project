@@ -6,21 +6,26 @@ const AppError = require("../utils/AppError");
 const catchAsync = require("../utils/catchAsync");
 
 exports.getBannerSettings = async () => {
-  return await db.query(
-    `SELECT * 
-      FROM 
-        Banner`
-  );
+  return await db.query(`
+    SELECT *, Banner.BannerID 
+    FROM 
+      Banner
+    LEFT JOIN BannerSelected ON BannerSelected.BannerID = Banner.BannerID
+    `);
 };
 
 exports.addBanner = async (bannerData) => {
   try {
     const result = await db.query(
       `INSERT INTO Banner 
-      (BannerURL, BannerDes)
+      (BannerURL, BannerName , BannerDes)
       VALUES 
       (?, ?)`,
-      [bannerData.BannerURL || null, bannerData.BannerDes || null]
+      [
+        bannerData.BannerURL,
+        bannerData.BannerName,
+        bannerData.BannerDes || null,
+      ]
     );
 
     return "New banner inserted successfully";
@@ -46,29 +51,37 @@ exports.deleteBanner = async (id) => {
 };
 
 exports.selectBanner = async (selected) => {
-  const c = [];
-
-  selected.forEach((b, i) => {
-    c.push(`WHEN BannerID = ${b} THEN ${i + 1}`);
-  });
-
-  if (c.length === 0) {
-    throw new AppError("Please select at least 1 Banner", 400)
-  }
-
+  console.log(selected.Interval || "5000");
   try {
     const result = await db.query(
       `
-      UPDATE 
-        Banner
-      SET OrderNo = CASE
-        ${c.join(" ")}
-        ELSE 
-          ${null}
-      END`
+      INSERT INTO BannerSelected
+        (BannerID, \`Interval\`)
+      VALUES 
+        (?, ?)
+      `,
+      [selected.BannerID, selected.Interval || 5000]
     );
 
     return "Banner selected successfully";
+  } catch (e) {
+    throw new AppError(e, 409);
+  }
+};
+
+exports.unselectBanner = async (id) => {
+  try {
+    const result = await db.query(
+      `
+      DELETE FROM 
+        BannerSelected
+      WHERE
+        BannerNO = ?
+      `,
+      [id]
+    );
+
+    return "Banner unselected successfully";
   } catch (e) {
     throw new AppError(e, 409);
   }

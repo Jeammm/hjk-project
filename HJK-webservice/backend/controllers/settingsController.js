@@ -13,6 +13,7 @@ exports.getBannerSettings = catchAsync(async (req, res, next) => {
     data,
   });
 });
+
 exports.addBanner = catchAsync(async (req, res, next) => {
   const result = await settings.addBanner(req.body);
   const data = result;
@@ -21,6 +22,7 @@ exports.addBanner = catchAsync(async (req, res, next) => {
     data,
   });
 });
+
 exports.deleteBanner = catchAsync(async (req, res, next) => {
   const result = await settings.deleteBanner(req.body.id);
   const data = result;
@@ -29,8 +31,18 @@ exports.deleteBanner = catchAsync(async (req, res, next) => {
     data,
   });
 });
+
 exports.selectBanner = catchAsync(async (req, res, next) => {
-  const result = await settings.selectBanner(req.body.selected);
+  const result = await settings.selectBanner(req.body);
+  const data = result;
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
+
+exports.unselectBanner = catchAsync(async (req, res, next) => {
+  const result = await settings.unselectBanner(req.body.id);
   const data = result;
   res.status(200).json({
     status: "success",

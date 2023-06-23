@@ -68,6 +68,10 @@ import EditBrand, {
   loader as EditBrandLoader,
   action as EditBrandAction,
 } from "./routes/Admin/EditBrand";
+import SelectBanner, {
+  loader as SelectBannerLoader,
+  action as SelectBannerAction,
+} from "./routes/Admin/SelectBanner";
 
 const router = createBrowserRouter([
   {
@@ -219,6 +223,12 @@ const router = createBrowserRouter([
             element: <NewBanner />,
             action: NewBannerAction,
           },
+          {
+            path: "select",
+            element: <SelectBanner />,
+            loader: SelectBannerLoader,
+            action: SelectBannerAction,
+          }
         ],
       },
     ],

@@ -10,7 +10,8 @@ router
   .get(settingsController.getBannerSettings)
   .post(authController.protect, settingsController.addBanner)
   .delete(authController.protect, settingsController.deleteBanner)
-  .patch(authController.protect, settingsController.selectBanner);
+  .put(authController.protect, settingsController.selectBanner)
+  .patch(authController.protect, settingsController.unselectBanner);
 // .post(authController.protect, categoryController.createCategory);
 
 module.exports = router;
