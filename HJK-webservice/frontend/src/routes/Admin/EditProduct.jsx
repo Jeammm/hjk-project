@@ -53,6 +53,7 @@ export default function EditProduct() {
   const navigate = useNavigate();
   const { product, size, brands } = useLoaderData();
   const productDetail = product[0];
+  const [brandOptions, setBrandOptions] = useState(brands);
 
   const [sizeOptions, setSizeOptions] = useState(size);
   const [isAvailable, setIsAvailable] = useState(productDetail.Available);
@@ -129,7 +130,7 @@ export default function EditProduct() {
     else return "grey";
   };
 
-  const brands_option = brands.map((b) => {
+  const brands_option = brandOptions.map((b) => {
     return { value: b.BrandID, label: `${b.NameTH} ${b.NameEN}` };
   });
 
@@ -159,6 +160,11 @@ export default function EditProduct() {
     }
   };
 
+  const fetchOption = async () => {
+    const brands = await getBrands();
+    setBrandOptions(brands);
+  };
+
   return (
     <div id="product-detail">
       <div className="topic-with-close">
@@ -173,7 +179,9 @@ export default function EditProduct() {
       <Form method="post">
         <div id="img-with-desc">
           <ImgUploader
-            prevImg={productDetail.Thumbnail || "http://via.placeholder.com/640x360"}
+            prevImg={
+              productDetail.Thumbnail || "http://via.placeholder.com/170x200"
+            }
             img_field="Thumbnail"
           />
           {/* <div id="product-img-container">
@@ -215,13 +223,19 @@ export default function EditProduct() {
             >
               คลิกถ้าหาแบรนด์ไม่เจอ
             </NavLink>
-            <Select
-              options={brands_option}
-              name="Brand"
-              isClearable={true}
-              isSearchable={true}
-              defaultValue={default_brand[0]}
-            />
+            <div className="select-container">
+              <Select
+                options={brands_option}
+                name="Brand"
+                isClearable={true}
+                isSearchable={true}
+                className="select-component"
+                defaultValue={default_brand[0]}
+              />
+              <button type="button" onClick={fetchOption}>
+                refresh
+              </button>
+            </div>
           </label>
         </div>
 

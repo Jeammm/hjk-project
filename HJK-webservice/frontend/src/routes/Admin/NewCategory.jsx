@@ -20,7 +20,7 @@ export default function NewCategory() {
     <div className="edit-category-form-conatiner">
       <h2>สร้างหมวดหมู่ใหม่</h2>
       <Form method="post">
-        <ImgUploader prevImg="http://via.placeholder.com/640x360" img_field="Thumbnail" />
+        <ImgUploader prevImg="http://via.placeholder.com/270x150" img_field="Thumbnail" />
         <div className="edit-input-field">
           <p>ชื่อหมวดหมู่</p>
           <input type="text" name="CategoryTH" autoComplete="off" />

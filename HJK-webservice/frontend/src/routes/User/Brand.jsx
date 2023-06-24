@@ -40,7 +40,7 @@ export default function Category() {
           return (
             <li key={b.BrandID}>
               <NavLink
-                to={`/brands/${b.BrandID}`}
+                to={`/search/?b=${b.BrandID}`}
                 className="subcat-item selectable"
               >
                 <img

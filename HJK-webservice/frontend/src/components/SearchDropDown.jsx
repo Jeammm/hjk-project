@@ -20,7 +20,7 @@ const SearchDropDown = ({ q, setQ }) => {
       if (q.length >= 3) {
         try {
           const result = await searchProduct(q);
-          setSearchResult(result.data);
+          setSearchResult(result);
         } catch (error) {
           console.error(error);
         }

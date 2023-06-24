@@ -24,6 +24,16 @@ export default function Index() {
         <img loading="lazy" src={banner_icon} alt="banner setting" />
         <p>ตั้งค่าแบนเนอร์</p>
       </NavLink>
+      
+      <NavLink to="contact" className="cpindex-menu-item selectable">
+        <img loading="lazy" src={banner_icon} alt="banner setting" />
+        <p>ตั้งค่าข้อมูลติดต่อ</p>
+      </NavLink>
+      
+      <NavLink to="map" className="cpindex-menu-item selectable">
+        <img loading="lazy" src={banner_icon} alt="banner setting" />
+        <p>ตั้งค่าแผนที่</p>
+      </NavLink>
     </div>
   );
 }

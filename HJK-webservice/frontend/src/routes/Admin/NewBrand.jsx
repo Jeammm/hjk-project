@@ -18,7 +18,10 @@ export default function NewCategory() {
     <div id="brand-edit-container">
       <Form id="brand-edit-form" method="post" key="new-brand">
         <h1>เพิ่มแบรนด์ใหม่</h1>
-        <ImgUploader prevImg={"http://via.placeholder.com/640x360"} img_field="Logo" />
+        <ImgUploader
+          prevImg={"http://via.placeholder.com/200x200"}
+          img_field="Logo"
+        />
         <label>
           ชื่อไทย :
           <input

@@ -208,16 +208,15 @@ export async function newBrand(detail) {
   }
 }
 
-export async function queryProduct(q, p) {
-  const query = { q: q ? q : "", p: p ? p : 1 };
+export async function queryProduct(q, p, b) {
+  const query = { q : q || "", p : p || 1, b : b || ""};
   const res = await axios.get(`${url}/products`, { ...config, params: query });
   return res.data.data.product;
 }
 
-export async function searchProduct(q) {
+export async function searchProduct(q, p, b) {
   //simulate delay
-
-  const query = { q };
+  const query = { q : q || "", p : p || 1, b : b || ""};
   const res = await axios.get(`${url}/search`, { ...config, params: query });
-  return res.data;
+  return res.data.data;
 }

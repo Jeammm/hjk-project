@@ -19,7 +19,26 @@ export async function loader() {
   }
 }
 
-const categoryComponent = (category) => {
+const FeaturedComponent = () => {
+  return (
+    [
+      <NavLink to={`/search/?b=${1}`} className="cat-home-item selectable" key={`f-${1}`}>
+        <div className="cat-img-container">
+          <img src="https://iili.io/HPz9kJ4.jpg" alt="WaiZon"/>
+        </div>
+        <p className="cut-off-2-line">WaiZon</p>
+      </NavLink>,
+      <NavLink to={`/search/?b=${2}`} className="cat-home-item selectable" key={`f-${2}`}>
+        <div className="cat-img-container">
+          <img src="https://iili.io/HPx6oTx.jpg" alt="Marker"/>
+        </div>
+        <p className="cut-off-2-line">Marker</p>
+      </NavLink>,
+    ]
+  )
+}
+
+const CategoryComponent = ({category}) => {
   return category.map((c) => {
     return (
       <NavLink to={`category/${c.CategoryID}`} className="cat-home-item selectable" key={c.CategoryID}>
@@ -32,13 +51,14 @@ const categoryComponent = (category) => {
   });
 };
 
-const brandComponent = (brand) => {
+const BrandComponent = ({brand}) => {
   return brand.map((b) => {
     return (
-      <NavLink to={`brands/${b.BrandID}`} className="brand-home-item selectable" key={b.BrandID}>
+      <NavLink to={`/search/?b=${b.BrandID}`} className="brand-home-item selectable" key={b.BrandID}>
         <div className="brand-img-conatiner">
           <img src={b.Logo} alt={b.NameTH}/>
         </div>
+        <p>{b.NameEN}</p>
       </NavLink>
     );
   });
@@ -56,11 +76,19 @@ export default function Home() {
       <div className="banner-container">
         <CarouselBanner data={bannerSettings}/>
       </div>
+      
+      <div className="category-home">
+        <div className="category-header">
+          <h2>✨ แนะนำ ✨</h2>
+        </div>
+        <div className="cat-list"><FeaturedComponent /></div>
+      </div>
+      
       <div className="category-home">
         <div className="category-header">
           <h2>หมวดหมู่</h2>
         </div>
-        <div className="cat-list">{categoryComponent(category)}</div>
+        <div className="cat-list"><CategoryComponent category={category} /></div>
       </div>
 
       <div className="brand-home">
@@ -68,7 +96,7 @@ export default function Home() {
           <h2>แบรนด์</h2>
           <NavLink to="brands">{"แบรนด์ทั้งหมด >>"}</NavLink>
         </div>
-        <div className="brand-list">{brandComponent(brand)}</div>
+        <div className="brand-list"><BrandComponent brand={brand}/></div>
       </div>
     </div>
   );

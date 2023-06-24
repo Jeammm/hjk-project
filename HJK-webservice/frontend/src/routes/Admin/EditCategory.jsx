@@ -35,7 +35,7 @@ export default function EditCategory() {
     <div className="edit-category-form-conatiner">
       <h2>Category ID: {category[0].CategoryID}</h2>
       <Form key={category[0].CategoryID} method="post">
-        <ImgUploader prevImg={category[0].Thumbnail} img_field="Thumbnail" />
+        <ImgUploader prevImg={category[0].Thumbnail || "http://via.placeholder.com/270x150"} img_field="Thumbnail" />
         <div className="edit-input-field">
           <p>ชื่อหมวดหมู่</p>
           <input

@@ -40,7 +40,12 @@ export default function EditSubCategory() {
     <div className="edit-category-form-conatiner">
       <h2>Sub-Category ID: {subCategory[0].SubCategoryID}</h2>
       <Form key={subCategory[0].SubCategoryID} method="post">
-        <ImgUploader prevImg={subCategory[0].Thumbnail} img_field="Thumbnail" />
+        <ImgUploader
+          prevImg={
+            subCategory[0].Thumbnail || "http://via.placeholder.com/150x150"
+          }
+          img_field="Thumbnail"
+        />
         <div className="edit-input-field">
           <p>ชื่อหมวดหมู่ย่อย</p>
           <input

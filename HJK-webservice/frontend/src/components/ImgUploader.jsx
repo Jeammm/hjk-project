@@ -20,7 +20,7 @@ export default function ImgUploader({
         setPreview(prevImg);
         return;
       }
-      setPreview(undefined);
+      setPreview(prevImg || undefined);
       return;
     }
 

@@ -34,7 +34,10 @@ export default function EditCategory() {
     <div id="brand-edit-container">
       <Form id="brand-edit-form" method="post" key={brand[0].BrandID}>
         <h1>แก้ไขแบรนด์</h1>
-        <ImgUploader prevImg={brand[0].Logo} img_field="Logo" />
+        <ImgUploader
+          prevImg={brand[0].Logo || "http://via.placeholder.com/200x200"}
+          img_field="Logo"
+        />
         <label>
           ชื่อไทย :
           <input

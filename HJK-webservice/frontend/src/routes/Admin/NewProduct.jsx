@@ -121,7 +121,7 @@ export default function NewProduct() {
         <div id="img-with-desc">
           {/* <img loading="lazy" src="../assets/logo.svg" alt="product" id="product-img" /> */}
           <ImgUploader
-            prevImg="http://via.placeholder.com/640x360"
+            prevImg="http://via.placeholder.com/170x200"
             img_field="Thumbnail"
           />
           <div id="detail-beside-img">

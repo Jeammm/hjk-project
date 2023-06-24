@@ -9,7 +9,7 @@ export async function action({ request, params }) {
   const data = Object.fromEntries(formData);
   await newSubCategory(params.categoryId, data);
   // const newCatId = await newSubCategory(params.categoryId, data);
-  window.alert("New Sub-Category created successfully")
+  window.alert("New Sub-Category created successfully");
   return redirect(`/admin/category/${params.categoryId}/subcategory`);
 }
 
@@ -20,7 +20,10 @@ export default function NewSubCategory() {
     <div className="edit-category-form-conatiner">
       <h2>สร้างหมวดหมู่ย่อยใหม่</h2>
       <Form method="post">
-        <ImgUploader prevImg="http://via.placeholder.com/640x360" img_field="Thumbnail" />
+        <ImgUploader
+          prevImg="http://via.placeholder.com/150x150"
+          img_field="Thumbnail"
+        />
         <div className="edit-input-field">
           <p>ชื่อหมวดหมู่ย่อย</p>
           <input type="text" name="SubNameTH" autoComplete="off" />
