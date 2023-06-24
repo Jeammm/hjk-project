@@ -209,7 +209,6 @@ exports.queryProduct = async (q, p) => {
 };
 
 exports.search = async (q, p, b) => {
-  
   let queryStrings = [];
 
   if (q) {
@@ -249,11 +248,19 @@ exports.search = async (q, p, b) => {
 
   const product = await db.query(
     `
-    SELECT DISTINCT p.*, (SELECT MIN(s.Price) FROM Size s WHERE s.ProductID = p.ProductID) AS MinPrice, b.NameTH, b.NameEN
-    FROM Product p
-    LEFT JOIN Size s ON p.ProductID = s.ProductID
-    LEFT JOIN Brand b ON p.Brand = b.BrandID
-    WHERE ${conditions.join(" AND ")}
+    SELECT DISTINCT 
+      p.*, 
+      (SELECT MIN(s.Price) FROM Size s WHERE s.ProductID = p.ProductID) AS MinPrice, 
+      b.NameTH AS BrandTH, 
+      b.NameEN AS BrandEN
+    FROM 
+      Product p
+    LEFT JOIN 
+      Size s ON p.ProductID = s.ProductID
+    LEFT JOIN 
+      Brand b ON p.Brand = b.BrandID
+    WHERE 
+      ${conditions.join(" AND ")}
     `,
     [...param]
   );
