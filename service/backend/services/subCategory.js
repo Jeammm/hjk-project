@@ -114,29 +114,62 @@ exports.editSubCategory = async (id, subCategoryData) => {
   }
 };
 
-exports.search = async (q) => {
-  const queryStrings = q.split(" "); // Array of query strings
+exports.search = async (q, p, b) => {
   const conditions = [];
   const param = [];
 
-  queryStrings.forEach((queryString) => {
-    conditions.push(
-      `(
-        SubNameTH LIKE ? 
-        OR SubNameEN LIKE ? 
-        OR SubCategoryID LIKE ? 
-      )`
+  if (q) {
+    const queryStrings = q.split(" ");
+    queryStrings.forEach((queryString) => {
+      conditions.push(
+        `(
+          SubNameTH LIKE ? 
+          OR SubNameEN LIKE ? 
+          OR SubCategoryID LIKE ? 
+        )`
+      );
+      param.push(`%${queryString}%`, `%${queryString}%`, `%${queryString}%`);
+    });
+
+    if (b) {
+      const sub = await db.query(
+        `
+          SELECT Sub.SubCategoryID, Sub.CategoryID, Sub.Thumbnail, Sub.SubNameTH, Sub.SubNameEN, Sub.SubNameTH
+          FROM Product p
+          JOIN Brand b ON b.BrandID = p.Brand
+          JOIN SubCategory Sub ON Sub.SubCategoryID = p.SubCategory
+          WHERE ${conditions.join(" OR ")} AND p.Brand = ?
+          `,
+        [...param, b]
+      );
+
+      return {
+        sub,
+      };
+    }
+
+    const sub = await db.query(
+      `
+      SELECT Sub.SubCategoryID, Sub.CategoryID, Sub.Thumbnail, Sub.SubNameTH, Sub.SubNameEN, Sub.SubNameTH
+      FROM SubCategory Sub
+      WHERE ${conditions.join(" OR ")}
+      `,
+      param
     );
-    param.push(`%${queryString}%`, `%${queryString}%`, `%${queryString}%`);
-  });
+
+    return {
+      sub,
+    };
+  }
 
   const sub = await db.query(
     `
-    SELECT *
-    FROM SubCategory
-    WHERE ${conditions.join(" OR ")}
-    `,
-    param
+      SELECT Sub.SubCategoryID, Sub.CategoryID, Sub.Thumbnail, Sub.SubNameTH, Sub.SubNameEN, Sub.SubNameTH
+      FROM Product p
+      JOIN SubCategory Sub ON Sub.SubCategoryID = p.SubCategory
+      WHERE p.Brand = ?
+      `,
+    [b]
   );
 
   return {

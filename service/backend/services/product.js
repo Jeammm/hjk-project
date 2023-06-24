@@ -208,8 +208,13 @@ exports.queryProduct = async (q, p) => {
   };
 };
 
-exports.search = async (q) => {
-  const queryStrings = q.split(" "); // Array of query strings
+exports.search = async (q, p, b) => {
+  
+  let queryStrings = [];
+
+  if (q) {
+    queryStrings = q.split(" "); // Array of query strings
+  }
   const conditions = [];
   const param = [];
 
@@ -237,6 +242,11 @@ exports.search = async (q) => {
     );
   });
 
+  if (b) {
+    conditions.push("p.Brand = ?");
+    param.push(b);
+  }
+
   const product = await db.query(
     `
     SELECT DISTINCT p.*, (SELECT MIN(s.Price) FROM Size s WHERE s.ProductID = p.ProductID) AS MinPrice
@@ -245,7 +255,7 @@ exports.search = async (q) => {
     LEFT JOIN Brand b ON p.Brand = b.BrandID
     WHERE ${conditions.join(" AND ")}
     `,
-    param
+    [...param]
   );
 
   return {

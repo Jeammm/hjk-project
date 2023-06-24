@@ -72,6 +72,11 @@ exports.editCategory = async (id, categoryData) => {
 };
 
 exports.search = async (q) => {
+
+  if (!q) {
+    return {category: []};
+  }
+
   const queryStrings = q.split(" "); // Array of query strings
   const conditions = [];
   const param = [];
