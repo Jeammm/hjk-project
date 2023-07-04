@@ -12,7 +12,7 @@ export async function loader({ params }) {
   if (category.length === 0) {
     throw new Response("", {
       status: 404,
-      statusText: "Not Found",
+      statusText: "Not Found.",
     });
   }
 

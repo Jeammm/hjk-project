@@ -28,8 +28,8 @@ export default function NewBanner() {
           <ImgUploader
             prevImg="http://via.placeholder.com/2179x1000"
             img_field="BannerURL"
-            width={400}
-            height={130}
+            width="400px"
+            height="130px"
           />
           <div className="edit-input-field">
             <p>ชื่อ</p>

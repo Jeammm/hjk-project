@@ -5,8 +5,8 @@ import { imageUploader } from "../utils/imageUploader";
 export default function ImgUploader({
   prevImg,
   img_field,
-  width = 300,
-  height = 300,
+  width = "300px",
+  height = "300px",
 }) {
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState(prevImg);
@@ -99,7 +99,7 @@ export default function ImgUploader({
         )}
       </div>
       
-      <div id="product-image-upload-display"  style={{ width: width, height: height }}>
+      <div id="product-image-upload-display" style={{ width: width, height: height }}>
         {preview && (
           <img loading="lazy" src={preview} alt="preview" id="product-img" />
         )}

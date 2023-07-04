@@ -52,7 +52,7 @@ exports.deleteBanner = async (id) => {
 };
 
 exports.selectBanner = async (selected) => {
-  console.log(selected)
+  console.log(selected);
   try {
     const result = await db.query(
       `
@@ -86,4 +86,24 @@ exports.unselectBanner = async (id) => {
   } catch (e) {
     throw new AppError(e, 409);
   }
+};
+
+exports.getContact = async () => {
+  return await db.query(`
+    SELECT * 
+    FROM 
+      ContactInfo
+    WHERE
+      tag = 'contact'
+    `);
+};
+
+exports.getMap = async () => {
+  return await db.query(`
+    SELECT * 
+    FROM 
+      ContactInfo
+    WHERE
+      tag = 'map'
+    `);
 };

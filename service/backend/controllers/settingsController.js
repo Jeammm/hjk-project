@@ -49,3 +49,21 @@ exports.unselectBanner = catchAsync(async (req, res, next) => {
     data,
   });
 });
+
+exports.getContact = catchAsync(async (req, res, next) => {
+  const result = await settings.getContact();
+  const data = result;
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
+
+exports.getMap = catchAsync(async (req, res, next) => {
+  const result = await settings.getMap();
+  const data = result;
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});

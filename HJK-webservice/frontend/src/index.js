@@ -23,6 +23,8 @@ import SubCategory, {
 import Product, { loader as productLoader } from "./routes/User/Product";
 import Brand, { loader as brandLoader } from "./routes/User/Brand";
 import BrandItem, { loader as brandItemLoader } from "./routes/User/BrandItem";
+import Contact, { loader as contactLoader } from "./routes/User/Contact";
+import Map, { loader as mapLoader } from "./routes/User/Map";
 
 import CategoryConf, {
   loader as CategoryConfLoader,
@@ -72,6 +74,14 @@ import SelectBanner, {
   loader as SelectBannerLoader,
   action as SelectBannerAction,
 } from "./routes/Admin/SelectBanner";
+import EditContact, {
+  loader as EditContactLoader,
+  action as EditContactAction,
+} from "./routes/Admin/EditContact";
+import EditMap, {
+  loader as EditMapLoader,
+  action as EditMapAction,
+} from "./routes/Admin/EditMap";
 
 const router = createBrowserRouter([
   {
@@ -118,6 +128,16 @@ const router = createBrowserRouter([
             path: "brands/:brandId",
             element: <BrandItem />,
             loader: brandItemLoader,
+          },
+          {
+            path: "contact",
+            element: <Contact/>,
+            loader: contactLoader,
+          },
+          {
+            path: "map",
+            element: <Map/>,
+            loader: mapLoader,
           },
         ],
       },
@@ -228,8 +248,20 @@ const router = createBrowserRouter([
             element: <SelectBanner />,
             loader: SelectBannerLoader,
             action: SelectBannerAction,
-          }
+          },
         ],
+      },
+      {
+        path: "contact",
+        element: <EditContact />,
+        loader: EditContactLoader,
+        action: EditContactAction,
+      },
+      {
+        path: "map",
+        element: <EditMap />,
+        loader: EditMapLoader,
+        action: EditMapAction,
       },
     ],
   },

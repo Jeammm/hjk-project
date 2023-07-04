@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Jun 03, 2023 at 05:48 AM
+-- Generation Time: Jul 04, 2023 at 05:32 PM
 -- Server version: 8.0.33
 -- PHP Version: 8.1.17
 
@@ -20,6 +20,63 @@ SET time_zone = "+00:00";
 --
 -- Database: `hjk_database`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`%` PROCEDURE `sp_ResetBannerSetting` ()   BEGIN
+    -- Clear all data in the table
+    DELETE FROM BannerSetting;
+    
+    -- Reset the auto-increment counter
+    ALTER TABLE BannerSetting AUTO_INCREMENT = 1;
+END$$
+
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Banner`
+--
+
+CREATE TABLE `Banner` (
+  `BannerID` int NOT NULL,
+  `BannerURL` varchar(255) NOT NULL,
+  `BannerDes` varchar(255) DEFAULT NULL,
+  `BannerName` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Banner`
+--
+
+INSERT INTO `Banner` (`BannerID`, `BannerURL`, `BannerDes`, `BannerName`) VALUES
+(7, 'https://iili.io/HPO3YBe.png', 'Default Storage background', 'HJK Logo --Storage bg'),
+(8, 'https://iili.io/HPO3GpV.jpg', 'Engineers Day Lorem Ipsum', 'Engineers Day'),
+(9, 'https://iili.io/HPO3vvR.png', 'WaiZon ก็อกน้ำ', 'WaiZon ก็อกน้ำ');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `BannerSelected`
+--
+
+CREATE TABLE `BannerSelected` (
+  `BannerNo` int NOT NULL,
+  `BannerID` int NOT NULL,
+  `Interval` int NOT NULL DEFAULT '5000'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `BannerSelected`
+--
+
+INSERT INTO `BannerSelected` (`BannerNo`, `BannerID`, `Interval`) VALUES
+(12, 8, 5000),
+(13, 7, 5000),
+(14, 9, 5000);
 
 -- --------------------------------------------------------
 
@@ -44,7 +101,7 @@ CREATE TABLE `Brand` (
   `BrandID` int NOT NULL,
   `NameTH` varchar(255) DEFAULT NULL,
   `NameEN` varchar(255) DEFAULT NULL,
-  `Logo` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'placeholder_logo.png'
+  `Logo` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'http://via.placeholder.com/640x360'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -52,13 +109,13 @@ CREATE TABLE `Brand` (
 --
 
 INSERT INTO `Brand` (`BrandID`, `NameTH`, `NameEN`, `Logo`) VALUES
-(1, 'ทีโอเอ', 'TOA', 'https://www.toagroup.com/themes/default/assets/static/images/logo.svg'),
-(2, 'อีเกิ้ล วัน', 'Eagle One', 'https://ddstickers.com/wp-content/uploads/2018/07/Eagle-One-Logo.jpg'),
-(3, 'ล็อบสเตอร์', 'Lobster', 'https://www.uraipaints.com/imgadmins/img_model/large/20200422115401.jpeg'),
-(4, 'บิวตี้', 'Beauty', 'https://www.uraipaints.com/imgadmins/img_brand/logo/20200424142054.png'),
-(5, 'ทีเอชดับบิว', 'THW', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Thw.logo.svg/2048px-Thw.logo.svg.png'),
-(6, 'ม้า', 'Horse', 'https://cf.shopee.co.th/file/a65c9f2fc697c176f5e1c40b8072c911'),
-(7, 'เหมียว', 'Meow', '');
+(1, 'WaiZon', 'WaiZon', 'https://iili.io/HPz9kJ4.jpg'),
+(2, 'Marker', 'Marker', 'https://iili.io/HPx6oTx.jpg'),
+(3, 'ทีโอเอ', 'TOA', 'https://iili.io/HPk2qJf.png'),
+(4, 'อีเกิ้ล วัน', 'Eagle One', 'http://via.placeholder.com/110x110'),
+(5, 'กุ้ง', 'Lobster', 'http://via.placeholder.com/110x110'),
+(6, 'โฟว์ซีซัน', '4Season', 'http://via.placeholder.com/110x110'),
+(7, 'ม้า', 'Horse', 'http://via.placeholder.com/110x110');
 
 --
 -- Triggers `Brand`
@@ -81,25 +138,26 @@ DELIMITER ;
 CREATE TABLE `Category` (
   `CategoryID` int NOT NULL,
   `CategoryTH` varchar(255) DEFAULT NULL,
-  `CategoryEN` varchar(255) DEFAULT NULL
+  `CategoryEN` varchar(255) DEFAULT NULL,
+  `Thumbnail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'http://via.placeholder.com/640x360'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `Category`
 --
 
-INSERT INTO `Category` (`CategoryID`, `CategoryTH`, `CategoryEN`) VALUES
-(1, 'กระดาษทราย', 'Abrasives'),
-(4, 'สี', 'Paint'),
-(7, 'อุปกรณ์ขัด อุปกรณ์เจีย', 'Drilling Tools'),
-(10, 'อุปกรณ์สื่อสาร', 'Communication device'),
-(5, 'อุปกรณ์เจาะ', 'Drilling Tool'),
-(2, 'เครื่องมือช่าง', 'Hand Tools'),
-(8, 'เครื่องมือตัด', 'Cutting Tools'),
-(6, 'เครื่องมือวัด', 'Measuring Tools'),
-(3, 'เครื่องมือและอุปกรณ์เกี่ยวกับรถยนต์', 'Mobils Tools'),
-(11, 'แปรง ลูกกลิ้งทาสี', 'Paint Brush and Roller'),
-(9, 'ไฟฟ้า', 'Electronic');
+INSERT INTO `Category` (`CategoryID`, `CategoryTH`, `CategoryEN`, `Thumbnail`) VALUES
+(1, 'Marker', 'Marker', 'https://iili.io/HPx6oTx.jpg'),
+(2, 'Waizon', 'Waizon', 'https://iili.io/HPx6suj.jpg'),
+(3, 'งานก่อสร้างทั่วไป', 'Construction Tools', 'https://iili.io/HPxPIAG.webp'),
+(4, 'งานสี', 'Paint Tools', 'https://iili.io/HPxP1Hu.webp'),
+(5, 'ห้องน้ำ สุขภัณฑ์ ส้วม', 'Bathroom', 'https://iili.io/HPxPNl1.webp'),
+(6, 'ประตู หน้าต่าง', 'Doors and Windows', 'https://iili.io/HPxPSDv.webp'),
+(7, 'เครื่องมือช่าง', 'Professional Tools', 'https://iili.io/HPxiHfS.webp'),
+(8, 'อุปกรณ์ PVC', 'Plumbing Tools', 'https://iili.io/HPxiz0P.webp'),
+(9, 'งานเกษตร', 'Garden Tools', 'https://iili.io/HPxiIg1.webp'),
+(10, 'เครื่องใช้ไฟฟ้า', 'Electronic Tools', 'https://iili.io/HPxiXmG.webp'),
+(11, 'งานโลหะ', 'Metalic Work Tools', 'https://iili.io/HPxiLBV.webp');
 
 --
 -- Triggers `Category`
@@ -124,7 +182,7 @@ CREATE TABLE `Product` (
   `ProductID` varchar(10) NOT NULL,
   `NameTH` varchar(255) DEFAULT NULL,
   `NameEN` varchar(255) DEFAULT NULL,
-  `Thumbnail` varchar(255) DEFAULT NULL,
+  `Thumbnail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'http://via.placeholder.com/640x360',
   `DesTH` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `DesEN` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `Brand` int DEFAULT NULL,
@@ -139,23 +197,8 @@ CREATE TABLE `Product` (
 --
 
 INSERT INTO `Product` (`ProductID`, `NameTH`, `NameEN`, `Thumbnail`, `DesTH`, `DesEN`, `Brand`, `IsColor`, `SubCategory`, `Available`, `source`) VALUES
-('01101', 'กระดาษทรายน้ำ ตรา ทีโอเอ', 'Waterproof Abrasive Paper - TOA', 'https://iili.io/HrZIFaV.png', 'เหมาะสำหรับทั้งงานขัดแบบน้ำและแบบแห้ง เช่น งานขัดสีรถยนต์ งานขัดโลหะหรือเหล็กต่างๆ คุณสมบัติคือเม็ดทรายมีคุณภาพสูง กระดาษหนาและเหนียว ซึ่งทนทานต่อการใช้งานขัดถูที่สูงกว่าทั่วไป โดยมีหลายเบอร์ให้เลือกใช้ตามความต้องการทั้งแบบหยาบและละเอียด', 'Suitable for both wet and dry work such as, car polishing, metal or steel polishing. High-quality sand on thick or tough paper. Durable high abrasive. Numbered for selection to meet needs from tough grade to high resolution.', 1, 0, '0101', 1, '347018463_267726515705587_1556222189870781683_n.png'),
-('01102', 'กระดาษทรายน้ำ ตรา อีเกิ้ล วัน', 'Water Proof Abrasive Paper - EAGLE ONE', 'https://inwfile.com/s-gc/1ytxr0.jpg', 'ผงขัดผลิตจากซิลิคอนคาร์ไบด์ (silicon carbide) เหมาะสำหรับทั้งงานขัดแบบน้ำและแบบแห้ง มีหลายขนาดให้เลือกตามความเหมาะสมของชิ้นงานในราคายุติธรรม', 'Polishing powder is made with Silicon Carbine, suitable for wet and dry usage. There are a variety of code numbers, depending on your work. All are fairly priced.', 2, 0, '0101', 1, NULL),
-('01103', 'กระดาษทรายน้ำ ตรา นิตโต้', 'Water Proof Abrasive Paper - Nitto', 'https://iili.io/HrDITcx.jpg', 'ใช้ขัดสีพ่นรถยนต์ ชิ้นงานเหล็ก และเฟอร์นิเจอร์พลาสติก เป็นกระดาษทรายน้ำที่ให้ความคมเพื่อขัดชิ้นงาน จึงได้ความเรียบและสวยงาม เม็ดทรายมีการยึดเกาะแน่นกับแผ่นกระดาษ ไม่หลุดล่อนง่าย', 'The product can be used for car paint, metal and plastic furniture. Waterproof abrasive paper with sharp abrasion that can give a very smooth finish. Abrasive is stuck tough to the paper for long lasting usage.', NULL, 0, '0101', 1, '6410504390.jpg'),
-('01104', 'กระดาษทรายน้ำ ตรา นิตเต้', NULL, 'https://iili.io/Hrb8xGS.jpg', 'ใช้ขัดสีพ่นรถยนต์ ชิ้นงานเหล็ก และเฟอร์นิเจอร์พลาสติก เป็นกระดาษทรายน้ำที่ให้ความคมเพื่อขัดชิ้นงาน จึงได้ความเรียบและสวยงาม เม็ดทรายมีการยึดเกาะแน่นกับแผ่นกระดาษ ไม่หลุดล่อนง่าย\"', NULL, NULL, 0, '0101', 1, NULL),
-('02001', 'กรรไกรตัดเหล็กเส้น ตรา ม้า', NULL, NULL, 'กรรไกรตัดเหล็กเส้น ตรา ม้ากรรไกรตัดเหล็กเส้น ตรา ม้า', NULL, 6, 0, '0201', 1, NULL),
-('04101', 'สีทาภายนอก TOA', 'Exterior Paint - TOA', 'https://www.toagroup.com/storage/products/decorative-coatings/premium/shield-1-primer-2022.png', 'สีสำหรับทาภายนอก ทนฝนทนแดด ไม่ขึนรา สีสวย', 'Paint for Exterior uses. Resist to sunlight, rain, and fungi.', 1, 1, '0401', 1, NULL),
-('04102', 'สีทาภายใน TOA', 'Interior Paint - TOA', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKwkbSVVG09M-GHkYYv8jyMtbRFIolOMce6oewKEed8_GUEZcgaDIRMmlyZv8a9eDoDwY&usqp=CAU', 'สีสำหรับทาภายใน ทนมือทนเท้า ไม่ขึนรา', 'Paint for interior uses. Resist to stain and fungi.', 1, 1, '0402', 1, NULL),
-('04103', 'asd', NULL, NULL, 'asd', NULL, NULL, 0, '0403', 1, NULL),
-('04104', 'สีไม้เฟเบอคาสเทล', NULL, NULL, 'แพงแต่ดี', NULL, NULL, 1, '0403', 1, NULL),
-('04105', 'สีไม้ตะเข้', NULL, NULL, 'กำลังดี', NULL, NULL, 1, '0403', 1, NULL),
-('04106', 'สีตราม้า', NULL, NULL, 'ไม่ชอบ', NULL, NULL, 0, '0403', 1, NULL),
-('04107', 'สีทาภายนอก ตรากุ้ง', NULL, NULL, 'กุ้งๆๆๆๆๆๆ', NULL, 3, 1, '0401', 1, NULL),
-('05001', 'สว่านเจาะกระโหลก', NULL, NULL, 'สว่านเจาะกระโหลกสว่านเจาะกระโหลกสว่านเจาะกระโหลก', NULL, 4, 0, '0501', 1, NULL),
-('07001', 'หินเจีย', NULL, NULL, 'หินเจีย', NULL, 2, 0, '0701', 1, NULL),
-('09001', 'สายไฟ VAF ตรา THW', NULL, NULL, 'สายไฟ VAF ตรา THWสายไฟ VAF ตรา THWสายไฟ VAF ตรา THWสายไฟ VAF ตรา THW', NULL, 5, 0, '0901', 1, NULL),
-('10001', 'แมวคอลเซนเตอร์', NULL, 'https://iili.io/HrZI0ns.jpg', 'แมวคอลเซนเตอร์แมวคอลเซนเตอร์แมวคอลเซนเตอร์แมวคอลเซนเตอร์แมวคอลเซนเตอร์แมวคอลเซนเตอร์แมวคอลเซนเตอร์แมวคอลเซนเตอร์แมวคอลเซนเตอร์แมวคอลเซนเตอร์แมวคอลเซนเตอร์', NULL, 7, 0, '1001', 0, NULL),
-('11001', 'แปรงทาสี TOA', NULL, 'https://iili.io/HrbQ8yN.jpg', 'แปรงทาสี TOAแปรงทาสี TOAแปรงทาสี TOAแปรงทาสี TOAแปรงทาสี TOAแปรงทาสี TOAแปรงทาสี TOAแปรงทาสี TOAแปรงทาสี TOAแปรงทาสี TOAแปรงทาสี TOAแปรงทาสี TOAแปรงทาสี TOAแปรงทาสี TOAแปรงทาสี TOAแปรงทาสี TOA asdasd', NULL, 1, 1, '1101', 0, NULL);
+('02001', 'ก็อกซิ้งล้างจาน WaiZon', NULL, 'https://iili.io/HPOTXZG.jpg', 'ก็อกซิ้งล้างจาน WaiZonก็อกซิ้งล้างจาน WaiZonก็อกซิ้งล้างจาน WaiZonก็อกซิ้งล้างจาน WaiZonก็อกซิ้งล้างจาน WaiZonก็อกซิ้งล้างจาน WaiZonก็อกซิ้งล้างจาน WaiZonก็อกซิ้งล้างจาน WaiZonก็อกซิ้งล้างจาน WaiZon', NULL, 1, 0, '0201', 1, 'S__280297486.jpg'),
+('03001', 'อิฐ TOA', NULL, '', 'อิฐแดง TOA อิฐแดง TOA อิฐแดง TOA อิฐแดง TOA อิฐแดง TOA อิฐแดง TOA อิฐแดง TOA อิฐแดง TOA อิฐแดง TOA อิฐแดง TOA อิฐแดง TOA อิฐแดง TOA อิฐแดง TOA อิฐแดง TOA อิฐแดง TOA', NULL, 3, 0, '0301', 1, NULL);
 
 --
 -- Triggers `Product`
@@ -196,35 +239,8 @@ CREATE TABLE `Size` (
 --
 
 INSERT INTO `Size` (`ProductID`, `SizeID`, `Des`, `Packing`, `Price`) VALUES
-('01101', 1, '#80', '60 Pcs.', 100),
-('01101', 2, '#100', '60 Pcs.', 110),
-('01101', 3, '#200', '60 Pcs.', 200),
-('01101', 4, '#1000', '60 Pcs.', 500),
-('01101', 5, '#2000', '60 Pcs.', 1000),
-('01101', 6, '2', '6', 9),
-('01101', 7, '3', '7', 0),
-('01101', 8, '4', '8', 1),
-('01102', 1, '#120', '50 Pcs.', 120),
-('01102', 2, '#150', '50 Pcs.', 130),
-('01104', 1, '1', '2', 3),
-('02001', 1, '1', '2', 10000),
-('04101', 1, '20 L.', '1 Pcs.', 140),
-('04101', 2, '40 L.', '1 Pcs.', 150),
-('04101', 3, '60 L.', '1 Pcs.', 160),
-('04101', 4, '70 L.', '1 Pcs.', 170),
-('04101', 5, '80 L.', '1 Pcs.', 180),
-('04102', 1, '20 L.', '1 Pcs.', 160),
-('04102', 2, '40 L.', '1 Pcs.', 170),
-('04103', 1, 'as23', 'sda', 123),
-('04104', 1, '1213', '123', 123),
-('04105', 1, 'ๅ/-', 'หฟก', 123),
-('04106', 1, 'ๅ/-', 'ๅ/-', 123),
-('04107', 1, '1 Gallon', '1 Pcs.', 350),
-('05001', 1, 'ภ', 'ถ', 2),
-('07001', 1, '2', '3', 4),
-('09001', 1, '20 m.', '1 ม้วน', 500),
-('09001', 2, '40 m.', '1 ม้วน', 1000),
-('10001', 1, '1', '1', 10000);
+('02001', 1, '1', '2', 3),
+('03001', 1, '2x3x5', '60 Pcs.', 200);
 
 -- --------------------------------------------------------
 
@@ -237,7 +253,7 @@ CREATE TABLE `SubCategory` (
   `CategoryID` int NOT NULL,
   `SubNameTH` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `SubNameEN` varchar(255) NOT NULL,
-  `Thumbnail` varchar(255) NOT NULL DEFAULT 'placeholder.png',
+  `Thumbnail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'http://via.placeholder.com/640x360',
   `source` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -246,19 +262,8 @@ CREATE TABLE `SubCategory` (
 --
 
 INSERT INTO `SubCategory` (`SubCategoryID`, `CategoryID`, `SubNameTH`, `SubNameEN`, `Thumbnail`, `source`) VALUES
-('0101', 1, 'กระดาษทรายน้ำ', 'Waterproof Abrasive Paper', 'https://inwfile.com/s-gc/14hprf.jpg', NULL),
-('0102', 1, 'กระดาษทรายกลม', 'Abrasive Fiber Disc', 'placeholder.png', NULL),
-('0103', 1, 'กระดาษทรายม้วน', 'Abrasive Cloth Roll', 'placeholder.png', NULL),
-('0104', 1, 'ผ้าทราย', 'Abrasive Cloth', 'undefined', NULL),
-('0201', 2, 'กรรไกรตัดเหล็กเส้น', 'Bolt Clipper', 'placeholder.png', NULL),
-('0401', 4, 'สีทาภายนอก', 'Exterior Paint', 'https://www.toagroup.com/storage/products/decorative-coatings/premium/shield-1-primer-2022.png', NULL),
-('0402', 4, 'สีทาภายใน', 'Interior Paint', 'https://iili.io/HrDITcx.jpg', '6410504390.jpg'),
-('0403', 4, 'สีไม้', 'Colored Pencil', 'https://iili.io/HrbvZva.jpg', 'second.jpg'),
-('0501', 5, 'สว่านไฟฟ้า', 'Electric Drill', 'undefined', NULL),
-('0701', 7, 'หินเจีย', 'Grinding Stone', 'undefined', NULL),
-('0901', 9, 'สายไฟ', 'wire', 'undefined', NULL),
-('1001', 10, 'หูฟังชนิดครอบหู', 'Headphone', 'undefined', NULL),
-('1101', 11, 'แปรงทาสี', 'Paint Brush', 'undefined', NULL);
+('0201', 2, 'ก็อกน้ำ', 'Faucet', 'https://iili.io/HPxpV7p.jpg', NULL),
+('0301', 3, 'อิฐ', 'Bricks', 'https://iili.io/HPeyc2R.webp', NULL);
 
 --
 -- Triggers `SubCategory`
@@ -332,6 +337,18 @@ DELIMITER ;
 --
 
 --
+-- Indexes for table `Banner`
+--
+ALTER TABLE `Banner`
+  ADD PRIMARY KEY (`BannerID`);
+
+--
+-- Indexes for table `BannerSelected`
+--
+ALTER TABLE `BannerSelected`
+  ADD PRIMARY KEY (`BannerNo`);
+
+--
 -- Indexes for table `Basket`
 --
 ALTER TABLE `Basket`
@@ -392,6 +409,22 @@ ALTER TABLE `Tag`
 ALTER TABLE `Users`
   ADD PRIMARY KEY (`UserID`),
   ADD UNIQUE KEY `username` (`username`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `Banner`
+--
+ALTER TABLE `Banner`
+  MODIFY `BannerID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `BannerSelected`
+--
+ALTER TABLE `BannerSelected`
+  MODIFY `BannerNo` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables

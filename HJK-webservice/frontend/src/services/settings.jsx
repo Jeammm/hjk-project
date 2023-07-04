@@ -50,3 +50,17 @@ export async function unselectBanner(detail) {
   });
   return res.data.data;
 }
+
+export async function getContact() {
+  const res = await axios.get(`${url}/contact`, {
+    ...config,
+  })
+  return res.data.data;
+}
+
+export async function getMap() {
+  const res = await axios.get(`${url}/map`, {
+    ...config,
+  })
+  return res.data.data;
+}

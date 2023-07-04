@@ -14,4 +14,7 @@ router
   .patch(authController.protect, settingsController.unselectBanner);
 // .post(authController.protect, categoryController.createCategory);
 
+router.route("/contact").get(settingsController.getContact)
+router.route("/map").get(settingsController.getMap)
+
 module.exports = router;
